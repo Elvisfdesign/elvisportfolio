@@ -1,0 +1,93 @@
+nav {
+	background: rgba(0, 0, 0, 0.8);
+	width: max-content;
+	display: block;
+	padding: 0.7rem 1.7rem;
+	z-index: 2;
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 2rem;
+	display: flex;
+	gap: 0.8rem;
+	border-radius: 3rem;
+}
+
+@supports (backdrop-filter: blur(15px)) {
+	nav {
+		background: rgba(0, 0, 0, 0.3);
+		backdrop-filter: blur(15px);
+	}
+}
+
+nav a {
+	background: transparent;
+	padding: 0.9rem;
+	border-radius: 50%;
+	display: flex;
+	color: var(--color-light);
+	font-size: 1.1rem;
+}
+
+nav a:hover {
+	background-color: rgba(0, 0, 0, 0.3);
+	color: var(--color-primary);
+}
+
+nav a.active {
+	background: var(--color-primary);
+	color: var(--color-bg);
+}
+
+@media screen and (min-width: 800px) {
+	/**
+ * Tooltip Styles
+ */
+
+	/* Add this attribute to the element that needs a tooltip */
+	[data-tooltip] {
+		position: relative;
+		z-index: 2;
+		cursor: pointer;
+	}
+
+	/* Hide the tooltip content by default */
+	[data-tooltip]:before,
+	[data-tooltip]:after {
+		visibility: hidden;
+		-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
+		filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=0);
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	/* Position tooltip above the element */
+	[data-tooltip]:before {
+		position: absolute;
+		bottom: 124%;
+		left: 140%;
+		margin-bottom: 5px;
+		margin-left: -80px;
+		padding: 0.5rem 1rem;
+		width: auto;
+		-webkit-border-radius: 14px;
+		-moz-border-radius: 14px;
+		border-radius: 14px;
+
+		background-color: rgba(0, 0, 0, 1);
+		color: #fff;
+		content: attr(data-tooltip);
+		text-align: center;
+		font-size: 12px;
+		line-height: 1.2;
+	}
+
+	/* Show tooltip content on hover */
+	[data-tooltip]:hover:before,
+	[data-tooltip]:hover:after {
+		visibility: visible;
+		-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=100)';
+		filter: progid: DXImageTransform.Microsoft.Alpha(Opacity=100);
+		opacity: 1;
+	}
+}
