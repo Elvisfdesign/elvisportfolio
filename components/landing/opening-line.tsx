@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import clsx from "clsx";
-import { useRef } from "react";
+import { useRef, useSyncExternalStore } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
@@ -10,6 +10,19 @@ import { useReducedMotionPreference } from "@/components/motion/use-reduced-moti
 /** Shared layout overrides `link-underline`’s `inline-block` for aligned touch targets. */
 const EDITORIAL_OPENING_LINK_CLASSES =
   "t-mono link-underline !inline-flex min-h-11 items-center touch-manipulation leading-none transition-colors relative";
+
+/** `md` breakpoint — matches Tailwind `md:` (768px). */
+const HERO_COMPACT_MEDIA = "(max-width: 767px)";
+
+function subscribeHeroCompactMq(onChange: () => void) {
+  const mq = window.matchMedia(HERO_COMPACT_MEDIA);
+  mq.addEventListener("change", onChange);
+  return () => mq.removeEventListener("change", onChange);
+}
+
+function heroCompactMqSnapshot() {
+  return window.matchMedia(HERO_COMPACT_MEDIA).matches;
+}
 
 function OpeningEditorialHairlineMark({ className }: { className?: string }) {
   return (
@@ -66,29 +79,42 @@ export function OpeningLine() {
 }
 
 function OpeningLineMotion() {
+  const compact = useSyncExternalStore(
+    subscribeHeroCompactMq,
+    heroCompactMqSnapshot,
+    () => false,
+  );
   const ref = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  // First half opacity / morph
-  const firstY = useTransform(scrollYProgress, [0, 0.55], [0, -40]);
-  const firstOpacity = useTransform(scrollYProgress, [0, 0.45, 0.6], [1, 1, 0]);
-  // Second half reveals as the first fades
-  const secondY = useTransform(scrollYProgress, [0.35, 0.85], [40, 0]);
-  const secondOpacity = useTransform(scrollYProgress, [0.4, 0.7], [0, 1]);
-  // Subtle ambient gradient wash — 4% opacity max
-  const washOpacity = useTransform(scrollYProgress, [0, 1], [0.04, 0.0]);
+  /** Shorter pinned travel + staggered fade so lines rarely sit at equal opacity together. */
+  const firstOpacity = useTransform(
+    scrollYProgress,
+    compact ? [0, 0.08, 0.26] : [0, 0.12, 0.34],
+    [1, 1, 0],
+  );
+  const secondOpacity = useTransform(
+    scrollYProgress,
+    compact ? [0.2, 0.36, 0.58] : [0.28, 0.44, 0.72],
+    [0, 1, 1],
+  );
+
+  /** Mobile: crossfade-first (no positional morph) to eliminate glyph collision. Desktop: restrained drift only. */
+  const firstY = useTransform(scrollYProgress, [0, 0.42], compact ? [0, 0] : [0, -18]);
+  const secondY = useTransform(scrollYProgress, [0.22, 0.48], compact ? [0, 0] : [14, 0]);
+
+  const washOpacity = useTransform(scrollYProgress, [0, 1], [0.04, 0]);
 
   return (
     <section
       ref={ref}
-      className="relative min-h-[158svh] px-[var(--gutter)] md:min-h-[186svh]"
+      className="relative min-h-[120svh] px-[var(--gutter)] md:min-h-[142svh]"
       aria-labelledby="opening-line"
       style={{ maxWidth: "var(--max-outer)", marginInline: "auto" }}
     >
-      {/* Sticky stage that holds the type while the section scrolls */}
       <div className="sticky top-0 flex min-h-svh items-center">
         <motion.div
           aria-hidden
@@ -98,16 +124,28 @@ function OpeningLineMotion() {
             background: "var(--ambient-wash)",
           }}
         />
-        <div className="relative w-full pt-32 md:pt-40">
-          <Eyebrow className="mb-12 md:mb-20">
+        <div className="relative w-full pt-28 pb-10 md:pt-40 md:pb-14">
+          <Eyebrow className="mb-10 md:mb-20">
             PORTFOLIO&nbsp;·&nbsp;2026&nbsp;·&nbsp;V1
           </Eyebrow>
 
-          <div className="relative overflow-visible pb-1 md:pb-2">
+          <div
+            className={clsx(
+              "relative isolate pb-2 md:pb-4",
+              "max-md:min-h-[clamp(13.75rem,48svh,21rem)]",
+            )}
+          >
             <motion.h1
               id="opening-line"
-              className="t-display-xl font-display text-ink"
-              style={{ y: firstY, opacity: firstOpacity }}
+              className={clsx(
+                "t-display-xl font-display text-ink",
+                "max-md:!leading-[1.08]",
+              )}
+              style={{
+                zIndex: 1,
+                y: firstY,
+                opacity: firstOpacity,
+              }}
             >
               I design{" "}
               <span className="italic text-ink-mute">systems</span>,
@@ -117,8 +155,15 @@ function OpeningLineMotion() {
 
             <motion.p
               aria-hidden
-              className="absolute inset-0 t-display-xl font-display text-ink"
-              style={{ y: secondY, opacity: secondOpacity }}
+              className={clsx(
+                "absolute inset-0 t-display-xl font-display text-ink",
+                "pointer-events-none max-md:!leading-[1.08]",
+              )}
+              style={{
+                zIndex: 2,
+                y: secondY,
+                opacity: secondOpacity,
+              }}
             >
               And the systems
               <br />
@@ -130,7 +175,12 @@ function OpeningLineMotion() {
             </motion.p>
           </div>
 
-          <p className="mt-16 max-w-prose t-body-l text-ink-mute">
+          <p
+            className={clsx(
+              "max-w-prose t-body-l text-ink-mute leading-relaxed",
+              "max-md:mt-28 md:mt-16",
+            )}
+          >
             Elvis Fernandes — a Senior Product Designer building intelligent
             systems at the intersection of design, engineering, and AI.
           </p>
@@ -158,16 +208,16 @@ function OpeningLineStill() {
       </Eyebrow>
       <h1
         id="opening-line"
-        className="t-display-xl font-display text-ink"
+        className="max-md:!leading-[1.08] t-display-xl font-display text-ink"
       >
         I design <span className="italic text-ink-mute">systems</span>,
         <br />
         not screens.
       </h1>
-      <p className="mt-12 t-display-m font-display text-ink-mute">
+      <p className="mt-12 t-display-m font-display text-ink-mute max-md:!leading-snug">
         And the systems are <span className="italic">getting smarter</span>.
       </p>
-      <p className="mt-12 max-w-prose t-body-l text-ink-mute">
+      <p className="mt-12 max-w-prose leading-relaxed t-body-l text-ink-mute">
         Elvis Fernandes — a Senior Product Designer building intelligent
         systems at the intersection of design, engineering, and AI.
       </p>
