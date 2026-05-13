@@ -60,6 +60,13 @@ export const metadata: Metadata = {
     description:
       "Building intelligent systems at the intersection of design, engineering, and AI.",
   },
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico", sizes: "32x32" },
+    ],
+    apple: "/apple-icon",
+  },
 };
 
 export const viewport: Viewport = {
