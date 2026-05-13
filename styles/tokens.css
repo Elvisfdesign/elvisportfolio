@@ -1,0 +1,218 @@
+/*
+ * Design tokens — Elvis Fernandes Portfolio 2026
+ * One foundation. One accent. One artifact surface. That's it.
+ *
+ * Theme strategy:
+ *   - Dark is the :root default (no prefix).
+ *   - Light is purely additive on [data-theme="light"].
+ *   - The "system" preference is resolved in JS (see ThemeProvider) and
+ *     applied as data-theme="light" or "dark" before paint.
+ */
+
+:root {
+  /* --- Foundations (dark canvas, default theme) --- */
+  --canvas: #0b0b0c;
+  --canvas-raised: #111114;
+  --canvas-recessed: #08080a;
+
+  --ink: #edeae3;
+  --ink-mute: rgba(237, 234, 227, 0.62);
+  --ink-quiet: rgba(237, 234, 227, 0.42);
+  --ink-faint: rgba(237, 234, 227, 0.18);
+  --hairline: rgba(237, 234, 227, 0.08);
+  --hairline-strong: rgba(237, 234, 227, 0.14);
+
+  /* --- Strategic accent (Signal Lime) --- */
+  --signal: #c8ff00;
+  --signal-soft: rgba(200, 255, 0, 0.18);
+  --signal-faint: rgba(200, 255, 0, 0.08);
+
+  /* --- AI artifact surface (the mono evidence pane) --- */
+  --artifact: #111114;
+  --artifact-border: rgba(237, 234, 227, 0.10);
+  --artifact-ink: #d8d4cb;
+  --artifact-accent: var(--signal);
+
+  /* --- Ambient / cover / stub tokens (used by gradient panels) --- */
+  --cover-deep: #15161a;
+  --cover-base: #0a0a0c;
+  --stub-bg: #111114;
+  --stub-bg-soft: #0e0e10;
+  --stub-bg-dashboard: linear-gradient(180deg, #131418 0%, #0b0b0c 100%);
+  --stub-bg-system: linear-gradient(135deg, #0e0f12 0%, #15161a 100%);
+  --stub-bg-flow: linear-gradient(180deg, #0c0d10 0%, #14151a 100%);
+  --stub-bg-graph: radial-gradient(ellipse at 30% 40%, rgba(200, 255, 0, 0.06), transparent 60%), #0c0d10;
+  --stub-bg-prompt: #111114;
+  --stub-bg-screen: #0e0e10;
+  --ambient-wash: radial-gradient(ellipse 80% 60% at 20% 30%, rgba(200, 255, 0, 0.6), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 70%, rgba(120, 180, 255, 0.4), transparent 60%);
+  --grain-blend: overlay;
+  --nav-scrim: rgba(11, 11, 12, 0.7);
+
+  /* --- Type scale (1.25 modular at desktop) --- */
+  --t-display-xl: clamp(3.5rem, 7vw + 1rem, 6rem);
+  --t-display-l: clamp(2.75rem, 5.5vw + 1rem, 4.5rem);
+  --t-display-m: clamp(2.25rem, 4vw + 0.5rem, 3.5rem);
+  --t-heading: clamp(1.5rem, 1.5vw + 1rem, 2rem);
+  /* Body scale fluids down slightly on narrow viewports vs display */
+  --t-subhead: clamp(1.125rem, 0.35vw + 1.06rem, 1.375rem);
+  --t-body-l: clamp(1.0625rem, 0.35vw + 0.93rem, 1.1875rem);
+  --t-body: 1rem;
+  --t-caption: 0.8125rem;
+
+  /* --- Line heights (display fonts need slack for Fraunces ascenders/WebKit rounding) --- */
+  --lh-display-xl: 1.03;
+  --lh-display-l: 1.075;
+  --lh-display-m: 1.14;
+  --lh-heading: 1.2;
+  --lh-subhead: 1.35;
+  --lh-body: 1.6;
+  --lh-caption: 1.5;
+
+  /* --- Letter spacing --- */
+  --tr-display-xl: -0.04em;
+  --tr-display-l: -0.03em;
+  --tr-display-m: -0.025em;
+  --tr-heading: -0.02em;
+  --tr-subhead: -0.01em;
+  --tr-body: 0;
+  --tr-label: 0.06em;
+
+  /* --- Spacing scale (8px base, geometric ramp) --- */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-6: 1.5rem;
+  --s-8: 2rem;
+  --s-12: 3rem;
+  --s-16: 4rem;
+  --s-24: 6rem;
+  --s-32: 8rem;
+  --s-48: 12rem;
+  --s-64: 16rem;
+
+  /* --- Layout --- */
+  --max-outer: 1440px;
+  --max-reading: 1200px;
+  --max-prose: 720px;
+  --gutter: clamp(1rem, 3vw, 1.5rem);
+
+  /* --- Easings & durations (editorial, slow-in confident-out) --- */
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-soft: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --d-fast: 240ms;
+  --d-base: 400ms;
+  --d-slow: 700ms;
+  --d-cinematic: 1200ms;
+
+  /* --- Surfaces / shadows (faint, depth from light not boxes) --- */
+  --shadow-press: 0 1px 0 0 rgba(237, 234, 227, 0.04) inset;
+  --shadow-lift: 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+
+  /* --- Grain (svg noise overlay, near-imperceptible) --- */
+  --grain-opacity: 0.035;
+}
+
+/* ---------------------------------------------------------------------------
+ * Light "paper" theme — equally considered, never an inversion.
+ * Warm cream paper · warm near-black ink · deeper, calibrated Signal accent.
+ * Activated by data-theme="light" on <html>.
+ * --------------------------------------------------------------------------- */
+[data-theme="light"] {
+  /* Foundations */
+  --canvas: #f5f2ea;
+  --canvas-raised: #ebe6db;
+  --canvas-recessed: #fbf8f1;
+
+  --ink: #14130f;
+  --ink-mute: rgba(20, 19, 15, 0.66);
+  --ink-quiet: rgba(20, 19, 15, 0.50);
+  --ink-faint: rgba(20, 19, 15, 0.24);
+  --hairline: rgba(20, 19, 15, 0.12);
+  --hairline-strong: rgba(20, 19, 15, 0.20);
+
+  /* Strategic accent — Signal Lime, deepened for WCAG-safe contrast on cream */
+  --signal: #5d7d00;
+  --signal-soft: rgba(93, 125, 0, 0.16);
+  --signal-faint: rgba(93, 125, 0, 0.08);
+
+  /* AI artifact surface — inked-on-paper insert, not a screen */
+  --artifact: #ece6d6;
+  --artifact-border: rgba(20, 19, 15, 0.18);
+  --artifact-ink: #2a2622;
+  --artifact-accent: var(--signal);
+
+  /* Ambient / cover / stub — light-mode replacements that keep the same shape
+   * but trade dark vignettes for warm paper layering. */
+  --cover-deep: #e3ddcd;
+  --cover-base: #f1ece0;
+  --stub-bg: #ebe6d9;
+  --stub-bg-soft: #efeadf;
+  --stub-bg-dashboard: linear-gradient(180deg, #efeadf 0%, #e3ddcd 100%);
+  --stub-bg-system: linear-gradient(135deg, #f0ebde 0%, #e1dac9 100%);
+  --stub-bg-flow: linear-gradient(180deg, #f1ece0 0%, #e0d9c7 100%);
+  --stub-bg-graph: radial-gradient(ellipse at 30% 40%, rgba(93, 125, 0, 0.10), transparent 60%), #ece6d6;
+  --stub-bg-prompt: #ebe6d9;
+  --stub-bg-screen: #efeadf;
+
+  /* Ambient wash — much lower opacity warm lime + peach tones on paper */
+  --ambient-wash: radial-gradient(ellipse 80% 60% at 20% 30%, rgba(180, 210, 40, 0.20), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 70%, rgba(220, 170, 120, 0.20), transparent 60%);
+
+  /* Grain blends differently on a light substrate */
+  --grain-blend: multiply;
+  --grain-opacity: 0.025;
+
+  /* Nav scrim — slightly higher opacity so the cream canvas doesn't disappear into the page */
+  --nav-scrim: rgba(245, 242, 234, 0.78);
+
+  /* Softer, paper-appropriate shadows */
+  --shadow-press: 0 1px 0 0 rgba(20, 19, 15, 0.04) inset;
+  --shadow-lift: 0 24px 60px -32px rgba(20, 19, 15, 0.22);
+}
+
+/* Explicit dark override — used when the user actively picks dark on a
+ * system-light machine. Mirrors :root so attribute selector specificity wins
+ * over any cascade quirks. */
+[data-theme="dark"] {
+  --canvas: #0b0b0c;
+  --canvas-raised: #111114;
+  --canvas-recessed: #08080a;
+
+  --ink: #edeae3;
+  --ink-mute: rgba(237, 234, 227, 0.62);
+  --ink-quiet: rgba(237, 234, 227, 0.42);
+  --ink-faint: rgba(237, 234, 227, 0.18);
+  --hairline: rgba(237, 234, 227, 0.08);
+  --hairline-strong: rgba(237, 234, 227, 0.14);
+
+  --signal: #c8ff00;
+  --signal-soft: rgba(200, 255, 0, 0.18);
+  --signal-faint: rgba(200, 255, 0, 0.08);
+
+  --artifact: #111114;
+  --artifact-border: rgba(237, 234, 227, 0.10);
+  --artifact-ink: #d8d4cb;
+
+  --cover-deep: #15161a;
+  --cover-base: #0a0a0c;
+  --stub-bg: #111114;
+  --stub-bg-soft: #0e0e10;
+  --stub-bg-dashboard: linear-gradient(180deg, #131418 0%, #0b0b0c 100%);
+  --stub-bg-system: linear-gradient(135deg, #0e0f12 0%, #15161a 100%);
+  --stub-bg-flow: linear-gradient(180deg, #0c0d10 0%, #14151a 100%);
+  --stub-bg-graph: radial-gradient(ellipse at 30% 40%, rgba(200, 255, 0, 0.06), transparent 60%), #0c0d10;
+  --stub-bg-prompt: #111114;
+  --stub-bg-screen: #0e0e10;
+  --ambient-wash: radial-gradient(ellipse 80% 60% at 20% 30%, rgba(200, 255, 0, 0.6), transparent 60%),
+    radial-gradient(ellipse 70% 50% at 80% 70%, rgba(120, 180, 255, 0.4), transparent 60%);
+  --grain-blend: overlay;
+  --grain-opacity: 0.035;
+  --nav-scrim: rgba(11, 11, 12, 0.7);
+
+  --shadow-press: 0 1px 0 0 rgba(237, 234, 227, 0.04) inset;
+  --shadow-lift: 0 30px 80px -40px rgba(0, 0, 0, 0.6);
+}
