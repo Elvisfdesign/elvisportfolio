@@ -1,14 +1,16 @@
 /**
  * Flash-free theme init.
  *
- * Renders an inline <script> that runs synchronously before any styles paint:
+ * Runs before React hydrates (`next/script` + `beforeInteractive`):
  *   1. Reads localStorage.theme ("system" | "light" | "dark", default "system").
  *   2. If preference is "system", resolves via matchMedia.
  *   3. Sets <html data-theme="..."> and the matching color-scheme.
  *
- * Lives in <head> as the first child so it fires before the body renders.
- * The runtime ThemeProvider mounts after hydration and matches this result.
+ * Kept in root `app/layout.tsx` <head> before other scripts so correct tokens
+ * paint on first frame. Runtime `ThemeProvider` matches this after hydration.
  */
+
+import Script from "next/script";
 
 export const THEME_STORAGE_KEY = "theme";
 
@@ -16,9 +18,8 @@ const SCRIPT = `(function(){try{var k="${THEME_STORAGE_KEY}";var s=localStorage.
 
 export function ThemeInit() {
   return (
-    <script
-      // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: SCRIPT }}
-    />
+    <Script id="flash-free-theme-init" strategy="beforeInteractive">
+      {SCRIPT}
+    </Script>
   );
 }

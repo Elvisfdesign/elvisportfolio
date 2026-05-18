@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Geist, Geist_Mono, Fraunces } from "next/font/google";
 import { LenisProvider } from "@/components/motion/lenis-provider";
 import { SiteNav } from "@/components/navigation/site-nav";
@@ -91,6 +92,21 @@ export default function RootLayout({
     >
       <head>
         <ThemeInit />
+        {/* Google tag (gtag.js) — site-wide via root layout */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-YWTKHHL6K0"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics-g-ywtkhhl6k0" strategy="afterInteractive">
+          {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YWTKHHL6K0');
+`}
+        </Script>
       </head>
       <body suppressHydrationWarning>
         <a href="#main" className="sr-only focus:not-sr-only fixed left-4 top-4 z-50 bg-canvas-raised px-3 py-2 text-ink t-mono">
