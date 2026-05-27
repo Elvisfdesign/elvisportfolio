@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
+import { scrollToTop } from "@/components/motion/lenis-provider";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const NAV_ITEMS = [
@@ -15,10 +16,25 @@ const NAV_ITEMS = [
   { href: "/contact", label: "Contact" },
 ];
 
+const HOME_HREF = "/";
+const PRACTICE_HREF = "/practice/ai-for-product-designers";
+
 export function SiteNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const pendingTopReset = useRef(false);
+
+  const handleTopResetClick =
+    (href: string) => (event: MouseEvent<HTMLAnchorElement>) => {
+      pendingTopReset.current = true;
+
+      if (pathname === href) {
+        event.preventDefault();
+        pendingTopReset.current = false;
+        scrollToTop({ immediate: false });
+      }
+    };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -30,6 +46,15 @@ export function SiteNav() {
   // Close mobile menu on route change
   useEffect(() => {
     setOpen(false);
+  }, [pathname]);
+
+  // After client navigation via logo or Practice, force top-of-page under Lenis.
+  useEffect(() => {
+    if (!pendingTopReset.current) return;
+    if (pathname !== HOME_HREF && pathname !== PRACTICE_HREF) return;
+
+    pendingTopReset.current = false;
+    requestAnimationFrame(() => scrollToTop({ immediate: true }));
   }, [pathname]);
 
   // Lock scroll when mobile menu open
@@ -68,6 +93,7 @@ export function SiteNav() {
         >
           <Link
             href="/"
+            onClick={handleTopResetClick(HOME_HREF)}
             aria-label="Elvis Fernandes — home"
             className="t-mono text-ink hover:text-signal transition-colors duration-300"
           >
@@ -79,10 +105,15 @@ export function SiteNav() {
             <ul className="flex items-center gap-8">
               {NAV_ITEMS.slice(1).map((item) => {
                 const active = isActive(item.href, pathname);
+                const topResetProps =
+                  item.href === PRACTICE_HREF
+                    ? { onClick: handleTopResetClick(PRACTICE_HREF) }
+                    : {};
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
+                      {...topResetProps}
                       className={clsx(
                         "t-mono link-underline transition-colors duration-300",
                         active ? "text-ink" : "text-ink-mute hover:text-ink"
@@ -137,6 +168,10 @@ export function SiteNav() {
               <ul className="space-y-6 pt-8">
                 {NAV_ITEMS.slice(1).map((item, i) => {
                   const active = isActive(item.href, pathname);
+                  const topResetProps =
+                    item.href === PRACTICE_HREF
+                      ? { onClick: handleTopResetClick(PRACTICE_HREF) }
+                      : {};
                   return (
                     <motion.li
                       key={item.href}
@@ -151,6 +186,7 @@ export function SiteNav() {
                     >
                       <Link
                         href={item.href}
+                        {...topResetProps}
                         className={clsx(
                           "block t-display-m font-display transition-colors duration-300",
                           active ? "text-ink" : "text-ink-mute hover:text-ink"

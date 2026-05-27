@@ -90,28 +90,28 @@ function OpeningLineMotion() {
     offset: ["start start", "end start"],
   });
 
-  /** Shorter pinned travel + staggered fade so lines rarely sit at equal opacity together. */
+  /** Faster crossfade — completes earlier in scroll progress. */
   const firstOpacity = useTransform(
     scrollYProgress,
-    compact ? [0, 0.08, 0.26] : [0, 0.12, 0.34],
+    compact ? [0, 0.04, 0.16] : [0, 0.06, 0.2],
     [1, 1, 0],
   );
   const secondOpacity = useTransform(
     scrollYProgress,
-    compact ? [0.2, 0.36, 0.58] : [0.28, 0.44, 0.72],
+    compact ? [0.12, 0.24, 0.38] : [0.16, 0.28, 0.44],
     [0, 1, 1],
   );
 
-  /** Mobile: crossfade-first (no positional morph) to eliminate glyph collision. Desktop: restrained drift only. */
-  const firstY = useTransform(scrollYProgress, [0, 0.42], compact ? [0, 0] : [0, -18]);
-  const secondY = useTransform(scrollYProgress, [0.22, 0.48], compact ? [0, 0] : [14, 0]);
+  /** Mobile: opacity-only crossfade. Desktop: lighter drift over a shorter span. */
+  const firstY = useTransform(scrollYProgress, [0, 0.26], compact ? [0, 0] : [0, -14]);
+  const secondY = useTransform(scrollYProgress, [0.12, 0.3], compact ? [0, 0] : [10, 0]);
 
   const washOpacity = useTransform(scrollYProgress, [0, 1], [0.04, 0]);
 
   return (
     <section
       ref={ref}
-      className="relative min-h-[120svh] px-[var(--gutter)] md:min-h-[142svh]"
+      className="relative min-h-[96svh] px-[var(--gutter)] md:min-h-[112svh]"
       aria-labelledby="opening-line"
       style={{ maxWidth: "var(--max-outer)", marginInline: "auto" }}
     >
@@ -165,13 +165,9 @@ function OpeningLineMotion() {
                 opacity: secondOpacity,
               }}
             >
-              And the systems
+              Building products that
               <br />
-              are{" "}
-              <span className="italic">
-                getting smarter
-              </span>
-              .
+              <span className="italic text-ink-mute">think, adapt, and scale</span>.
             </motion.p>
           </div>
 
@@ -215,7 +211,8 @@ function OpeningLineStill() {
         not screens.
       </h1>
       <p className="mt-12 t-display-m font-display text-ink-mute max-md:!leading-snug">
-        And the systems are <span className="italic">getting smarter</span>.
+        Building products that{" "}
+        <span className="italic">think, adapt, and scale</span>.
       </p>
       <p className="mt-12 max-w-prose leading-relaxed t-body-l text-ink-mute">
         Elvis Fernandes — a Senior Product Designer building intelligent
