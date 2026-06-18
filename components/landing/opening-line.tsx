@@ -132,7 +132,7 @@ function OpeningLineMotion() {
           <div
             className={clsx(
               "relative isolate pb-2 md:pb-4",
-              "max-md:min-h-[clamp(13.75rem,48svh,21rem)]",
+              "max-md:min-h-[clamp(15rem,52svh,23rem)]",
             )}
           >
             <motion.h1
@@ -147,10 +147,10 @@ function OpeningLineMotion() {
                 opacity: firstOpacity,
               }}
             >
-              I design{" "}
-              <span className="italic text-ink-mute">systems</span>,
-              <br />
-              not screens.
+              I design products people can
+              <br className="hidden sm:block" />
+              <span className="sm:hidden"> </span>
+              understand,
             </motion.h1>
 
             <motion.p
@@ -165,9 +165,8 @@ function OpeningLineMotion() {
                 opacity: secondOpacity,
               }}
             >
-              Building products that
-              <br />
-              <span className="italic text-ink-mute">think, adapt, and scale</span>.
+              trust, and actually{" "}
+              <span className="italic text-ink-mute">enjoy using</span>.
             </motion.p>
           </div>
 
@@ -206,14 +205,9 @@ function OpeningLineStill() {
         id="opening-line"
         className="max-md:!leading-[1.08] t-display-xl font-display text-ink"
       >
-        I design <span className="italic text-ink-mute">systems</span>,
-        <br />
-        not screens.
+        I design products people can understand, trust, and actually{" "}
+        <span className="italic text-ink-mute">enjoy using</span>.
       </h1>
-      <p className="mt-12 t-display-m font-display text-ink-mute max-md:!leading-snug">
-        Building products that{" "}
-        <span className="italic">think, adapt, and scale</span>.
-      </p>
       <p className="mt-12 max-w-prose leading-relaxed t-body-l text-ink-mute">
         Elvis Fernandes — a Senior Product Designer building intelligent
         systems at the intersection of design, engineering, and AI.
