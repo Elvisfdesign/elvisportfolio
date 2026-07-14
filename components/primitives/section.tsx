@@ -5,7 +5,7 @@ type SectionProps = {
   children: ReactNode;
   id?: string;
   /** Vertical breathing — landing acts use 'movement', case studies use 'beat'. */
-  rhythm?: "movement" | "movementDense" | "beat" | "tight" | "none";
+  rhythm?: "movement" | "movementDense" | "beat" | "tight" | "editorial" | "none";
   /** Narrower eyebrow/header band → first heading (same hairline divider). */
   tightHeader?: boolean;
   /** Container width clamp. Defaults to 'outer' (1440px). */
@@ -21,6 +21,8 @@ type SectionProps = {
 const rhythmClass: Record<NonNullable<SectionProps["rhythm"]>, string> = {
   movement: "py-28 md:py-48 lg:py-64",
   movementDense: "py-24 md:py-44 lg:py-56",
+  /** Flagship doc pages (Atlas) — spacious but not cinematic dead air. */
+  editorial: "py-16 md:py-24 lg:py-36",
   beat: "py-20 md:py-28 lg:py-32",
   tight: "py-12 md:py-16",
   none: "",

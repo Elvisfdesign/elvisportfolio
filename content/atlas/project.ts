@@ -25,10 +25,17 @@ export type AtlasExternalLink = {
 export type AtlasScreen = {
   id: string;
   label: string;
-  src: string;
+  /** Optimized preview for the product grid. */
+  thumbnailSrc: string;
+  /** Original high-resolution asset for the fullscreen gallery. */
+  fullSrc: string;
   alt: string;
+  /** Intrinsic dimensions of the fullSrc asset. */
   width: number;
   height: number;
+  /** Intrinsic dimensions of the thumbnailSrc asset. */
+  thumbWidth: number;
+  thumbHeight: number;
 };
 
 export type AtlasFoundation = {
@@ -77,49 +84,67 @@ export const atlasProject = {
     {
       id: "dashboard",
       label: "Dashboard",
-      src: "/images/atlas/dashboard.jpg",
-      width: 1024,
-      height: 785,
+      thumbnailSrc: "/images/atlas/thumb/dashboard.jpg",
+      fullSrc: "/images/atlas/full/dashboard.png",
+      width: 2880,
+      height: 2208,
+      thumbWidth: 1280,
+      thumbHeight: 981,
       alt: "Atlas Intelligence dashboard showing workflow metrics, activity overview, recent workflows, and quick actions.",
     },
     {
       id: "review-queue",
       label: "Review Queue",
-      src: "/images/atlas/review-queue.jpg",
-      width: 1024,
-      height: 785,
+      thumbnailSrc: "/images/atlas/thumb/review-queue.jpg",
+      fullSrc: "/images/atlas/full/review-queue.png",
+      width: 2880,
+      height: 2208,
+      thumbWidth: 1280,
+      thumbHeight: 981,
       alt: "Atlas Intelligence Review Queue table listing documents with review status, confidence scores, assignees, and upload times.",
     },
     {
       id: "document-review",
       label: "Document Review",
-      src: "/images/atlas/document-review.jpg",
-      width: 1024,
-      height: 785,
+      thumbnailSrc: "/images/atlas/thumb/document-review.jpg",
+      fullSrc: "/images/atlas/full/document-review.png",
+      width: 2880,
+      height: 2208,
+      thumbWidth: 1280,
+      thumbHeight: 981,
       alt: "Atlas Intelligence Document Review workspace with invoice preview, extracted fields with confidence, and an AI assistant panel.",
     },
     {
       id: "analytics",
       label: "Analytics",
-      src: "/images/atlas/analytics.jpg",
-      width: 1024,
-      height: 896,
+      thumbnailSrc: "/images/atlas/thumb/analytics.jpg",
+      fullSrc: "/images/atlas/full/analytics.png",
+      width: 2880,
+      height: 2522,
+      thumbWidth: 1280,
+      thumbHeight: 1121,
       alt: "Atlas Intelligence Analytics dashboard with KPI cards, processing trend chart, document-type distribution, and recent activity.",
     },
     {
       id: "workflow-builder",
       label: "Workflow Builder",
-      src: "/images/atlas/workflow-builder.jpg",
-      width: 1024,
-      height: 785,
+      thumbnailSrc: "/images/atlas/thumb/workflow-builder.jpg",
+      fullSrc: "/images/atlas/full/workflow-builder.png",
+      width: 2880,
+      height: 2208,
+      thumbWidth: 1280,
+      thumbHeight: 981,
       alt: "Atlas Intelligence Workflows board with Intake, Processing, Review, and Output columns of workflow cards.",
     },
     {
       id: "settings",
       label: "Settings",
-      src: "/images/atlas/settings.jpg",
-      width: 1024,
-      height: 785,
+      thumbnailSrc: "/images/atlas/thumb/settings.jpg",
+      fullSrc: "/images/atlas/full/settings.png",
+      width: 2880,
+      height: 2208,
+      thumbWidth: 1280,
+      thumbHeight: 981,
       alt: "Atlas Intelligence Settings screen with user profile, workspace details, and notification preferences.",
     },
   ] satisfies AtlasScreen[],

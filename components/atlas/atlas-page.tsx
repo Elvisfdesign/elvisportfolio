@@ -11,15 +11,22 @@ import { MaskUp } from "@/components/motion/mask-up";
 import { Section } from "@/components/primitives/section";
 import { atlasProject } from "@/content/atlas/project";
 
+/** Atlas body sections share one editorial rhythm (not landing cinematic padding). */
+const ATLAS_SECTION = {
+  rhythm: "editorial" as const,
+  width: "outer" as const,
+  tightHeader: true,
+};
+
 export function AtlasPage() {
   return (
     <article>
       <header
-        className="px-[var(--gutter)] pb-20 pt-32 md:pb-28 md:pt-40"
+        className="px-[var(--gutter)] pb-16 pt-32 md:pb-20 md:pt-40"
         style={{ maxWidth: "var(--max-outer)", marginInline: "auto" }}
       >
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
-          <div className="lg:col-span-7">
+          <div className="min-w-0 lg:col-span-7">
             <p className="inline-flex items-center gap-2 t-mono text-ink-mute tabular">
               <span className="dot-live" aria-hidden />
               {atlasProject.statusLabel}
@@ -29,7 +36,7 @@ export function AtlasPage() {
               <AtlasLogo />
             </div>
 
-            <h1 className="mt-10 t-display-xl font-display text-ink">
+            <h1 className="mt-10 max-w-full t-display-xl font-display text-ink text-balance">
               <MaskUp>A Modern Enterprise</MaskUp>
               <br />
               <MaskUp delay={0.12}>
@@ -69,7 +76,7 @@ export function AtlasPage() {
         </div>
       </header>
 
-      <Section rhythm="movementDense" width="outer" number="01" eyebrow="THESIS">
+      <Section {...ATLAS_SECTION} number="01" eyebrow="THESIS">
         <AtlasSectionHeader
           title={
             <>
@@ -84,34 +91,29 @@ export function AtlasPage() {
         />
       </Section>
 
-      <Section rhythm="movementDense" width="outer" number="02" eyebrow="PRODUCT">
+      <Section {...ATLAS_SECTION} number="02" eyebrow="PRODUCT">
         <AtlasSectionHeader
           title="The product came first."
           description="Atlas Intelligence was designed as a complete enterprise AI workspace. Repeated product patterns were then identified, standardized, and extracted into a reusable UI system."
         />
-        <div className="mt-14">
+        <div className="mt-10 md:mt-12">
           <AtlasScreenGallery screens={atlasProject.screens} />
         </div>
       </Section>
 
-      <Section
-        rhythm="movementDense"
-        width="outer"
-        number="03"
-        eyebrow="DESIGN SYSTEM"
-      >
+      <Section {...ATLAS_SECTION} number="03" eyebrow="DESIGN SYSTEM">
         <AtlasSectionHeader
           title="Extracted from real product decisions."
           description="Categories mapped from Atlas Intelligence — ready for Figma documentation and future React translation."
         />
         <ul
-          className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-5"
+          className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 md:mt-12 md:grid-cols-5"
           role="list"
         >
           {atlasProject.foundations.map((item) => (
             <li
               key={item.id}
-              className="rounded-sm border px-4 py-5"
+              className="rounded-sm border px-4 py-4 md:py-5"
               style={{ borderColor: "var(--hairline)" }}
             >
               <span className="t-mono text-ink-mute tabular">{item.label}</span>
@@ -120,40 +122,37 @@ export function AtlasPage() {
         </ul>
       </Section>
 
-      <Section rhythm="movementDense" width="outer" number="04" eyebrow="WORKFLOW">
+      <Section {...ATLAS_SECTION} number="04" eyebrow="WORKFLOW">
         <AtlasSectionHeader
           title="Product → Design System → Code"
           description="A design-to-code loop where Figma remains the visual source of truth and implementation is a disciplined partnership with Claude Code."
         />
-        <div className="mt-14 space-y-0">
+        <div className="mt-10 space-y-0 md:mt-12">
           <AtlasProcessFlow steps={atlasProject.workflow} />
           <AtlasProcessFlowDesktop steps={atlasProject.workflow} />
         </div>
       </Section>
 
-      <Section
-        rhythm="movementDense"
-        width="outer"
-        number="05"
-        eyebrow="COMPONENTS"
-      >
+      <Section {...ATLAS_SECTION} number="05" eyebrow="COMPONENTS">
         <AtlasSectionHeader
           title="A future-ready component map."
           description="Structure for screenshots and interactive examples as the React library lands. Nothing here is finished decoration."
         />
         <ul
-          className="mt-12 grid grid-cols-1 gap-0 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-10 grid grid-cols-1 border-t border-[var(--hairline)] sm:grid-cols-2 lg:mt-12 lg:grid-cols-3"
           role="list"
+          style={{ borderColor: "var(--hairline)" }}
         >
           {atlasProject.componentCategories.map((cat) => (
             <li
               key={cat.id}
-              className="hairline-t flex min-h-28 flex-col justify-between py-6 pr-6 sm:px-6"
+              className="flex flex-col gap-2 border-b border-[var(--hairline)] px-0 py-5 sm:border-r sm:px-5 sm:odd:pl-0 lg:[&:nth-child(3n)]:border-r-0 lg:[&:nth-child(3n+1)]:pl-0"
+              style={{ borderColor: "var(--hairline)" }}
             >
-              <span className="t-mono text-ink-quiet tabular">
+              <span className="t-mono text-ink tabular">
                 {cat.label.toUpperCase()}
               </span>
-              <span className="mt-6 t-body text-ink-faint">
+              <span className="t-mono text-[0.6875rem] text-ink-faint tabular">
                 Screenshots forthcoming
               </span>
             </li>
@@ -161,42 +160,32 @@ export function AtlasPage() {
         </ul>
       </Section>
 
-      <Section
-        rhythm="movementDense"
-        width="outer"
-        number="06"
-        eyebrow="PLAYGROUND"
-      >
+      <Section {...ATLAS_SECTION} number="06" eyebrow="PLAYGROUND">
         <div
-          className="rounded-sm border bg-canvas-raised px-6 py-12 md:px-10 md:py-16"
+          className="rounded-sm border bg-canvas-raised px-6 py-10 md:px-10 md:py-12"
           style={{ borderColor: "var(--hairline)" }}
         >
           <p className="t-mono text-ink-quiet tabular">COMING NEXT</p>
-          <h2 className="mt-6 max-w-[22ch] t-display-m font-display text-ink">
+          <h2 className="mt-5 max-w-[22ch] t-display-m font-display text-ink">
             Interactive component playground coming next.
           </h2>
-          <p className="mt-6 max-w-prose t-body-l text-ink-mute">
+          <p className="mt-5 max-w-prose t-body-l text-ink-mute">
             The next phase translates the approved Figma system into reusable
             React and TypeScript components.
           </p>
         </div>
       </Section>
 
-      <Section
-        rhythm="movementDense"
-        width="outer"
-        number="07"
-        eyebrow="CASE STUDY"
-      >
+      <Section {...ATLAS_SECTION} number="07" eyebrow="CASE STUDY">
         <AtlasSectionHeader
           title="The narrative in progress."
           description="A modular outline that stays readable while sections are still being written."
         />
-        <ol className="mt-12 space-y-0" role="list">
+        <ol className="mt-10 space-y-0 md:mt-12" role="list">
           {atlasProject.caseBeats.map((beat, i) => (
             <li
               key={beat.id}
-              className="hairline-t grid grid-cols-12 gap-4 py-5"
+              className="hairline-t grid grid-cols-12 gap-4 py-4 md:py-5"
             >
               <span className="col-span-2 t-mono text-ink-quiet tabular md:col-span-1">
                 {String(i + 1).padStart(2, "0")}
@@ -209,17 +198,11 @@ export function AtlasPage() {
         </ol>
       </Section>
 
-      <Section
-        rhythm="movementDense"
-        width="outer"
-        number="08"
-        eyebrow="BUILDING IN PUBLIC"
-        id="status"
-      >
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+      <Section {...ATLAS_SECTION} number="08" eyebrow="BUILDING IN PUBLIC" id="status">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
             <AtlasSectionHeader title="Where Atlas stands today." />
-            <div className="mt-10">
+            <div className="mt-8 md:mt-10">
               <AtlasStatus
                 items={atlasProject.statuses}
                 lastUpdated={atlasProject.lastUpdated}
@@ -227,7 +210,7 @@ export function AtlasPage() {
               />
             </div>
           </div>
-          <div className="lg:col-span-5 lg:pt-24">
+          <div className="lg:col-span-5 lg:pt-2">
             <h3 className="t-mono text-ink-quiet tabular">UPDATES</h3>
             <div className="mt-6">
               <AtlasUpdateList updates={atlasProject.updates} />
@@ -236,15 +219,15 @@ export function AtlasPage() {
         </div>
       </Section>
 
-      <Section rhythm="movement" width="outer" number="09" eyebrow="NEXT">
+      <Section {...ATLAS_SECTION} number="09" eyebrow="NEXT">
         <AtlasSectionHeader
           title="Continue with the source files."
           description="Open the product and system Figma files. Repository and playground links appear when those surfaces ship."
         />
-        <div className="mt-12">
+        <div className="mt-10 md:mt-12">
           <AtlasExternalLinks links={atlasProject.links} />
         </div>
-        <p className="mt-16">
+        <p className="mt-12 md:mt-14">
           <Link
             href="/#films"
             className="t-mono link-underline text-ink-mute tabular hover:text-ink"

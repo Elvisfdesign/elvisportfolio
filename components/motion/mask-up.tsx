@@ -20,12 +20,15 @@ type MaskUpProps = {
 
 /**
  * Padding inside each overflow:hidden mask so Fraunces (and tight display
- * line-heights) do not clip ascenders/descenders during or after reveal.
+ * line-heights / negative tracking / italics) do not clip glyph edges
+ * during or after reveal.
  */
 function lineMaskInsetStyle(tightLines: boolean): CSSProperties {
   return {
     paddingTop: tightLines ? "0.07em" : "0.11em",
     paddingBottom: tightLines ? "0.04em" : "calc(0.055em + 0.02em)",
+    paddingInlineStart: "0.02em",
+    paddingInlineEnd: "0.14em",
   };
 }
 
@@ -33,6 +36,9 @@ function lineMaskInsetStyle(tightLines: boolean): CSSProperties {
 const SINGLE_MASK_STYLE: CSSProperties = {
   paddingTop: "0.11em",
   paddingBottom: "0.065em",
+  paddingInlineStart: "0.02em",
+  /* Italic + negative tracking often overhang the final glyph (e.g. “Enterprise”). */
+  paddingInlineEnd: "0.16em",
 };
 
 /**

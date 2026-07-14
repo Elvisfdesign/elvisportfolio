@@ -61,15 +61,12 @@ function HeroHeadline() {
   return (
     <h1
       id="opening-line"
-      className="max-w-[18ch] t-display-xl font-display text-ink max-md:!leading-[1.08] sm:max-w-[20ch] lg:max-w-[16ch]"
+      className="max-w-[18ch] t-display-xl font-display text-ink max-md:!leading-[1.08] sm:max-w-[22ch] lg:max-w-[18ch]"
     >
       I design products, systems,
       <br className="hidden sm:block" />
       <span className="sm:hidden"> </span>
-      and the AI workflows
-      <br className="hidden md:block" />
-      <span className="md:hidden"> </span>
-      behind them.
+      and intelligent experiences.
     </h1>
   );
 }
@@ -77,8 +74,8 @@ function HeroHeadline() {
 function HeroIntro() {
   return (
     <p className="mt-8 max-w-prose t-body-l leading-relaxed text-ink-mute md:mt-10">
-      Elvis Fernandes is a Senior Product Designer creating intelligent products
-      at the intersection of design, systems, engineering, and AI.
+      Elvis Fernandes is a Senior Product Designer working at the intersection of
+      design, systems, engineering, and AI.
     </p>
   );
 }
