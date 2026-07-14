@@ -14,7 +14,7 @@ export function IdentityReel() {
       rhythm="movementDense"
       width="outer"
       eyebrow="PRACTICE"
-      number="02 / 07"
+      number="04 / 07"
       id="identity"
       tightHeader
       className="!pt-8 !pb-16 md:!pt-14 md:!pb-28 lg:!pt-16 lg:!pb-36"

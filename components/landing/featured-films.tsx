@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { ExtendedPortfolioArchive } from "@/components/landing/extended-portfolio-archive";
 import { Section } from "@/components/primitives/section";
 import { getCaseStudy, type CaseStudy } from "@/content/case-studies";
+import { atlasProject } from "@/content/atlas/project";
 import { practicePiece } from "@/content/practice/ai-for-product-designers";
 
 type Film = {
@@ -15,7 +16,7 @@ type Film = {
   positioning: string;
   ambient: string;
   meta: string;
-  kind: "case-study" | "practice";
+  kind: "case-study" | "practice" | "atlas";
   layoutId: string;
 };
 
@@ -49,12 +50,24 @@ const practiceFilm: Film = {
   layoutId: `film:${practicePiece.slug}`,
 };
 
-/** Homepage order · practice pinned as editorial 02 after Voice Moderation Platform. */
+const atlasFilm: Film = {
+  href: atlasProject.href,
+  index: "01",
+  title: atlasProject.name,
+  positioning: atlasProject.tagline,
+  ambient: "Design system · Building in public",
+  meta: `${atlasProject.statusLabel}`,
+  kind: "atlas",
+  layoutId: "film:atlas",
+};
+
+/** Homepage order · Atlas first as flagship, then existing case studies + practice. */
 const films: Film[] = [
-  caseStudyFilm(requireStudy("voice-moderation")),
-  practiceFilm,
-  caseStudyFilm(requireStudy("career-navigator")),
-  caseStudyFilm(requireStudy("signal")),
+  atlasFilm,
+  { ...caseStudyFilm(requireStudy("voice-moderation")), index: "02" },
+  { ...practiceFilm, index: "03" },
+  { ...caseStudyFilm(requireStudy("career-navigator")), index: "04" },
+  { ...caseStudyFilm(requireStudy("signal")), index: "05" },
 ];
 
 export function FeaturedFilms() {
@@ -63,7 +76,7 @@ export function FeaturedFilms() {
       rhythm="movementDense"
       width="outer"
       eyebrow="SELECTED WORK"
-      number="03 / 07"
+      number="02 / 07"
       id="films"
       tightHeader
       className="!pt-10 !pb-24 md:!pt-16 md:!pb-36 lg:!pt-20 lg:!pb-44"
@@ -116,7 +129,11 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
         <div className="flex items-baseline gap-6">
           <span className="t-mono text-ink-quiet tabular">{film.index}</span>
           <span className="t-mono text-ink-quiet tabular">
-            {film.kind === "practice" ? "PRACTICE" : "CASE STUDY"}
+            {film.kind === "practice"
+              ? "PRACTICE"
+              : film.kind === "atlas"
+                ? "FLAGSHIP"
+                : "CASE STUDY"}
           </span>
         </div>
 
@@ -135,9 +152,17 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
           <Link
             href={film.href}
             className="t-mono link-underline text-ink shrink-0 touch-manipulation leading-none"
-            aria-label={`Enter case study: ${film.title}`}
+            aria-label={
+              film.kind === "atlas"
+                ? `Explore ${film.title}`
+                : `Enter case study: ${film.title}`
+            }
           >
-            ENTER&nbsp;→
+            {film.kind === "atlas" ? (
+              <>EXPLORE&nbsp;→</>
+            ) : (
+              <>ENTER&nbsp;→</>
+            )}
           </Link>
         </div>
       </div>
@@ -229,6 +254,13 @@ function KindGlyph({
   index: string;
 }) {
   // Each kind gets a different abstract — same family, distinct character.
+  if (kind === "atlas") {
+    return (
+      <svg viewBox="0 0 200 200" className="h-1/2 w-1/2 text-signal" aria-hidden>
+        <path d="M100 28 L172 172 H28 Z" fill="currentColor" opacity="0.9" />
+      </svg>
+    );
+  }
   if (kind === "practice") {
     return (
       <svg viewBox="0 0 200 200" className="h-2/3 w-2/3 text-ink-mute" aria-hidden>

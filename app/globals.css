@@ -225,6 +225,25 @@ button {
   animation: pulse 2.4s ease-out infinite;
 }
 
+/* Atlas homepage feature card — hairline strengthens on hover without lifting globally */
+.atlas-feature-card:hover {
+  border-color: var(--hairline-strong) !important;
+}
+
+.atlas-screen-card:hover figure {
+  border-color: var(--hairline-strong) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-feature-card:hover {
+    transform: none;
+  }
+
+  .atlas-screen-card img {
+    transform: none !important;
+  }
+}
+
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 0 4px var(--signal-faint); }
   50% { box-shadow: 0 0 0 8px transparent; }

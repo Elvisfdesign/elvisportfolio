@@ -89,7 +89,7 @@ function PracticeStripMotion() {
         >
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <div>
-              <p className="t-mono text-ink-quiet tabular">04 / 07 · HOW I WORK WITH AI</p>
+              <p className="t-mono text-ink-quiet tabular">03 / 07 · HOW I WORK WITH AI</p>
               <h2
                 id="practice-heading"
                 className="mt-2 t-display-m font-display text-ink"
@@ -185,7 +185,7 @@ function PracticeStripStill() {
       aria-labelledby="practice-heading"
     >
       <header className="hairline-b mb-12 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 pb-4">
-        <span className="t-mono text-ink-quiet tabular">04 / 07 · HOW I WORK WITH AI</span>
+        <span className="t-mono text-ink-quiet tabular">03 / 07 · HOW I WORK WITH AI</span>
         <span className="t-mono text-ink-quiet tabular">5 STAGES</span>
       </header>
       <h2 id="practice-heading" className="t-display-l font-display text-ink">
