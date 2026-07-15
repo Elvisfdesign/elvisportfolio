@@ -9,7 +9,7 @@ import { FadeRise } from "@/components/motion/fade-rise";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Elvis Fernandes — a designer working across product, systems, front-end, and AI. Systems thinking, enterprise UX, AI-assisted workflows.",
+    "Elvis Fernandes designs and builds thoughtful UX/UI, scalable design systems, and front-end experiences.",
 };
 
 const NOW = [
@@ -79,8 +79,8 @@ export default function AboutPage() {
                 className="flex-col items-start gap-y-4"
                 items={[
                   { label: "BASED", value: "Boston, MA" },
-                  { label: "PRACTICE", value: "Design · Systems · Front-End" },
-                  { label: "FOCUS", value: "Systems · AI Workflows · Enterprise UX" },
+                  { label: "PRACTICE", value: "UX/UI · Systems · Front-End" },
+                  { label: "FOCUS", value: "Enterprise UX · Design Systems · Implementation" },
                   { label: "BUILDING FOR WEB SINCE", value: "2017" },
                   { label: "PRODUCT DESIGN FOCUSED SINCE", value: "2022" },
                 ]}
@@ -123,10 +123,11 @@ export default function AboutPage() {
                 front-end where it shortened the loop.
               </p>
               <p className="t-body-l text-ink-mute">
-                I work as a designer and front-end developer in the same
-                pass, which means I design for what&rsquo;s actually
-                shippable, not what looks good in Figma alone. AI is a
-                working tool in that loop — a critique partner, a scaffolding
+                I design and build in the same pass — thoughtful UX/UI,
+                scalable systems, and front-end detail that survives contact
+                with engineering. That means designing for what&rsquo;s
+                actually shippable, not what looks good in Figma alone. AI is
+                a working tool in that loop — a critique partner, a scaffolding
                 generator, a way to compress the gap between concept and
                 code. I use it daily and pragmatically; the design decisions
                 in the middle still happen in my head.

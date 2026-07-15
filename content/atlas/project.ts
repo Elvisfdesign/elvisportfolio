@@ -65,7 +65,7 @@ export type AtlasWorkflowStep = {
 export const atlasProject = {
   name: "Atlas UI System",
   shortName: "Atlas",
-  tagline: "Designing the future of design systems.",
+  tagline: "From product UI to a scalable system and production code.",
   statusLabel: "Building in public · Version 1.0",
   version: "1.0",
   /** Manual editorial date — update when publishing meaningful progress. */

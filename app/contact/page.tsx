@@ -45,7 +45,7 @@ export default function ContactPage() {
                   {
                     label: "OPEN TO",
                     value:
-                      "Product Design · Design Systems · Design Engineer · AI",
+                      "Product Design · Design Systems · Design Engineer",
                   },
                   { label: "FOCUS", value: "AI · Systems · Enterprise" },
                   { label: "RESPONSE", value: "Usually within hours" },

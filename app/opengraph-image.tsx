@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Elvis Fernandes — Designer working at the intersection of design, systems, engineering, and AI.";
+  "Elvis Fernandes designs and builds thoughtful UX/UI, scalable design systems, and front-end experiences.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -81,8 +81,8 @@ export default async function OpengraphImage() {
               lineHeight: 1.4,
             }}
           >
-            A designer working at the intersection of design, systems,
-            engineering, and AI.
+            Designs and builds thoughtful UX/UI, scalable design systems,
+            and front-end experiences.
           </div>
         </div>
 
@@ -96,7 +96,7 @@ export default async function OpengraphImage() {
           }}
         >
           <span>ELVISFERNANDES.COM</span>
-          <span>DESIGNER · SYSTEMS · AI</span>
+          <span>UX/UI · SYSTEMS · FRONT-END</span>
         </div>
       </div>
     ),

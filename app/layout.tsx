@@ -34,14 +34,14 @@ export const metadata: Metadata = {
     template: "%s · Elvis Fernandes",
   },
   description:
-    "Elvis Fernandes is a designer working at the intersection of design, systems, engineering, and AI.",
+    "Elvis Fernandes designs and builds thoughtful UX/UI, scalable design systems, and front-end experiences.",
   keywords: [
     "Designer",
+    "UX/UI",
     "Product Design",
     "Design Systems",
+    "Front-End",
     "Design Engineer",
-    "UI/UX",
-    "AI",
     "Modulate",
     "ToxMod",
     "Voice Vault",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     type: "website",
     title: "Elvis Fernandes — Designer",
     description:
-      "A designer working at the intersection of design, systems, engineering, and AI.",
+      "Elvis Fernandes designs and builds thoughtful UX/UI, scalable design systems, and front-end experiences.",
     url: "/",
     siteName: "Elvis Fernandes",
   },
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Elvis Fernandes — Designer",
     description:
-      "Working at the intersection of design, systems, engineering, and AI.",
+      "Thoughtful UX/UI, scalable design systems, and front-end experiences.",
   },
   icons: {
     icon: [
@@ -121,6 +121,8 @@ export default function RootLayout({
               "@type": "Person",
               name: "Elvis Fernandes",
               jobTitle: "Designer",
+              description:
+                "Elvis Fernandes designs and builds thoughtful UX/UI, scalable design systems, and front-end experiences.",
               worksFor: { "@type": "Organization", name: "Modulate" },
               url: "https://elvisfernandes.com",
               sameAs: [
@@ -128,11 +130,11 @@ export default function RootLayout({
                 "https://elvisfernandes.com/practice/ai-for-product-designers",
               ],
               knowsAbout: [
+                "UX/UI Design",
                 "Product Design",
-                "UI/UX Design",
                 "Design Systems",
+                "Front-End",
                 "AI Workflows",
-                "Front-End Engineering",
               ],
             }),
           }}

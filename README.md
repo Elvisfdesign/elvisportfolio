@@ -1,6 +1,6 @@
 # Elvis Fernandes — Portfolio 2026
 
-A designer portfolio built as a system, not a poster.
+A portfolio for a designer who builds thoughtful UX/UI, scalable design systems, and front-end experiences.
 
 Cinematic landing scroll, dedicated case-study routes, AI as substrate (not sticker), one live AI moment — the Prompt Lab — at the end of the practice piece. Designed and built to the blueprint in `.cursor/plans/2026_portfolio_blueprint_*.plan.md`.
 

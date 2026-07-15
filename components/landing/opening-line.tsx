@@ -66,7 +66,7 @@ function HeroHeadline() {
       I design products, systems,
       <br className="hidden sm:block" />
       <span className="sm:hidden"> </span>
-      and intelligent experiences.
+      and front-end experiences.
     </h1>
   );
 }
@@ -74,8 +74,8 @@ function HeroHeadline() {
 function HeroIntro() {
   return (
     <p className="mt-8 max-w-prose t-body-l leading-relaxed text-ink-mute md:mt-10">
-      Elvis Fernandes is a designer working at the intersection of design,
-      systems, engineering, and AI.
+      Elvis Fernandes designs and builds thoughtful UX/UI, scalable design
+      systems, and front-end experiences.
     </p>
   );
 }
