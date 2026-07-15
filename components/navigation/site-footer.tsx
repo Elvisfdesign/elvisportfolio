@@ -14,7 +14,7 @@ export function SiteFooter() {
             <span className="italic"> inevitable.</span>
           </p>
           <p className="mt-4 t-body text-ink-mute max-w-prose">
-            Open to senior product design, design engineer, and AI-product roles.
+            Open to product design, design systems, design engineering, and AI-product roles.
           </p>
         </div>
 

@@ -1,6 +1,6 @@
 # Elvis Fernandes — Portfolio 2026
 
-A Senior Product Designer portfolio built as a system, not a poster.
+A designer portfolio built as a system, not a poster.
 
 Cinematic landing scroll, dedicated case-study routes, AI as substrate (not sticker), one live AI moment — the Prompt Lab — at the end of the practice piece. Designed and built to the blueprint in `.cursor/plans/2026_portfolio_blueprint_*.plan.md`.
 

@@ -74,8 +74,8 @@ function HeroHeadline() {
 function HeroIntro() {
   return (
     <p className="mt-8 max-w-prose t-body-l leading-relaxed text-ink-mute md:mt-10">
-      Elvis Fernandes is a Senior Product Designer working at the intersection of
-      design, systems, engineering, and AI.
+      Elvis Fernandes is a designer working at the intersection of design,
+      systems, engineering, and AI.
     </p>
   );
 }

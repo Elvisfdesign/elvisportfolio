@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Elvis Fernandes — Senior Product Designer building intelligent systems at the intersection of design, engineering, and AI.";
+  "Elvis Fernandes — Designer working at the intersection of design, systems, engineering, and AI.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -81,8 +81,8 @@ export default async function OpengraphImage() {
               lineHeight: 1.4,
             }}
           >
-            A Senior Product Designer building intelligent systems at the
-            intersection of design, engineering, and AI.
+            A designer working at the intersection of design, systems,
+            engineering, and AI.
           </div>
         </div>
 
@@ -96,7 +96,7 @@ export default async function OpengraphImage() {
           }}
         >
           <span>ELVISFERNANDES.COM</span>
-          <span>SR. PRODUCT DESIGNER · MODULATE</span>
+          <span>DESIGNER · SYSTEMS · AI</span>
         </div>
       </div>
     ),

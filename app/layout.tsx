@@ -30,17 +30,18 @@ const fraunces = Fraunces({
 export const metadata: Metadata = {
   metadataBase: new URL("https://elvisfernandes.com"),
   title: {
-    default: "Elvis Fernandes — Senior Product Designer",
+    default: "Elvis Fernandes — Designer",
     template: "%s · Elvis Fernandes",
   },
   description:
-    "Elvis Fernandes is a Senior Product Designer building intelligent systems at the intersection of design, engineering, and AI.",
+    "Elvis Fernandes is a designer working at the intersection of design, systems, engineering, and AI.",
   keywords: [
-    "Product Designer",
-    "UI/UX",
-    "Design Engineer",
-    "AI",
+    "Designer",
+    "Product Design",
     "Design Systems",
+    "Design Engineer",
+    "UI/UX",
+    "AI",
     "Modulate",
     "ToxMod",
     "Voice Vault",
@@ -49,17 +50,17 @@ export const metadata: Metadata = {
   creator: "Elvis Fernandes",
   openGraph: {
     type: "website",
-    title: "Elvis Fernandes — Senior Product Designer",
+    title: "Elvis Fernandes — Designer",
     description:
-      "A Senior Product Designer building intelligent systems at the intersection of design, engineering, and AI.",
+      "A designer working at the intersection of design, systems, engineering, and AI.",
     url: "/",
     siteName: "Elvis Fernandes",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Elvis Fernandes — Senior Product Designer",
+    title: "Elvis Fernandes — Designer",
     description:
-      "Building intelligent systems at the intersection of design, engineering, and AI.",
+      "Working at the intersection of design, systems, engineering, and AI.",
   },
   icons: {
     icon: [
@@ -119,7 +120,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Person",
               name: "Elvis Fernandes",
-              jobTitle: "Senior Product Designer",
+              jobTitle: "Designer",
               worksFor: { "@type": "Organization", name: "Modulate" },
               url: "https://elvisfernandes.com",
               sameAs: [

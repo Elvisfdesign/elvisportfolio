@@ -153,7 +153,7 @@ export default function PracticePage() {
               <div className="space-y-2.5">
                 <p className="leading-snug">
                   <span className="opacity-[0.62]">Role:</span>{" "}
-                  Senior Product Designer improving UX writing for a SaaS dashboard.
+                  Designer improving UX writing for a SaaS dashboard.
                 </p>
 
                 <div className="space-y-0.5">
