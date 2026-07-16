@@ -104,26 +104,26 @@ export type AtlasCta = {
   statusLabel?: string;
 };
 
-const LIGHT_COMMON = {
-  width: 2880,
-  height: 2208,
-  thumbWidth: 1280,
-  thumbHeight: 981,
-} as const;
-
-const LIGHT_ANALYTICS = {
-  width: 2880,
-  height: 2522,
-  thumbWidth: 1280,
-  thumbHeight: 1121,
-} as const;
+/**
+ * Screen dimensions per aspect. Grid + modal derive their intrinsic size
+ * from these values so a single resolver drives both roles.
+ *
+ * - Light theme currently ships from `/light/thumb/*.jpg` (1280 wide,
+ *   Figma-exported light screenshots — the only files that actually
+ *   contain light-mode content today). Replace with high-res
+ *   `/light/full/*.png` here + on disk once exported.
+ * - Dark theme ships from `/dark/full/*.png` (2880 wide).
+ */
+const LIGHT_COMMON = { width: 1280, height: 981 } as const;
+const LIGHT_ANALYTICS = { width: 1280, height: 1121 } as const;
+const DARK_COMMON = { width: 2880, height: 2208 } as const;
+const DARK_ANALYTICS = { width: 2880, height: 2522 } as const;
 
 function lightAssets(
   id: string,
   dims: typeof LIGHT_COMMON | typeof LIGHT_ANALYTICS = LIGHT_COMMON,
 ): AtlasScreenAssets {
-  /** High-res source used for both grid preview and fullscreen viewer. */
-  const src = `/images/atlas/product/light/full/${id}.png`;
+  const src = `/images/atlas/product/light/thumb/${id}.jpg`;
   return {
     thumbnailSrc: src,
     fullSrc: src,
@@ -136,7 +136,7 @@ function lightAssets(
 
 function darkAssets(
   id: string,
-  dims: typeof LIGHT_COMMON | typeof LIGHT_ANALYTICS = LIGHT_COMMON,
+  dims: typeof DARK_COMMON | typeof DARK_ANALYTICS = DARK_COMMON,
 ): AtlasScreenAssets {
   const src = `/images/atlas/product/dark/full/${id}.png`;
   return {
@@ -258,7 +258,7 @@ export const atlasProject = {
       alt: "Atlas Intelligence Analytics dashboard with KPI cards, processing trend chart, document-type distribution, and recent activity.",
       themes: {
         light: lightAssets("analytics", LIGHT_ANALYTICS),
-        dark: darkAssets("analytics", LIGHT_ANALYTICS),
+        dark: darkAssets("analytics", DARK_ANALYTICS),
       },
     },
     {
