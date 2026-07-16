@@ -39,7 +39,7 @@ export function AtlasExternalLinks({
         }
 
         return (
-          <li key={link.id}>
+          <li key={link.id} className="inline-flex items-baseline">
             <a
               href={link.href}
               target={link.external ? "_blank" : undefined}
@@ -47,12 +47,24 @@ export function AtlasExternalLinks({
               className="t-mono link-underline text-ink tabular touch-manipulation"
               aria-label={
                 link.external
-                  ? `${link.label} (opens in a new tab)`
-                  : link.label
+                  ? `${link.label} (opens in a new tab)${
+                      link.statusLabel ? `, ${link.statusLabel}` : ""
+                    }`
+                  : `${link.label}${
+                      link.statusLabel ? `, ${link.statusLabel}` : ""
+                    }`
               }
             >
               {link.label}&nbsp;↗
             </a>
+            {link.statusLabel ? (
+              <span
+                className="t-mono text-ink-faint tabular"
+                aria-hidden="true"
+              >
+                &nbsp;·&nbsp;{link.statusLabel}
+              </span>
+            ) : null}
           </li>
         );
       })}

@@ -100,6 +100,8 @@ export type AtlasCta = {
   external?: boolean;
   /** Shown when href is null. */
   pendingLabel?: string;
+  /** Optional status note shown alongside an active link (e.g. "Work in progress"). */
+  statusLabel?: string;
 };
 
 const LIGHT_COMMON = {
@@ -120,10 +122,30 @@ function lightAssets(
   id: string,
   dims: typeof LIGHT_COMMON | typeof LIGHT_ANALYTICS = LIGHT_COMMON,
 ): AtlasScreenAssets {
+  /** High-res source used for both grid preview and fullscreen viewer. */
+  const src = `/images/atlas/product/light/full/${id}.png`;
   return {
-    thumbnailSrc: `/images/atlas/product/light/thumb/${id}.jpg`,
-    fullSrc: `/images/atlas/product/light/full/${id}.png`,
-    ...dims,
+    thumbnailSrc: src,
+    fullSrc: src,
+    width: dims.width,
+    height: dims.height,
+    thumbWidth: dims.width,
+    thumbHeight: dims.height,
+  };
+}
+
+function darkAssets(
+  id: string,
+  dims: typeof LIGHT_COMMON | typeof LIGHT_ANALYTICS = LIGHT_COMMON,
+): AtlasScreenAssets {
+  const src = `/images/atlas/product/dark/full/${id}.png`;
+  return {
+    thumbnailSrc: src,
+    fullSrc: src,
+    width: dims.width,
+    height: dims.height,
+    thumbWidth: dims.width,
+    thumbHeight: dims.height,
   };
 }
 
@@ -180,17 +202,18 @@ export const atlasProject = {
     },
     {
       id: "figmaSystemUrl",
-      label: "Explore Figma UI System",
+      label: "Explore Atlas UI System",
       href: "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
       external: true,
       pendingLabel: "Publishing soon",
     },
     {
       id: "storybookUrl",
-      label: "View React Components",
-      href: null,
+      label: "View React Component Library",
+      href: "https://atlas-ui-alpha.vercel.app/",
       external: true,
       pendingLabel: "Publishing soon",
+      statusLabel: "Work in progress",
     },
     {
       id: "githubUrl",
@@ -206,13 +229,19 @@ export const atlasProject = {
       id: "dashboard",
       label: "Dashboard",
       alt: "Atlas Intelligence dashboard showing workflow metrics, activity overview, recent workflows, and quick actions.",
-      themes: { light: lightAssets("dashboard") },
+      themes: {
+        light: lightAssets("dashboard"),
+        dark: darkAssets("dashboard"),
+      },
     },
     {
       id: "review-queue",
       label: "Review Queue",
       alt: "Atlas Intelligence Review Queue table listing documents with review status, confidence scores, assignees, and upload times.",
-      themes: { light: lightAssets("review-queue") },
+      themes: {
+        light: lightAssets("review-queue"),
+        dark: darkAssets("review-queue"),
+      },
     },
     {
       id: "document-review",
@@ -220,33 +249,35 @@ export const atlasProject = {
       alt: "Atlas Intelligence Document Review workspace with invoice preview, extracted fields with confidence, and an AI assistant panel.",
       themes: {
         light: lightAssets("document-review"),
-        dark: {
-          thumbnailSrc: "/images/atlas/product/dark/thumb/document-review.jpg",
-          fullSrc: "/images/atlas/product/dark/full/document-review.png",
-          width: 2880,
-          height: 2208,
-          thumbWidth: 1280,
-          thumbHeight: 981,
-        },
+        dark: darkAssets("document-review"),
       },
     },
     {
       id: "analytics",
       label: "Analytics",
       alt: "Atlas Intelligence Analytics dashboard with KPI cards, processing trend chart, document-type distribution, and recent activity.",
-      themes: { light: lightAssets("analytics", LIGHT_ANALYTICS) },
+      themes: {
+        light: lightAssets("analytics", LIGHT_ANALYTICS),
+        dark: darkAssets("analytics", LIGHT_ANALYTICS),
+      },
     },
     {
       id: "workflow-builder",
       label: "Workflow Builder",
       alt: "Atlas Intelligence Workflows board with Intake, Processing, Review, and Output columns of workflow cards.",
-      themes: { light: lightAssets("workflow-builder") },
+      themes: {
+        light: lightAssets("workflow-builder"),
+        dark: darkAssets("workflow-builder"),
+      },
     },
     {
       id: "settings",
       label: "Settings",
       alt: "Atlas Intelligence Settings screen with user profile, workspace details, and notification preferences.",
-      themes: { light: lightAssets("settings") },
+      themes: {
+        light: lightAssets("settings"),
+        dark: darkAssets("settings"),
+      },
     },
   ] satisfies AtlasScreen[],
 
@@ -447,7 +478,7 @@ export function resolveScreenAssets(
   screen: AtlasScreen,
   theme: AtlasThemeId,
 ): AtlasScreenAssets | null {
-  return screen.themes[theme] ?? screen.themes.light ?? null;
+  return screen.themes[theme] ?? null;
 }
 
 /** Backward-compatible link list for shared CTA rendering. */

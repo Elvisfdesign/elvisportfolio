@@ -7,6 +7,10 @@ type AtlasComponentMapProps = {
   className?: string;
 };
 
+/**
+ * Implementation status map — borders define the grid; equal cell insets
+ * keep labels clear of every rule.
+ */
 export function AtlasComponentMap({
   categories,
   className,
@@ -23,10 +27,19 @@ export function AtlasComponentMap({
       {categories.map((cat) => (
         <li
           key={cat.id}
-          className="flex flex-col gap-3 border-b border-[var(--hairline)] px-0 py-5 sm:border-r sm:px-5 sm:odd:pl-0 lg:[&:nth-child(4n)]:border-r-0 lg:[&:nth-child(4n+1)]:pl-0"
+          className={clsx(
+            "flex flex-col gap-4",
+            "border-b border-[var(--hairline)]",
+            /* Consistent inset on every side — no first-column pl-0 exceptions. */
+            "px-6 py-6 sm:border-r sm:px-6 sm:py-7 lg:px-7",
+            "lg:[&:nth-child(4n)]:border-r-0",
+            "sm:max-lg:[&:nth-child(2n)]:border-r-0",
+          )}
           style={{ borderColor: "var(--hairline)" }}
         >
-          <span className="t-mono text-ink tabular">{cat.label.toUpperCase()}</span>
+          <span className="t-mono text-ink tabular">
+            {cat.label.toUpperCase()}
+          </span>
           <AtlasStatusBadge state={cat.state} />
         </li>
       ))}

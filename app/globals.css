@@ -230,6 +230,19 @@ button {
   border-color: var(--hairline-strong) !important;
 }
 
+/*
+ * Atlas theme segmented control —
+ * Active label must stay visible over the ink pill. Global `button { color: inherit }`
+ * would otherwise leave selected text as ink-on-ink (invisible).
+ */
+.atlas-theme-segmented__tab[aria-selected="true"] {
+  color: var(--canvas);
+}
+
+.atlas-theme-segmented__tab[aria-selected="true"]:hover {
+  color: var(--canvas);
+}
+
 .atlas-screen-card {
   transition: border-color 300ms var(--ease-entrance);
 }

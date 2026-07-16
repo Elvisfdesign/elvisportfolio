@@ -16,7 +16,6 @@ import {
 import { createPortal } from "react-dom";
 import { AtlasGalleryThemeToggle } from "@/components/atlas/atlas-gallery-theme-toggle";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
-import { useTheme } from "@/components/theme/theme-provider";
 import {
   getCompleteGalleryThemes,
   resolveScreenAssets,
@@ -60,7 +59,6 @@ export function AtlasScreenGallery({
   className,
 }: AtlasScreenGalleryProps) {
   const reduced = useReducedMotionPreference();
-  const { resolved: siteTheme } = useTheme();
   const availableThemes = useMemo(
     () => getCompleteGalleryThemes(screens),
     [screens],
@@ -88,15 +86,27 @@ export function AtlasScreenGallery({
 
   useEffect(() => {
     setMounted(true);
+    const complete = getCompleteGalleryThemes(screens);
     const saved = readSessionTheme();
-    const preferred =
-      saved && availableThemes.includes(saved)
-        ? saved
-        : availableThemes.includes(siteTheme)
-          ? siteTheme
-          : (availableThemes[0] ?? "light");
+    const htmlTheme = document.documentElement.getAttribute("data-theme");
+    const resolvedSite: AtlasThemeId =
+      htmlTheme === "light" || htmlTheme === "dark" ? htmlTheme : "light";
+
+    let preferred: AtlasThemeId = "light";
+    if (saved && complete.includes(saved)) {
+      preferred = saved;
+    } else if (resolvedSite === "dark" && complete.includes("dark")) {
+      preferred = "dark";
+    } else if (complete.includes("light")) {
+      preferred = "light";
+    } else {
+      preferred = complete[0] ?? "light";
+    }
+
     setGalleryTheme(preferred);
-  }, [availableThemes, siteTheme]);
+    // Run once on mount so later site-theme toggles don't override gallery choice.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onThemeChange = useCallback(
     (theme: AtlasThemeId) => {
@@ -107,21 +117,23 @@ export function AtlasScreenGallery({
     [availableThemes],
   );
 
-  // Preload alternate theme full + thumb assets to avoid flicker on toggle.
+  // Preload every theme asset set so Light ↔ Dark switches do not flicker.
   useEffect(() => {
     if (!mounted) return;
-    const alternate = availableThemes.find((t) => t !== galleryTheme);
-    if (!alternate) return;
 
-    for (const screen of screens) {
-      const assets = screen.themes[alternate];
-      if (!assets) continue;
-      const full = new window.Image();
-      full.src = assets.fullSrc;
-      const thumb = new window.Image();
-      thumb.src = assets.thumbnailSrc;
+    for (const theme of availableThemes) {
+      for (const screen of screens) {
+        const assets = screen.themes[theme];
+        if (!assets) continue;
+        const full = new window.Image();
+        full.src = assets.fullSrc;
+        if (assets.thumbnailSrc !== assets.fullSrc) {
+          const thumb = new window.Image();
+          thumb.src = assets.thumbnailSrc;
+        }
+      }
     }
-  }, [mounted, galleryTheme, availableThemes, screens]);
+  }, [mounted, availableThemes, screens]);
 
   const close = useCallback(() => {
     setActiveIndex(null);
@@ -362,7 +374,7 @@ export function AtlasScreenGallery({
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={activeAssets.fullSrc}
-                      alt={activeScreen.alt}
+                      alt={`${activeScreen.alt} (${galleryTheme === "light" ? "Light" : "Dark"} mode)`}
                       width={activeAssets.width}
                       height={activeAssets.height}
                       decoding="async"
@@ -470,6 +482,7 @@ export function AtlasScreenGallery({
                         height={assets.thumbHeight}
                         loading={index < 3 ? "eager" : "lazy"}
                         priority={index === 0}
+                        quality={95}
                         className="pointer-events-none h-full w-full object-contain object-top transition-transform duration-500 ease-[var(--ease-soft)] motion-reduce:transition-none"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       />
