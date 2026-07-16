@@ -218,9 +218,8 @@ export const atlasProject = {
     {
       id: "githubUrl",
       label: "View Repository",
-      href: null,
+      href: "https://github.com/Elvisfdesign/atlas-ui",
       external: true,
-      pendingLabel: "Publishing soon",
     },
   ] satisfies AtlasCta[],
 
