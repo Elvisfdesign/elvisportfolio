@@ -7,30 +7,66 @@ import {
   useCallback,
   useEffect,
   useId,
+  useMemo,
   useRef,
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
   type PointerEvent as ReactPointerEvent,
 } from "react";
 import { createPortal } from "react-dom";
+import { AtlasGalleryThemeToggle } from "@/components/atlas/atlas-gallery-theme-toggle";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
-import type { AtlasScreen } from "@/content/atlas/project";
+import { useTheme } from "@/components/theme/theme-provider";
+import {
+  getCompleteGalleryThemes,
+  resolveScreenAssets,
+  type AtlasScreen,
+  type AtlasThemeId,
+} from "@/content/atlas/project";
 import { duration, ease } from "@/lib/motion";
+
+const GALLERY_THEME_KEY = "atlas-gallery-theme";
 
 type AtlasScreenGalleryProps = {
   screens: readonly AtlasScreen[];
   className?: string;
 };
 
+function readSessionTheme(): AtlasThemeId | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.sessionStorage.getItem(GALLERY_THEME_KEY);
+    if (raw === "light" || raw === "dark") return raw;
+  } catch {
+    /* sessionStorage unavailable */
+  }
+  return null;
+}
+
+function writeSessionTheme(theme: AtlasThemeId) {
+  try {
+    window.sessionStorage.setItem(GALLERY_THEME_KEY, theme);
+  } catch {
+    /* ignore */
+  }
+}
+
 /**
  * Product screenshot grid + fullscreen modal carousel for Atlas.
- * Modal is portaled to document.body so it never replaces page content.
+ * Light/Dark gallery theme is independent from the global portfolio theme.
  */
 export function AtlasScreenGallery({
   screens,
   className,
 }: AtlasScreenGalleryProps) {
   const reduced = useReducedMotionPreference();
+  const { resolved: siteTheme } = useTheme();
+  const availableThemes = useMemo(
+    () => getCompleteGalleryThemes(screens),
+    [screens],
+  );
+
+  const [galleryTheme, setGalleryTheme] = useState<AtlasThemeId>("light");
   const [mounted, setMounted] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const triggerRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -43,12 +79,49 @@ export function AtlasScreenGallery({
   const headingId = useId();
   const panelId = `${headingId}-atlas-gallery`;
   const open = activeIndex !== null;
+
   const activeScreen =
     activeIndex !== null ? (screens[activeIndex] ?? null) : null;
+  const activeAssets = activeScreen
+    ? resolveScreenAssets(activeScreen, galleryTheme)
+    : null;
 
   useEffect(() => {
     setMounted(true);
-  }, []);
+    const saved = readSessionTheme();
+    const preferred =
+      saved && availableThemes.includes(saved)
+        ? saved
+        : availableThemes.includes(siteTheme)
+          ? siteTheme
+          : (availableThemes[0] ?? "light");
+    setGalleryTheme(preferred);
+  }, [availableThemes, siteTheme]);
+
+  const onThemeChange = useCallback(
+    (theme: AtlasThemeId) => {
+      if (!availableThemes.includes(theme)) return;
+      setGalleryTheme(theme);
+      writeSessionTheme(theme);
+    },
+    [availableThemes],
+  );
+
+  // Preload alternate theme full + thumb assets to avoid flicker on toggle.
+  useEffect(() => {
+    if (!mounted) return;
+    const alternate = availableThemes.find((t) => t !== galleryTheme);
+    if (!alternate) return;
+
+    for (const screen of screens) {
+      const assets = screen.themes[alternate];
+      if (!assets) continue;
+      const full = new window.Image();
+      full.src = assets.fullSrc;
+      const thumb = new window.Image();
+      thumb.src = assets.thumbnailSrc;
+    }
+  }, [mounted, galleryTheme, availableThemes, screens]);
 
   const close = useCallback(() => {
     setActiveIndex(null);
@@ -200,11 +273,15 @@ export function AtlasScreenGallery({
     ? { duration: 0 }
     : { duration: duration.base, ease: ease.entrance };
 
+  const crossfade = reduced
+    ? { duration: 0 }
+    : { duration: duration.fast, ease: ease.soft };
+
   const portal =
     mounted &&
     createPortal(
       <AnimatePresence>
-        {open && activeScreen ? (
+        {open && activeScreen && activeAssets ? (
           <motion.div
             key="atlas-screen-gallery-shell"
             className="atlas-lightbox"
@@ -246,6 +323,10 @@ export function AtlasScreenGallery({
                     aria-live="polite"
                   >
                     {(activeIndex ?? 0) + 1}&nbsp;/&nbsp;{screens.length}
+                    <span className="text-ink-faint">
+                      &nbsp;·&nbsp;
+                      {galleryTheme === "light" ? "Light" : "Dark"}
+                    </span>
                   </p>
                 </div>
 
@@ -271,22 +352,19 @@ export function AtlasScreenGallery({
               >
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
-                    key={activeScreen.id}
+                    key={`${activeScreen.id}-${galleryTheme}`}
                     initial={reduced ? { opacity: 1 } : { opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={reduced ? { opacity: 0 } : { opacity: 0 }}
-                    transition={{
-                      duration: reduced ? 0 : duration.fast,
-                      ease: ease.soft,
-                    }}
+                    transition={crossfade}
                     className="atlas-lightbox-frame"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={activeScreen.fullSrc}
+                      src={activeAssets.fullSrc}
                       alt={activeScreen.alt}
-                      width={activeScreen.width}
-                      height={activeScreen.height}
+                      width={activeAssets.width}
+                      height={activeAssets.height}
                       decoding="async"
                       draggable={false}
                       className="atlas-lightbox-image"
@@ -354,70 +432,84 @@ export function AtlasScreenGallery({
     );
 
   return (
-    <>
+    <div className={clsx("space-y-6 md:space-y-8", className)}>
+      <AtlasGalleryThemeToggle
+        value={galleryTheme}
+        onChange={onThemeChange}
+        available={availableThemes}
+      />
+
       <ul
-        className={clsx(
-          "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
-          className,
-        )}
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
         role="list"
       >
-        {screens.map((screen, index) => (
-          <li key={screen.id} className="relative">
-            <figure
-              className="atlas-screen-card relative overflow-hidden rounded-sm border bg-canvas-raised transition-[border-color] duration-300"
-              style={{ borderColor: "var(--hairline)" }}
-            >
-              <div className="relative aspect-[16/12] bg-canvas-recessed">
-                <Image
-                  src={screen.thumbnailSrc}
-                  alt=""
-                  width={screen.thumbWidth}
-                  height={screen.thumbHeight}
-                  loading={index < 3 ? "eager" : "lazy"}
-                  priority={index === 0}
-                  className="pointer-events-none h-full w-full object-contain object-top transition-transform duration-500 ease-[var(--ease-soft)] motion-reduce:transition-none"
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                />
-              </div>
+        {screens.map((screen, index) => {
+          const assets = resolveScreenAssets(screen, galleryTheme);
+          if (!assets) return null;
 
-              <figcaption
-                className="pointer-events-none flex items-center justify-between gap-3 border-t px-4 py-3 md:px-5"
+          return (
+            <li key={screen.id} className="relative">
+              <figure
+                className="atlas-screen-card relative overflow-hidden rounded-sm border bg-canvas-raised transition-[border-color] duration-300"
                 style={{ borderColor: "var(--hairline)" }}
               >
-                <span className="t-mono text-ink tabular">{screen.label}</span>
-                <span className="t-mono text-[0.6875rem] text-ink-quiet tabular transition-colors duration-300">
-                  VIEW&nbsp;FULL&nbsp;SCREEN
-                </span>
-              </figcaption>
-            </figure>
+                <div className="relative aspect-[16/12] bg-canvas-recessed">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={`${screen.id}-${galleryTheme}`}
+                      className="absolute inset-0"
+                      initial={reduced ? false : { opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={reduced ? undefined : { opacity: 0 }}
+                      transition={crossfade}
+                    >
+                      <Image
+                        src={assets.thumbnailSrc}
+                        alt=""
+                        width={assets.thumbWidth}
+                        height={assets.thumbHeight}
+                        loading={index < 3 ? "eager" : "lazy"}
+                        priority={index === 0}
+                        className="pointer-events-none h-full w-full object-contain object-top transition-transform duration-500 ease-[var(--ease-soft)] motion-reduce:transition-none"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
 
-            {/*
-              Valid hit target: covering button (not wrapping figure).
-              Nested figure-in-button is invalid HTML and browsers can
-              split the tree so clicks on the image never fire onClick.
-            */}
-            <button
-              ref={(el) => {
-                triggerRefs.current[index] = el;
-              }}
-              type="button"
-              onClick={() => openAt(index)}
-              aria-haspopup="dialog"
-              aria-expanded={open && activeIndex === index}
-              aria-controls={open ? panelId : undefined}
-              aria-label={`View ${screen.label} fullscreen`}
-              className={clsx(
-                "atlas-screen-card-hit group absolute inset-0 z-10 rounded-sm touch-manipulation",
-                "[--tw-ring-offset-color:var(--canvas)]",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-2",
-              )}
-            />
-          </li>
-        ))}
+                <figcaption
+                  className="pointer-events-none flex items-center justify-between gap-3 border-t px-4 py-3 md:px-5"
+                  style={{ borderColor: "var(--hairline)" }}
+                >
+                  <span className="t-mono text-ink tabular">{screen.label}</span>
+                  <span className="t-mono text-[0.6875rem] text-ink-quiet tabular transition-colors duration-300">
+                    VIEW&nbsp;FULL&nbsp;SCREEN
+                  </span>
+                </figcaption>
+              </figure>
+
+              <button
+                ref={(el) => {
+                  triggerRefs.current[index] = el;
+                }}
+                type="button"
+                onClick={() => openAt(index)}
+                aria-haspopup="dialog"
+                aria-expanded={open && activeIndex === index}
+                aria-controls={open ? panelId : undefined}
+                aria-label={`View ${screen.label} fullscreen`}
+                className={clsx(
+                  "atlas-screen-card-hit group absolute inset-0 z-10 rounded-sm touch-manipulation",
+                  "[--tw-ring-offset-color:var(--canvas)]",
+                  "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-2",
+                )}
+              />
+            </li>
+          );
+        })}
       </ul>
 
       {portal}
-    </>
+    </div>
   );
 }

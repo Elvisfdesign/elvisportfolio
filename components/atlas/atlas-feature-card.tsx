@@ -27,8 +27,7 @@ export function AtlasFeatureCard({
   return (
     <motion.div
       className={clsx(
-        sticky &&
-          "lg:sticky lg:top-28 lg:self-start xl:top-32",
+        sticky && "lg:sticky lg:top-28 lg:self-start xl:top-32",
         className,
       )}
       initial={reduced ? false : { opacity: 0, y: 10 }}
@@ -43,7 +42,7 @@ export function AtlasFeatureCard({
         href={atlasProject.href}
         aria-label={`Explore ${atlasProject.name}`}
         className={clsx(
-          "atlas-feature-card group relative block w-full max-w-none overflow-hidden rounded-sm border bg-canvas-raised p-7 outline-none transition-[border-color,transform,box-shadow] duration-300 md:p-8 lg:max-w-[22.5rem] xl:max-w-[24rem]",
+          "atlas-feature-card group relative block w-full max-w-none overflow-hidden rounded-sm border bg-canvas-raised p-7 outline-none transition-[border-color,transform,box-shadow] duration-300 md:p-8 lg:max-w-[24rem] xl:max-w-[26rem]",
           "hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal",
         )}
         style={{
@@ -54,30 +53,42 @@ export function AtlasFeatureCard({
         <div className="flex items-center justify-between gap-4">
           <span className="inline-flex items-center gap-2 t-mono text-ink-mute tabular">
             <span className="dot-live" aria-hidden />
-            NEW
+            FLAGSHIP
           </span>
           <span className="t-mono text-ink-faint tabular">
-            {atlasProject.version}
+            v{atlasProject.version}
           </span>
         </div>
 
-        <div className="mt-8">
+        <p className="mt-5 t-mono text-[0.6875rem] text-ink-quiet tabular">
+          {atlasProject.eyebrow}
+        </p>
+
+        <div className="mt-6">
           <AtlasLogo compact />
         </div>
 
-        <p className="mt-6 max-w-[22ch] t-heading font-display text-ink leading-snug">
-          {atlasProject.tagline}
+        <h2 className="mt-5 t-heading font-display text-ink leading-snug">
+          {atlasProject.name}
+        </h2>
+
+        <p className="mt-4 max-w-[34ch] t-body text-ink-mute leading-relaxed">
+          {atlasProject.description}
         </p>
 
-        <p className="mt-5 t-mono text-ink-quiet tabular">
-          Built in public using
-          <br />
-          <span className="text-ink-mute">{atlasProject.builtWithLine}</span>
+        <p className="mt-5 t-mono text-[0.6875rem] text-ink-quiet tabular">
+          {atlasProject.cardToolsLine}
         </p>
 
-        <p className="mt-6 t-mono text-[0.6875rem] text-ink-faint tabular">
-          {atlasProject.metadataLabel}
-        </p>
+        <div className="mt-6 space-y-1.5">
+          <p className="inline-flex items-center gap-2 t-mono text-ink-mute tabular">
+            <span className="dot-live" aria-hidden />
+            {atlasProject.libraryStatus}
+          </p>
+          <p className="t-mono text-[0.6875rem] text-ink-faint tabular">
+            {atlasProject.secondaryStatus}
+          </p>
+        </div>
 
         <span className="mt-8 inline-flex min-h-11 items-center t-mono text-ink tabular transition-colors duration-300 group-hover:text-signal">
           Explore&nbsp;Atlas

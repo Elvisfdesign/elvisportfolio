@@ -1,38 +1,17 @@
 import clsx from "clsx";
-import type { AtlasStatusItem, AtlasStatusState } from "@/content/atlas/project";
-
-const STATE_LABEL: Record<AtlasStatusState, string> = {
-  Complete: "Complete",
-  "In review": "In review",
-  "In progress": "In progress",
-  Next: "Next",
-  Planned: "Planned",
-};
-
-function stateTone(state: AtlasStatusState) {
-  switch (state) {
-    case "Complete":
-      return "text-ink";
-    case "In review":
-    case "In progress":
-      return "text-signal";
-    case "Next":
-      return "text-ink-mute";
-    default:
-      return "text-ink-quiet";
-  }
-}
+import type { AtlasStatusItem } from "@/content/atlas/project";
+import { STATE_LABEL, stateTone } from "@/components/atlas/atlas-status-badge";
 
 type AtlasStatusProps = {
   items: readonly AtlasStatusItem[];
-  lastUpdated: string;
+  lastUpdatedDisplay: string;
   statusLabel: string;
   className?: string;
 };
 
 export function AtlasStatus({
   items,
-  lastUpdated,
+  lastUpdatedDisplay,
   statusLabel,
   className,
 }: AtlasStatusProps) {
@@ -50,7 +29,7 @@ export function AtlasStatus({
           {statusLabel}
         </p>
         <p className="t-mono text-ink-faint tabular">
-          Last&nbsp;updated&nbsp;{lastUpdated}
+          Last&nbsp;updated&nbsp;·&nbsp;{lastUpdatedDisplay}
         </p>
       </div>
 
@@ -61,12 +40,7 @@ export function AtlasStatus({
             className="hairline-t flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 py-4 first:border-t-0 first:pt-0"
           >
             <span className="t-body text-ink">{item.label}</span>
-            <span
-              className={clsx(
-                "t-mono tabular",
-                stateTone(item.state),
-              )}
-            >
+            <span className={clsx("t-mono tabular", stateTone(item.state))}>
               {STATE_LABEL[item.state]}
             </span>
           </li>

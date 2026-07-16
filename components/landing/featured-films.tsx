@@ -54,9 +54,9 @@ const atlasFilm: Film = {
   href: atlasProject.href,
   index: "01",
   title: atlasProject.name,
-  positioning: atlasProject.tagline,
-  ambient: "Design system · Building in public",
-  meta: `${atlasProject.statusLabel}`,
+  positioning: atlasProject.description,
+  ambient: atlasProject.eyebrow,
+  meta: atlasProject.libraryStatus,
   kind: "atlas",
   layoutId: "film:atlas",
 };
@@ -100,14 +100,19 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
   // Faint parallax on the ambient panel — narrative-driven, not decoration.
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.7]);
+  const isFlagship = film.kind === "atlas";
 
   return (
     <article ref={ref} className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
       <div
         className={
-          reverse
-            ? "md:col-span-5 md:col-start-8 md:order-2"
-            : "md:col-span-5 md:col-start-1"
+          isFlagship
+            ? reverse
+              ? "md:col-span-6 md:col-start-7 md:order-2"
+              : "md:col-span-6 md:col-start-1"
+            : reverse
+              ? "md:col-span-5 md:col-start-8 md:order-2"
+              : "md:col-span-5 md:col-start-1"
         }
       >
         <motion.div
@@ -121,9 +126,13 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
 
       <div
         className={
-          reverse
-            ? "md:col-span-6 md:col-start-1 md:order-1 md:pt-12"
-            : "md:col-span-6 md:col-start-7 md:pt-12"
+          isFlagship
+            ? reverse
+              ? "md:col-span-5 md:col-start-1 md:order-1 md:pt-10"
+              : "md:col-span-5 md:col-start-8 md:pt-10"
+            : reverse
+              ? "md:col-span-6 md:col-start-1 md:order-1 md:pt-12"
+              : "md:col-span-6 md:col-start-7 md:pt-12"
         }
       >
         <div className="flex items-baseline gap-6">

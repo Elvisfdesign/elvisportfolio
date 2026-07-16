@@ -1,11 +1,15 @@
 import clsx from "clsx";
-import type { AtlasExternalLink } from "@/content/atlas/project";
+import type { AtlasCta } from "@/content/atlas/project";
 
 type AtlasExternalLinksProps = {
-  links: readonly AtlasExternalLink[];
+  links: readonly AtlasCta[];
   className?: string;
 };
 
+/**
+ * Atlas CTAs. Active when href exists; otherwise an honest inactive status.
+ * Never renders "#" placeholders. Unpublished links are not focusable anchors.
+ */
 export function AtlasExternalLinks({
   links,
   className,
@@ -22,8 +26,13 @@ export function AtlasExternalLinks({
         if (!link.href) {
           return (
             <li key={link.id}>
-              <span className="t-mono text-ink-faint tabular">
-                {link.label}&nbsp;·&nbsp;Coming&nbsp;soon
+              <span
+                className="t-mono text-ink-faint tabular"
+                aria-label={`${link.label}: ${link.pendingLabel ?? "Publishing soon"}`}
+              >
+                {link.label}
+                &nbsp;·&nbsp;
+                {link.pendingLabel ?? "Publishing soon"}
               </span>
             </li>
           );

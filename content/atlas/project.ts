@@ -1,3 +1,10 @@
+/**
+ * Atlas UI System — single source of truth for homepage card, /atlas page,
+ * gallery themes, progress, workflow, CTAs, and status.
+ *
+ * Update this file to evolve the project publicly without rewriting sections.
+ */
+
 export type AtlasStatusState =
   | "Complete"
   | "In review"
@@ -15,27 +22,23 @@ export type AtlasUpdate = {
   items: string[];
 };
 
-export type AtlasExternalLink = {
-  id: string;
-  label: string;
-  href: string | null;
-  external?: boolean;
+export type AtlasThemeId = "light" | "dark";
+
+export type AtlasScreenAssets = {
+  thumbnailSrc: string;
+  fullSrc: string;
+  width: number;
+  height: number;
+  thumbWidth: number;
+  thumbHeight: number;
 };
 
 export type AtlasScreen = {
   id: string;
   label: string;
-  /** Optimized preview for the product grid. */
-  thumbnailSrc: string;
-  /** Original high-resolution asset for the fullscreen gallery. */
-  fullSrc: string;
   alt: string;
-  /** Intrinsic dimensions of the fullSrc asset. */
-  width: number;
-  height: number;
-  /** Intrinsic dimensions of the thumbnailSrc asset. */
-  thumbWidth: number;
-  thumbHeight: number;
+  /** Theme variants. Omit a theme until real mockups exist — never invent with filters. */
+  themes: Partial<Record<AtlasThemeId, AtlasScreenAssets>>;
 };
 
 export type AtlasFoundation = {
@@ -46,11 +49,15 @@ export type AtlasFoundation = {
 export type AtlasComponentCategory = {
   id: string;
   label: string;
+  state: AtlasStatusState;
 };
 
 export type AtlasCaseBeat = {
   id: string;
   label: string;
+  state: AtlasStatusState;
+  /** Real narrative body — omit until written. */
+  body?: string;
 };
 
 export type AtlasWorkflowStep = {
@@ -58,18 +65,86 @@ export type AtlasWorkflowStep = {
   label: string;
 };
 
+export type AtlasProgressItem = {
+  label: string;
+};
+
+export type AtlasProgressGroups = {
+  completed: readonly AtlasProgressItem[];
+  inProgress: readonly AtlasProgressItem[];
+  next: readonly AtlasProgressItem[];
+};
+
+export type AtlasStorybookShot = {
+  id: string;
+  title: string;
+  description: string;
+  status: AtlasStatusState;
+  imageSrc: string;
+  width: number;
+  height: number;
+  href?: string | null;
+};
+
+export type AtlasUrlKey =
+  | "figmaProductUrl"
+  | "figmaSystemUrl"
+  | "storybookUrl"
+  | "githubUrl"
+  | "dashboardUrl";
+
+export type AtlasCta = {
+  id: AtlasUrlKey | string;
+  label: string;
+  href: string | null;
+  external?: boolean;
+  /** Shown when href is null. */
+  pendingLabel?: string;
+};
+
+const LIGHT_COMMON = {
+  width: 2880,
+  height: 2208,
+  thumbWidth: 1280,
+  thumbHeight: 981,
+} as const;
+
+const LIGHT_ANALYTICS = {
+  width: 2880,
+  height: 2522,
+  thumbWidth: 1280,
+  thumbHeight: 1121,
+} as const;
+
+function lightAssets(
+  id: string,
+  dims: typeof LIGHT_COMMON | typeof LIGHT_ANALYTICS = LIGHT_COMMON,
+): AtlasScreenAssets {
+  return {
+    thumbnailSrc: `/images/atlas/product/light/thumb/${id}.jpg`,
+    fullSrc: `/images/atlas/product/light/full/${id}.png`,
+    ...dims,
+  };
+}
+
 /**
  * Atlas UI System — structured content for homepage card + /atlas.
- * Edit statuses, links, and changelog here as the project grows.
  */
 export const atlasProject = {
   name: "Atlas UI System",
   shortName: "Atlas",
+  /** Selected Work + feature card primary description. */
+  description:
+    "A modern enterprise design language built from product UI, extracted into a Figma system, and translated into reusable React components.",
   tagline: "From product UI to a scalable system and production code.",
-  statusLabel: "Building in public · Version 1.0",
-  version: "1.0",
+  eyebrow: "FLAGSHIP PROJECT · BUILDING IN PUBLIC",
+  statusLabel: "Building in public · Atlas UI v0.1",
+  libraryStatus: "React library in development",
+  secondaryStatus: "Live component documentation publishing soon",
+  version: "0.1",
   /** Manual editorial date — update when publishing meaningful progress. */
-  lastUpdated: "2026-04-10",
+  lastUpdated: "2026-07-15",
+  lastUpdatedDisplay: "July 2026",
   href: "/atlas",
   metadataLabel: "Product → Design System → Production Code",
   tools: [
@@ -77,77 +152,104 @@ export const atlasProject = {
     "Claude Code",
     "React",
     "TypeScript",
+    "Storybook",
     "Tailwind CSS",
   ] as const,
-  builtWithLine: "Figma × Claude Code",
+  builtWithLine: "Figma × Claude Code × React",
+  cardToolsLine: "Figma · Claude Code · React · TypeScript · Storybook",
+
+  /** Public URLs — null renders an honest inactive CTA. Never use "#". */
+  urls: {
+    figmaProductUrl:
+      "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=9g8qepXC4OytVeab-0",
+    figmaSystemUrl:
+      "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
+    storybookUrl: null as string | null,
+    githubUrl: null as string | null,
+    dashboardUrl: null as string | null,
+  },
+
+  /** Hero + footer CTAs derived from urls. */
+  ctas: [
+    {
+      id: "figmaProductUrl",
+      label: "View Atlas Product",
+      href: "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=9g8qepXC4OytVeab-0",
+      external: true,
+      pendingLabel: "Publishing soon",
+    },
+    {
+      id: "figmaSystemUrl",
+      label: "Explore Figma UI System",
+      href: "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
+      external: true,
+      pendingLabel: "Publishing soon",
+    },
+    {
+      id: "storybookUrl",
+      label: "View React Components",
+      href: null,
+      external: true,
+      pendingLabel: "Publishing soon",
+    },
+    {
+      id: "githubUrl",
+      label: "View Repository",
+      href: null,
+      external: true,
+      pendingLabel: "Publishing soon",
+    },
+  ] satisfies AtlasCta[],
+
   screens: [
     {
       id: "dashboard",
       label: "Dashboard",
-      thumbnailSrc: "/images/atlas/thumb/dashboard.jpg",
-      fullSrc: "/images/atlas/full/dashboard.png",
-      width: 2880,
-      height: 2208,
-      thumbWidth: 1280,
-      thumbHeight: 981,
       alt: "Atlas Intelligence dashboard showing workflow metrics, activity overview, recent workflows, and quick actions.",
+      themes: { light: lightAssets("dashboard") },
     },
     {
       id: "review-queue",
       label: "Review Queue",
-      thumbnailSrc: "/images/atlas/thumb/review-queue.jpg",
-      fullSrc: "/images/atlas/full/review-queue.png",
-      width: 2880,
-      height: 2208,
-      thumbWidth: 1280,
-      thumbHeight: 981,
       alt: "Atlas Intelligence Review Queue table listing documents with review status, confidence scores, assignees, and upload times.",
+      themes: { light: lightAssets("review-queue") },
     },
     {
       id: "document-review",
       label: "Document Review",
-      thumbnailSrc: "/images/atlas/thumb/document-review.jpg",
-      fullSrc: "/images/atlas/full/document-review.png",
-      width: 2880,
-      height: 2208,
-      thumbWidth: 1280,
-      thumbHeight: 981,
       alt: "Atlas Intelligence Document Review workspace with invoice preview, extracted fields with confidence, and an AI assistant panel.",
+      themes: {
+        light: lightAssets("document-review"),
+        dark: {
+          thumbnailSrc: "/images/atlas/product/dark/thumb/document-review.jpg",
+          fullSrc: "/images/atlas/product/dark/full/document-review.png",
+          width: 2880,
+          height: 2208,
+          thumbWidth: 1280,
+          thumbHeight: 981,
+        },
+      },
     },
     {
       id: "analytics",
       label: "Analytics",
-      thumbnailSrc: "/images/atlas/thumb/analytics.jpg",
-      fullSrc: "/images/atlas/full/analytics.png",
-      width: 2880,
-      height: 2522,
-      thumbWidth: 1280,
-      thumbHeight: 1121,
       alt: "Atlas Intelligence Analytics dashboard with KPI cards, processing trend chart, document-type distribution, and recent activity.",
+      themes: { light: lightAssets("analytics", LIGHT_ANALYTICS) },
     },
     {
       id: "workflow-builder",
       label: "Workflow Builder",
-      thumbnailSrc: "/images/atlas/thumb/workflow-builder.jpg",
-      fullSrc: "/images/atlas/full/workflow-builder.png",
-      width: 2880,
-      height: 2208,
-      thumbWidth: 1280,
-      thumbHeight: 981,
       alt: "Atlas Intelligence Workflows board with Intake, Processing, Review, and Output columns of workflow cards.",
+      themes: { light: lightAssets("workflow-builder") },
     },
     {
       id: "settings",
       label: "Settings",
-      thumbnailSrc: "/images/atlas/thumb/settings.jpg",
-      fullSrc: "/images/atlas/full/settings.png",
-      width: 2880,
-      height: 2208,
-      thumbWidth: 1280,
-      thumbHeight: 981,
       alt: "Atlas Intelligence Settings screen with user profile, workspace details, and notification preferences.",
+      themes: { light: lightAssets("settings") },
     },
   ] satisfies AtlasScreen[],
+
   foundations: [
     { id: "foundations", label: "Foundations" },
     { id: "variables", label: "Variables" },
@@ -160,80 +262,195 @@ export const atlasProject = {
     { id: "a11y", label: "Accessibility" },
     { id: "templates", label: "Templates" },
   ] satisfies AtlasFoundation[],
+
+  architecture: [
+    "Atlas Product",
+    "Figma UI System",
+    "Atlas UI React Library",
+    "Storybook Documentation",
+    "Atlas Dashboard",
+  ] as const,
+
+  /** Single active workflow stage id — drives highlight on the process flow. */
+  activeWorkflowStage: "react" as const,
+
   workflow: [
     { id: "product-ui", label: "Product UI" },
     { id: "patterns", label: "Pattern identification" },
     { id: "figma", label: "Figma variables and components" },
     { id: "audit", label: "System audit" },
     { id: "react", label: "React implementation" },
+    { id: "storybook", label: "Storybook documentation" },
+    { id: "dashboard", label: "Atlas Dashboard" },
     { id: "refine", label: "Production refinement" },
   ] satisfies AtlasWorkflowStep[],
+
   componentCategories: [
-    { id: "actions", label: "Actions" },
-    { id: "forms", label: "Forms" },
-    { id: "navigation", label: "Navigation" },
-    { id: "data", label: "Data Display" },
-    { id: "feedback", label: "Feedback" },
-    { id: "overlays", label: "Overlays" },
-    { id: "ai", label: "AI Components" },
+    { id: "foundations", label: "Foundations", state: "Complete" },
+    { id: "actions", label: "Actions", state: "Complete" },
+    { id: "forms", label: "Forms", state: "In progress" },
+    { id: "navigation", label: "Navigation", state: "In progress" },
+    { id: "data", label: "Data Display", state: "In progress" },
+    { id: "feedback", label: "Feedback", state: "In progress" },
+    { id: "overlays", label: "Overlays", state: "In progress" },
+    { id: "ai", label: "AI Components", state: "Planned" },
   ] satisfies AtlasComponentCategory[],
+
+  reactProgress: {
+    completed: [
+      { label: "React and TypeScript architecture" },
+      { label: "Semantic design tokens" },
+      { label: "Light and Dark themes" },
+      { label: "Storybook documentation" },
+      { label: "Button" },
+      { label: "Icon Button" },
+      { label: "Badge" },
+      { label: "Avatar" },
+      { label: "Tooltip" },
+      { label: "KPI Card" },
+    ],
+    inProgress: [
+      { label: "Forms" },
+      { label: "Navigation" },
+      { label: "Data Table" },
+      { label: "Feedback" },
+      { label: "Overlays" },
+      { label: "AI components" },
+    ],
+    next: [
+      { label: "Review Queue live prototype" },
+      { label: "Complete Atlas Dashboard" },
+      { label: "Public Storybook deployment" },
+      { label: "GitHub repository" },
+    ],
+  } satisfies AtlasProgressGroups,
+
+  /**
+   * Storybook screenshots — only entries with real imageSrc render.
+   * Add shots here as assets land under /public/images/atlas/storybook/.
+   */
+  storybookShots: [] as AtlasStorybookShot[],
+
   caseBeats: [
-    { id: "challenge", label: "Challenge" },
-    { id: "direction", label: "Direction" },
-    { id: "product", label: "Product creation" },
-    { id: "patterns", label: "Pattern extraction" },
-    { id: "system", label: "System construction" },
-    { id: "workflow", label: "Figma and Claude Code workflow" },
-    { id: "audit", label: "Quality audit" },
-    { id: "code", label: "Design-to-code implementation" },
-    { id: "learned", label: "What I learned" },
-  ] satisfies AtlasCaseBeat[],
-  statuses: [
-    { label: "Enterprise product UI", state: "Complete" },
-    { label: "Design system foundation", state: "Complete" },
-    { label: "Component library", state: "In review" },
-    { label: "Accessibility and layout audit", state: "In progress" },
-    { label: "React implementation", state: "Next" },
-    { label: "Interactive playground", state: "Planned" },
-    { label: "Portfolio case study", state: "In progress" },
-  ] satisfies AtlasStatusItem[],
-  updates: [
     {
-      version: "Version 1.0",
-      items: [
-        "Product screens completed",
-        "Design language extracted",
-        "Figma component system created",
-        "QA audit underway",
-      ],
+      id: "challenge",
+      label: "Challenge",
+      state: "Complete",
+      body: "Enterprise AI products need a durable design language — not one-off screens. Atlas began as a complete product so the system could be extracted from real decisions, not invented in isolation.",
     },
-  ] satisfies AtlasUpdate[],
-  links: [
+    {
+      id: "direction",
+      label: "Product direction",
+      state: "Complete",
+      body: "Atlas Intelligence is framed as an enterprise AI workspace: review queues, document review, analytics, workflow building, and settings — dense surfaces that demand clarity under operational pressure.",
+    },
     {
       id: "product",
-      label: "View Atlas Product",
-      href: "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=9g8qepXC4OytVeab-0",
-      external: true,
+      label: "Product UI",
+      state: "Complete",
+      body: "Six core product screens were designed end-to-end — establishing density, hierarchy, and interaction patterns before any component library work began.",
+    },
+    {
+      id: "patterns",
+      label: "Pattern extraction",
+      state: "Complete",
+      body: "Repeated product decisions — tables, KPI cards, status pills, AI suggestions, sidebars — were inventoried and named so the Figma system could stay faithful to shipped UI.",
     },
     {
       id: "system",
-      label: "Explore Atlas UI System",
-      href: "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
-      external: true,
+      label: "Figma system construction",
+      state: "Complete",
+      body: "Variables, foundations, and components were built in Figma as the visual source of truth for Atlas products and the React library that follows.",
     },
     {
-      id: "github",
-      label: "View GitHub Repository",
-      href: null,
-      external: true,
+      id: "theming",
+      label: "Light and Dark theming",
+      state: "Complete",
+      body: "Semantic tokens power both themes across product mockups and the Figma system, so Light and Dark stay aligned without duplicated component trees.",
     },
     {
-      id: "playground",
-      label: "Open Component Playground",
-      href: null,
-      external: false,
+      id: "audit",
+      label: "System audit",
+      state: "Complete",
+      body: "A structured handoff audit checked accessibility, layout consistency, missing variants, and React readiness before implementation started.",
     },
-  ] satisfies AtlasExternalLink[],
+    {
+      id: "react",
+      label: "React architecture",
+      state: "Complete",
+      body: "Atlas UI is a React and TypeScript library with semantic tokens, theme switching, Storybook, and tests — a disciplined translation of the approved Figma system.",
+    },
+    {
+      id: "storybook",
+      label: "Storybook documentation",
+      state: "Complete",
+      body: "Storybook documents foundations and the first shipped components with controls, themes, and accessibility checks. Public deployment is next.",
+    },
+    {
+      id: "components",
+      label: "Component implementation",
+      state: "In progress",
+    },
+    {
+      id: "dashboard",
+      label: "Atlas Dashboard",
+      state: "Next",
+    },
+    {
+      id: "learned",
+      label: "What I learned",
+      state: "In progress",
+    },
+  ] satisfies AtlasCaseBeat[],
+
+  statuses: [
+    { label: "Enterprise product UI", state: "Complete" },
+    { label: "Light and Dark product themes", state: "Complete" },
+    { label: "Figma UI System", state: "Complete" },
+    { label: "System audit and documentation", state: "Complete" },
+    { label: "React foundations and tokens", state: "Complete" },
+    { label: "Storybook documentation", state: "Complete" },
+    { label: "Core React components", state: "Complete" },
+    { label: "Full React component library", state: "In progress" },
+    { label: "Interactive Dashboard", state: "Next" },
+    { label: "Public deployment", state: "Planned" },
+    { label: "Portfolio case study", state: "In progress" },
+  ] satisfies AtlasStatusItem[],
+
+  updates: [
+    {
+      version: "Atlas UI v0.1",
+      items: [
+        "Product UI and Light/Dark themes complete",
+        "Figma UI System audited and documented",
+        "React tokens, themes, and Storybook foundation shipped",
+        "Core components: Button, Icon Button, Badge, Avatar, Tooltip, KPI Card",
+        "Full component library and public Storybook in progress",
+      ],
+    },
+  ] satisfies AtlasUpdate[],
 } as const;
 
 export type AtlasProject = typeof atlasProject;
+
+/** Themes that have assets for every product screen. */
+export function getCompleteGalleryThemes(
+  screens: readonly AtlasScreen[] = atlasProject.screens,
+): AtlasThemeId[] {
+  const themes: AtlasThemeId[] = ["light", "dark"];
+  return themes.filter((theme) =>
+    screens.every((screen) => Boolean(screen.themes[theme])),
+  );
+}
+
+export function resolveScreenAssets(
+  screen: AtlasScreen,
+  theme: AtlasThemeId,
+): AtlasScreenAssets | null {
+  return screen.themes[theme] ?? screen.themes.light ?? null;
+}
+
+/** Backward-compatible link list for shared CTA rendering. */
+export function getAtlasLinks(): AtlasCta[] {
+  return [...atlasProject.ctas];
+}

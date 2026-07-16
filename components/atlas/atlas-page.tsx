@@ -1,15 +1,20 @@
 import Link from "next/link";
+import { AtlasArchitecture } from "@/components/atlas/atlas-architecture";
+import { AtlasComponentMap } from "@/components/atlas/atlas-component-map";
 import { AtlasExternalLinks } from "@/components/atlas/atlas-external-links";
 import { AtlasLogo } from "@/components/atlas/atlas-logo";
-import { AtlasProcessFlow, AtlasProcessFlowDesktop } from "@/components/atlas/atlas-process-flow";
+import { AtlasProcessFlow } from "@/components/atlas/atlas-process-flow";
+import { AtlasReactProgress } from "@/components/atlas/atlas-react-progress";
 import { AtlasScreenGallery } from "@/components/atlas/atlas-screen-gallery";
 import { AtlasSectionHeader } from "@/components/atlas/atlas-section-header";
 import { AtlasStatus } from "@/components/atlas/atlas-status";
+import { AtlasStatusBadge } from "@/components/atlas/atlas-status-badge";
+import { AtlasStorybookGallery } from "@/components/atlas/atlas-storybook-gallery";
 import { AtlasUpdateList } from "@/components/atlas/atlas-update-list";
 import { FadeRise } from "@/components/motion/fade-rise";
 import { MaskUp } from "@/components/motion/mask-up";
 import { Section } from "@/components/primitives/section";
-import { atlasProject } from "@/content/atlas/project";
+import { atlasProject, getAtlasLinks } from "@/content/atlas/project";
 
 /** Atlas body sections share one editorial rhythm (not landing cinematic padding). */
 const ATLAS_SECTION = {
@@ -19,6 +24,11 @@ const ATLAS_SECTION = {
 };
 
 export function AtlasPage() {
+  const links = getAtlasLinks();
+  const storybookVisible = atlasProject.storybookShots.some((s) =>
+    Boolean(s.imageSrc),
+  );
+
   return (
     <article>
       <header
@@ -66,11 +76,7 @@ export function AtlasPage() {
             </FadeRise>
 
             <FadeRise delay={0.2}>
-              <AtlasExternalLinks
-                links={atlasProject.links.filter(
-                  (l) => l.id === "product" || l.id === "system",
-                )}
-              />
+              <AtlasExternalLinks links={links} />
             </FadeRise>
           </div>
         </div>
@@ -87,7 +93,7 @@ export function AtlasPage() {
               One shared source of truth.
             </>
           }
-          description="Atlas explores how a designer can use Figma as the visual source of truth and Claude Code as an implementation partner to move from product interface to reusable system and production code."
+          description="Atlas explores how a designer can move from product interface to Figma system to reusable React components — with Claude Code as an implementation partner, not a replacement for design judgment."
         />
       </Section>
 
@@ -103,23 +109,28 @@ export function AtlasPage() {
 
       <Section {...ATLAS_SECTION} number="03" eyebrow="DESIGN SYSTEM">
         <AtlasSectionHeader
-          title="Extracted from real product decisions."
-          description="Categories mapped from Atlas Intelligence — ready for Figma documentation and future React translation."
+          title="From visual system to working components."
+          description="Atlas UI is now being translated into a reusable React and TypeScript component library. The same semantic tokens power Light and Dark themes across Figma, Storybook, and future Atlas products."
         />
-        <ul
-          className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 md:mt-12 md:grid-cols-5"
-          role="list"
-        >
-          {atlasProject.foundations.map((item) => (
-            <li
-              key={item.id}
-              className="rounded-sm border px-4 py-4 md:py-5"
-              style={{ borderColor: "var(--hairline)" }}
-            >
-              <span className="t-mono text-ink-mute tabular">{item.label}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="mt-10 grid grid-cols-1 gap-10 lg:mt-12 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-5">
+            <AtlasArchitecture steps={atlasProject.architecture} />
+          </div>
+          <ul
+            className="grid grid-cols-2 gap-3 content-start sm:grid-cols-3 lg:col-span-7"
+            role="list"
+          >
+            {atlasProject.foundations.map((item) => (
+              <li
+                key={item.id}
+                className="rounded-sm border px-4 py-4 md:py-5"
+                style={{ borderColor: "var(--hairline)" }}
+              >
+                <span className="t-mono text-ink-mute tabular">{item.label}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       <Section {...ATLAS_SECTION} number="04" eyebrow="WORKFLOW">
@@ -127,85 +138,97 @@ export function AtlasPage() {
           title="Product → Design System → Code"
           description="A design-to-code loop where Figma remains the visual source of truth and implementation is a disciplined partnership with Claude Code."
         />
-        <div className="mt-10 space-y-0 md:mt-12">
-          <AtlasProcessFlow steps={atlasProject.workflow} />
-          <AtlasProcessFlowDesktop steps={atlasProject.workflow} />
+        <div className="mt-10 md:mt-12">
+          <AtlasProcessFlow
+            steps={atlasProject.workflow}
+            activeId={atlasProject.activeWorkflowStage}
+          />
         </div>
       </Section>
 
       <Section {...ATLAS_SECTION} number="05" eyebrow="COMPONENTS">
         <AtlasSectionHeader
-          title="A future-ready component map."
-          description="Structure for screenshots and interactive examples as the React library lands. Nothing here is finished decoration."
+          title="An honest implementation map."
+          description="Categories shared with Figma and Storybook. Status reflects the React library — not every component is finished."
         />
-        <ul
-          className="mt-10 grid grid-cols-1 border-t border-[var(--hairline)] sm:grid-cols-2 lg:mt-12 lg:grid-cols-3"
-          role="list"
-          style={{ borderColor: "var(--hairline)" }}
-        >
-          {atlasProject.componentCategories.map((cat) => (
-            <li
-              key={cat.id}
-              className="flex flex-col gap-2 border-b border-[var(--hairline)] px-0 py-5 sm:border-r sm:px-5 sm:odd:pl-0 lg:[&:nth-child(3n)]:border-r-0 lg:[&:nth-child(3n+1)]:pl-0"
-              style={{ borderColor: "var(--hairline)" }}
-            >
-              <span className="t-mono text-ink tabular">
-                {cat.label.toUpperCase()}
-              </span>
-              <span className="t-mono text-[0.6875rem] text-ink-faint tabular">
-                Screenshots forthcoming
-              </span>
-            </li>
-          ))}
-        </ul>
-      </Section>
-
-      <Section {...ATLAS_SECTION} number="06" eyebrow="PLAYGROUND">
-        <div
-          className="rounded-sm border bg-canvas-raised px-6 py-10 md:px-10 md:py-12"
-          style={{ borderColor: "var(--hairline)" }}
-        >
-          <p className="t-mono text-ink-quiet tabular">COMING NEXT</p>
-          <h2 className="mt-5 max-w-[22ch] t-display-m font-display text-ink">
-            Interactive component playground coming next.
-          </h2>
-          <p className="mt-5 max-w-prose t-body-l text-ink-mute">
-            The next phase translates the approved Figma system into reusable
-            React and TypeScript components.
-          </p>
+        <div className="mt-10 md:mt-12">
+          <AtlasComponentMap categories={atlasProject.componentCategories} />
         </div>
       </Section>
 
-      <Section {...ATLAS_SECTION} number="07" eyebrow="CASE STUDY">
+      <Section {...ATLAS_SECTION} number="06" eyebrow="ATLAS UI">
+        <AtlasSectionHeader
+          title="The system is becoming code."
+          description="Atlas UI is the production React implementation of the Atlas Design System. Tokens, themes, components, accessibility behavior, tests, and Storybook documentation are being developed from the approved Figma system."
+        />
+        <div className="mt-10 md:mt-12">
+          <AtlasReactProgress progress={atlasProject.reactProgress} />
+        </div>
+      </Section>
+
+      {storybookVisible ? (
+        <Section {...ATLAS_SECTION} number="07" eyebrow="STORYBOOK">
+          <AtlasSectionHeader
+            title="A live system, not a component inventory."
+            description="Screenshots from the Storybook documentation as the public deployment approaches."
+          />
+          <div className="mt-10 md:mt-12">
+            <AtlasStorybookGallery shots={atlasProject.storybookShots} />
+          </div>
+        </Section>
+      ) : null}
+
+      <Section
+        {...ATLAS_SECTION}
+        number={storybookVisible ? "08" : "07"}
+        eyebrow="CASE STUDY"
+      >
         <AtlasSectionHeader
           title="The narrative in progress."
-          description="A modular outline that stays readable while sections are still being written."
+          description="A modular outline. Completed sections carry real content; unfinished ones stay marked honestly."
         />
         <ol className="mt-10 space-y-0 md:mt-12" role="list">
           {atlasProject.caseBeats.map((beat, i) => (
             <li
               key={beat.id}
-              className="hairline-t grid grid-cols-12 gap-4 py-4 md:py-5"
+              className="hairline-t grid grid-cols-12 gap-4 py-5 md:py-6"
             >
               <span className="col-span-2 t-mono text-ink-quiet tabular md:col-span-1">
                 {String(i + 1).padStart(2, "0")}
               </span>
-              <span className="col-span-10 t-subhead font-display text-ink md:col-span-11">
-                {beat.label}
-              </span>
+              <div className="col-span-10 md:col-span-11">
+                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-2">
+                  <span className="t-subhead font-display text-ink">
+                    {beat.label}
+                  </span>
+                  {beat.state !== "Complete" ? (
+                    <AtlasStatusBadge state={beat.state} />
+                  ) : null}
+                </div>
+                {beat.body ? (
+                  <p className="mt-3 max-w-prose t-body text-ink-mute">
+                    {beat.body}
+                  </p>
+                ) : null}
+              </div>
             </li>
           ))}
         </ol>
       </Section>
 
-      <Section {...ATLAS_SECTION} number="08" eyebrow="BUILDING IN PUBLIC" id="status">
+      <Section
+        {...ATLAS_SECTION}
+        number={storybookVisible ? "09" : "08"}
+        eyebrow="BUILDING IN PUBLIC"
+        id="status"
+      >
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
             <AtlasSectionHeader title="Where Atlas stands today." />
             <div className="mt-8 md:mt-10">
               <AtlasStatus
                 items={atlasProject.statuses}
-                lastUpdated={atlasProject.lastUpdated}
+                lastUpdatedDisplay={atlasProject.lastUpdatedDisplay}
                 statusLabel={atlasProject.statusLabel}
               />
             </div>
@@ -219,13 +242,17 @@ export function AtlasPage() {
         </div>
       </Section>
 
-      <Section {...ATLAS_SECTION} number="09" eyebrow="NEXT">
+      <Section
+        {...ATLAS_SECTION}
+        number={storybookVisible ? "10" : "09"}
+        eyebrow="NEXT"
+      >
         <AtlasSectionHeader
           title="Continue with the source files."
-          description="Open the product and system Figma files. Repository and playground links appear when those surfaces ship."
+          description="Open the product and system Figma files. Repository and Storybook links appear when those surfaces ship."
         />
         <div className="mt-10 md:mt-12">
-          <AtlasExternalLinks links={atlasProject.links} />
+          <AtlasExternalLinks links={links} />
         </div>
         <p className="mt-12 md:mt-14">
           <Link
