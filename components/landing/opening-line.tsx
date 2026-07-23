@@ -61,7 +61,7 @@ function HeroHeadline() {
   return (
     <h1
       id="opening-line"
-      className="max-w-[18ch] t-display-xl font-display text-ink max-md:!leading-[1.08] sm:max-w-[22ch] lg:max-w-[18ch]"
+      className="max-w-[18ch] t-display-xl font-display text-ink max-md:!leading-[1.08] sm:max-w-[22ch] lg:max-w-[24ch]"
     >
       I design products, systems,
       <br className="hidden sm:block" />
@@ -83,13 +83,15 @@ function HeroIntro() {
 /**
  * Movement 01 — Opening Line.
  *
- * Editorial hero: large serif headline, supporting intro, flagship Atlas card
- * balancing the right column on desktop (sticky within the hero only).
+ * Editorial hero: large serif headline, supporting intro, and a full-width
+ * flagship Atlas feature card that anchors the movement. The card lives
+ * inside the same section so it inherits the opening rhythm without
+ * introducing a new movement number.
  */
 export function OpeningLine() {
   return (
     <section
-      className="relative px-[var(--gutter)] pt-28 pb-16 md:pt-36 md:pb-24 lg:min-h-[min(100svh,56rem)] lg:pb-28"
+      className="relative px-[var(--gutter)] pt-28 pb-16 md:pt-36 md:pb-24 lg:pb-28"
       aria-labelledby="opening-line"
       style={{ maxWidth: "var(--max-outer)", marginInline: "auto" }}
     >
@@ -97,16 +99,14 @@ export function OpeningLine() {
         PORTFOLIO&nbsp;·&nbsp;2026&nbsp;·&nbsp;V1
       </Eyebrow>
 
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start lg:gap-10 xl:gap-16">
-        <div className="lg:col-span-7 xl:col-span-8">
-          <HeroHeadline />
-          <HeroIntro />
-          <EditorialOpeningNavActions />
-        </div>
+      <div className="max-w-[64rem]">
+        <HeroHeadline />
+        <HeroIntro />
+        <EditorialOpeningNavActions />
+      </div>
 
-        <div className="lg:col-span-5 xl:col-span-4">
-          <AtlasFeatureCard sticky className="max-lg:max-w-lg" />
-        </div>
+      <div className="mt-20 md:mt-28 lg:mt-32">
+        <AtlasFeatureCard />
       </div>
     </section>
   );

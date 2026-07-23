@@ -24,15 +24,18 @@ export function AtlasExternalLinks({
     >
       {links.map((link) => {
         if (!link.href) {
+          // Hide entirely if there's no explicit inactive copy — avoids
+          // stale "Publishing soon" language on live surfaces.
+          if (!link.pendingLabel) return null;
           return (
             <li key={link.id}>
               <span
                 className="t-mono text-ink-faint tabular"
-                aria-label={`${link.label}: ${link.pendingLabel ?? "Publishing soon"}`}
+                aria-label={`${link.label}: ${link.pendingLabel}`}
               >
                 {link.label}
                 &nbsp;·&nbsp;
-                {link.pendingLabel ?? "Publishing soon"}
+                {link.pendingLabel}
               </span>
             </li>
           );

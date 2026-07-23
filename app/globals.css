@@ -231,6 +231,34 @@ button {
 }
 
 /*
+ * Atlas feature card — theme-aware product preview.
+ * Both light and dark screenshots are always rendered so the swap is CSS-only
+ * (no hydration flash, no layout shift). The site's data-theme attribute on
+ * <html> decides which one is visible.
+ */
+.atlas-feature-preview-light { display: none; }
+.atlas-feature-preview-dark { display: block; }
+[data-theme="light"] .atlas-feature-preview-light { display: block; }
+[data-theme="light"] .atlas-feature-preview-dark { display: none; }
+
+/* Primary Live Demo CTA — subtle arrow lift on hover, respects reduced-motion. */
+.atlas-feature-primary-cta:hover .atlas-feature-primary-cta-arrow {
+  transform: translate(2px, -2px);
+}
+.atlas-feature-primary-cta-arrow {
+  transition: transform 300ms var(--ease-entrance);
+  display: inline-block;
+}
+@media (prefers-reduced-motion: reduce) {
+  .atlas-feature-primary-cta-arrow {
+    transition: none;
+  }
+  .atlas-feature-primary-cta:hover .atlas-feature-primary-cta-arrow {
+    transform: none;
+  }
+}
+
+/*
  * Atlas theme segmented control —
  * Active label must stay visible over the ink pill. Global `button { color: inherit }`
  * would otherwise leave selected text as ink-on-ink (invisible).

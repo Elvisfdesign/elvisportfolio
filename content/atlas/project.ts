@@ -91,6 +91,7 @@ export type AtlasUrlKey =
   | "figmaSystemUrl"
   | "storybookUrl"
   | "githubUrl"
+  | "prototypeUrl"
   | "dashboardUrl";
 
 export type AtlasCta = {
@@ -98,10 +99,25 @@ export type AtlasCta = {
   label: string;
   href: string | null;
   external?: boolean;
-  /** Shown when href is null. */
+  /** Shown when href is null. Required for any inactive CTA. */
   pendingLabel?: string;
-  /** Optional status note shown alongside an active link (e.g. "Work in progress"). */
+  /** Optional status note shown alongside an active link (e.g. "Active development"). */
   statusLabel?: string;
+};
+
+export type AtlasRole = { id: string; label: string };
+
+/** Named product journey step used inside the prototype section. */
+export type AtlasProductFlowStep = { id: string; label: string };
+
+/** Concise capability inside the prototype section. */
+export type AtlasPrototypeCapability = { id: string; label: string };
+
+/** Workspace package/app card. */
+export type AtlasWorkspaceEntry = {
+  path: string;
+  role: "package" | "app";
+  description: string;
 };
 
 /**
@@ -157,68 +173,100 @@ export const atlasProject = {
   shortName: "Atlas",
   /** Selected Work + feature card primary description. */
   description:
-    "A modern enterprise design language built from product UI, extracted into a Figma system, and translated into reusable React components.",
-  tagline: "From product UI to a scalable system and production code.",
-  eyebrow: "FLAGSHIP PROJECT · BUILDING IN PUBLIC",
-  statusLabel: "Building in public · Atlas UI v0.1",
-  libraryStatus: "React library in development",
-  secondaryStatus: "Live component documentation publishing soon",
-  version: "0.1",
+    "An enterprise product ecosystem spanning UX/UI, design systems, React components, Storybook, and a live interactive product.",
+  /** Longer /atlas thesis copy. */
+  thesis:
+    "Atlas is an enterprise product ecosystem designed from product UI to reusable system to a live interactive product. Visitors can explore the working application directly — a product, design system, component library, and AI-assisted implementation workflow evolving together.",
+  tagline: "From product concept to live interactive product.",
+  eyebrow: "FLAGSHIP PROJECT · LIVE INTERACTIVE PRODUCT",
+  statusLabel: "Active development",
+  statusDetail: "Live interactive product",
+  /** Compact card status lines (feature card + selected-work meta). */
+  libraryStatus: "Live",
+  secondaryStatus: "Live interactive product · React library on Storybook",
+  /** Subtle caption shown below the Live Demo CTA. */
+  liveDemoCaption:
+    "This application is actively evolving with new product improvements, workflows, and design system enhancements.",
+  version: "0.3",
   /** Manual editorial date — update when publishing meaningful progress. */
-  lastUpdated: "2026-07-15",
+  lastUpdated: "2026-07-22",
   lastUpdatedDisplay: "July 2026",
   href: "/atlas",
-  metadataLabel: "Product → Design System → Production Code",
+  metadataLabel: "Product UI → Design System → React → Live Product",
+  activeSummary:
+    "Atlas Intelligence is now publicly available as an interactive enterprise product demonstration. The experience continues to evolve through ongoing refinement, additional workflows, accessibility improvements, and design system enhancements.",
+
+  roles: [
+    { id: "product", label: "Product Designer" },
+    { id: "systems", label: "Design Systems" },
+    { id: "engineer", label: "Design Engineer" },
+  ] satisfies AtlasRole[],
+
+  focus: [
+    "Enterprise UX",
+    "Design Systems",
+    "AI-assisted workflows",
+    "Front-end implementation",
+  ] as const,
+
   tools: [
     "Figma",
-    "Claude Code",
     "React",
     "TypeScript",
     "Storybook",
-    "Tailwind CSS",
+    "Claude Code",
+    "Cursor",
   ] as const,
-  builtWithLine: "Figma × Claude Code × React",
-  cardToolsLine: "Figma · Claude Code · React · TypeScript · Storybook",
+
+  builtWithLine: "Figma × React × Storybook × Claude Code",
+  cardToolsLine: "Product · Systems · React · Storybook · AI-assisted",
 
   /** Public URLs — null renders an honest inactive CTA. Never use "#". */
   urls: {
     figmaProductUrl:
-      "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=9g8qepXC4OytVeab-0",
+      "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=vKN3UwNoDvZkF8v9-0",
     figmaSystemUrl:
       "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
-    storybookUrl: null as string | null,
-    githubUrl: null as string | null,
+    storybookUrl: "https://atlas-ui-alpha.vercel.app/" as string | null,
+    githubUrl: "https://github.com/Elvisfdesign/atlas-ui" as string | null,
+    prototypeUrl:
+      "https://atlas-ui-atlas-intelligence.vercel.app/" as string | null,
     dashboardUrl: null as string | null,
   },
 
-  /** Hero + footer CTAs derived from urls. */
+  /**
+   * Hero + footer CTAs derived from urls.
+   * Order matters: Live Demo is the primary Atlas action and appears first.
+   */
   ctas: [
     {
-      id: "figmaProductUrl",
-      label: "View Atlas Product",
-      href: "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=9g8qepXC4OytVeab-0",
+      id: "prototypeUrl",
+      label: "Launch Live Demo",
+      href: "https://atlas-ui-atlas-intelligence.vercel.app/",
       external: true,
-      pendingLabel: "Publishing soon",
-    },
-    {
-      id: "figmaSystemUrl",
-      label: "Explore Atlas UI System",
-      href: "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
-      external: true,
-      pendingLabel: "Publishing soon",
     },
     {
       id: "storybookUrl",
-      label: "View React Component Library",
+      label: "View Storybook",
       href: "https://atlas-ui-alpha.vercel.app/",
       external: true,
-      pendingLabel: "Publishing soon",
-      statusLabel: "Work in progress",
     },
     {
       id: "githubUrl",
       label: "View Repository",
       href: "https://github.com/Elvisfdesign/atlas-ui",
+      external: true,
+    },
+    {
+      id: "figmaProductUrl",
+      label: "Product UI (Figma)",
+      href: "https://www.figma.com/design/dj1paTl6gvC58KQMUuzdW3/ATLAS?node-id=11-77&t=vKN3UwNoDvZkF8v9-0",
+      external: true,
+    },
+    {
+      id: "figmaSystemUrl",
+      label: "Design System (Figma)",
+      href: "https://www.figma.com/design/4WOjv0BlxVPtDJZk07Lnts/Atlas-UI-System?node-id=0-1&p=f&t=gPV9rHUrNtKJ1jZH-0",
       external: true,
     },
   ] satisfies AtlasCta[],
@@ -293,37 +341,54 @@ export const atlasProject = {
     { id: "templates", label: "Templates" },
   ] satisfies AtlasFoundation[],
 
+  /** High-level system architecture — visualized as a vertical flow. */
   architecture: [
-    "Atlas Product",
-    "Figma UI System",
-    "Atlas UI React Library",
+    "Figma Product",
+    "Atlas UI System",
+    "React Component Library",
     "Storybook Documentation",
-    "Atlas Dashboard",
+    "Atlas Intelligence Prototype",
   ] as const,
 
+  /** Monorepo split shown under the architecture flow. */
+  workspace: [
+    {
+      path: "packages/atlas-ui",
+      role: "package",
+      description:
+        "Tokens, themes, reusable components, tests, and Storybook. App-agnostic and consumable by any product.",
+    },
+    {
+      path: "apps/atlas-intelligence",
+      role: "app",
+      description:
+        "Routing, pages, product state, mock data, and workflows. Consumes the Atlas UI library.",
+    },
+  ] satisfies AtlasWorkspaceEntry[],
+
   /** Single active workflow stage id — drives highlight on the process flow. */
-  activeWorkflowStage: "react" as const,
+  activeWorkflowStage: "refine" as const,
 
   workflow: [
     { id: "product-ui", label: "Product UI" },
     { id: "patterns", label: "Pattern identification" },
     { id: "figma", label: "Figma variables and components" },
     { id: "audit", label: "System audit" },
-    { id: "react", label: "React implementation" },
+    { id: "react", label: "React component library" },
     { id: "storybook", label: "Storybook documentation" },
-    { id: "dashboard", label: "Atlas Dashboard" },
-    { id: "refine", label: "Production refinement" },
+    { id: "prototype", label: "Atlas Intelligence live" },
+    { id: "refine", label: "Ongoing refinement" },
   ] satisfies AtlasWorkflowStep[],
 
   componentCategories: [
     { id: "foundations", label: "Foundations", state: "Complete" },
     { id: "actions", label: "Actions", state: "Complete" },
-    { id: "forms", label: "Forms", state: "In progress" },
-    { id: "navigation", label: "Navigation", state: "In progress" },
-    { id: "data", label: "Data Display", state: "In progress" },
-    { id: "feedback", label: "Feedback", state: "In progress" },
-    { id: "overlays", label: "Overlays", state: "In progress" },
-    { id: "ai", label: "AI Components", state: "Planned" },
+    { id: "forms", label: "Forms", state: "Complete" },
+    { id: "navigation", label: "Navigation", state: "Complete" },
+    { id: "data", label: "Data Display", state: "Complete" },
+    { id: "feedback", label: "Feedback", state: "Complete" },
+    { id: "overlays", label: "Overlays", state: "Complete" },
+    { id: "ai", label: "AI Components", state: "In progress" },
   ] satisfies AtlasComponentCategory[],
 
   reactProgress: {
@@ -332,26 +397,18 @@ export const atlasProject = {
       { label: "Semantic design tokens" },
       { label: "Light and Dark themes" },
       { label: "Storybook documentation" },
-      { label: "Button" },
-      { label: "Icon Button" },
-      { label: "Badge" },
-      { label: "Avatar" },
-      { label: "Tooltip" },
-      { label: "KPI Card" },
+      { label: "Foundations, Actions, Forms" },
+      { label: "Navigation, Data Display, Feedback, Overlays" },
     ],
     inProgress: [
-      { label: "Forms" },
-      { label: "Navigation" },
-      { label: "Data Table" },
-      { label: "Feedback" },
-      { label: "Overlays" },
-      { label: "AI components" },
+      { label: "AI Assistant components" },
+      { label: "Performance and accessibility audit" },
+      { label: "Prototype polish and QA" },
     ],
     next: [
-      { label: "Review Queue live prototype" },
-      { label: "Complete Atlas Dashboard" },
-      { label: "Public Storybook deployment" },
-      { label: "GitHub repository" },
+      { label: "Public Atlas Intelligence deployment" },
+      { label: "Advanced workflow creation" },
+      { label: "Open-source package improvements" },
     ],
   } satisfies AtlasProgressGroups,
 
@@ -360,6 +417,32 @@ export const atlasProject = {
    * Add shots here as assets land under /public/images/atlas/storybook/.
    */
   storybookShots: [] as AtlasStorybookShot[],
+
+  /** Feature summary shown inside the Interactive Product Prototype section. */
+  prototypeCapabilities: [
+    { id: "dashboard", label: "Dashboard with operational metrics" },
+    { id: "queue", label: "Review Queue with search, sort, filter, selection, pagination" },
+    { id: "review", label: "Document Review with editable extracted fields" },
+    { id: "ai", label: "AI-assisted review with confidence and evidence" },
+    { id: "approval", label: "Approval flow with persistent state updates" },
+    { id: "analytics", label: "Analytics with trends and distribution" },
+    { id: "workflows", label: "Workflow management" },
+    { id: "settings", label: "Settings and preferences" },
+    { id: "themes", label: "Light and Dark modes" },
+    { id: "responsive", label: "Responsive navigation and mobile layouts" },
+  ] satisfies AtlasPrototypeCapability[],
+
+  /** End-to-end review workflow: dashboard → decision. */
+  productFlow: [
+    { id: "dashboard-start", label: "Dashboard" },
+    { id: "queue", label: "Review Queue" },
+    { id: "review", label: "Document Review" },
+    { id: "edit", label: "Edit extracted data" },
+    { id: "ask", label: "Ask AI" },
+    { id: "approve", label: "Approve document" },
+    { id: "queue-updates", label: "Queue updates" },
+    { id: "metrics", label: "Dashboard metrics update" },
+  ] satisfies AtlasProductFlowStep[],
 
   caseBeats: [
     {
@@ -396,7 +479,7 @@ export const atlasProject = {
       id: "theming",
       label: "Light and Dark theming",
       state: "Complete",
-      body: "Semantic tokens power both themes across product mockups and the Figma system, so Light and Dark stay aligned without duplicated component trees.",
+      body: "Semantic tokens power both themes across product mockups, the Figma system, the React library, and the interactive prototype — so Light and Dark stay aligned without duplicated component trees.",
     },
     {
       id: "audit",
@@ -406,56 +489,81 @@ export const atlasProject = {
     },
     {
       id: "react",
-      label: "React architecture",
+      label: "React component library",
       state: "Complete",
-      body: "Atlas UI is a React and TypeScript library with semantic tokens, theme switching, Storybook, and tests — a disciplined translation of the approved Figma system.",
+      body: "Atlas UI is a React and TypeScript library with semantic tokens, theme switching, Storybook, and tests — a disciplined translation of the approved Figma system, now live on Storybook.",
     },
     {
       id: "storybook",
       label: "Storybook documentation",
       state: "Complete",
-      body: "Storybook documents foundations and the first shipped components with controls, themes, and accessibility checks. Public deployment is next.",
+      body: "Storybook documents foundations and shipped components with controls, themes, and accessibility checks. Public deployment is live at atlas-ui-alpha.vercel.app.",
     },
     {
-      id: "components",
-      label: "Component implementation",
+      id: "prototype",
+      label: "Live interactive product",
+      state: "Complete",
+      body: "Atlas Intelligence is now publicly available. It consumes the React library to demonstrate the design system inside a working enterprise product — dashboard, review queue, document review, analytics, workflows, and settings — all sharing state and available to explore in the live demo.",
+    },
+    {
+      id: "ai-workflow",
+      label: "AI-assisted implementation",
+      state: "Complete",
+      body: "Claude Code and Cursor accelerated implementation, testing, and iteration. Design direction, UX decisions, component reuse, visual review, and design-system governance remained a designer-led practice throughout.",
+    },
+    {
+      id: "refine",
+      label: "Ongoing refinement",
       state: "In progress",
-    },
-    {
-      id: "dashboard",
-      label: "Atlas Dashboard",
-      state: "Next",
-    },
-    {
-      id: "learned",
-      label: "What I learned",
-      state: "In progress",
+      body: "Now that Atlas Intelligence is live, refinement continues in the open — new workflows, accessibility polish, performance work, and design-system enhancements ship as the product evolves.",
     },
   ] satisfies AtlasCaseBeat[],
 
   statuses: [
-    { label: "Enterprise product UI", state: "Complete" },
-    { label: "Light and Dark product themes", state: "Complete" },
-    { label: "Figma UI System", state: "Complete" },
+    { label: "Product UI", state: "Complete" },
+    { label: "Figma design system", state: "Complete" },
+    { label: "Light and Dark themes", state: "Complete" },
     { label: "System audit and documentation", state: "Complete" },
-    { label: "React foundations and tokens", state: "Complete" },
+    { label: "React component library", state: "Complete" },
     { label: "Storybook documentation", state: "Complete" },
-    { label: "Core React components", state: "Complete" },
-    { label: "Full React component library", state: "In progress" },
-    { label: "Interactive Dashboard", state: "Next" },
-    { label: "Public deployment", state: "Planned" },
-    { label: "Portfolio case study", state: "In progress" },
+    { label: "Interactive dashboard", state: "Complete" },
+    { label: "Review Queue", state: "Complete" },
+    { label: "Document Review workflow", state: "Complete" },
+    { label: "Analytics", state: "Complete" },
+    { label: "Workflow management", state: "Complete" },
+    { label: "Settings", state: "Complete" },
+    { label: "Responsive shell", state: "Complete" },
+    { label: "Public live demo", state: "Complete" },
+    { label: "Ongoing product refinement", state: "In progress" },
+    { label: "Performance and accessibility audit", state: "In progress" },
+    { label: "Additional workflows and improvements", state: "In progress" },
   ] satisfies AtlasStatusItem[],
 
   updates: [
     {
-      version: "Atlas UI v0.1",
+      version: "Atlas UI v0.3 · July 2026",
       items: [
-        "Product UI and Light/Dark themes complete",
-        "Figma UI System audited and documented",
+        "Atlas Intelligence live at atlas-ui-atlas-intelligence.vercel.app",
+        "Interactive dashboard, review queue, document review, analytics, workflows, and settings publicly available",
+        "Ongoing refinement: additional workflows, accessibility polish, and design-system enhancements",
+      ],
+    },
+    {
+      version: "Atlas UI v0.2 · July 2026",
+      items: [
+        "React component library live on Storybook",
+        "GitHub repository open sourced",
+        "Light and Dark parity across product and system",
+        "Responsive shell and mobile layouts",
+      ],
+    },
+    {
+      version: "Atlas UI v0.1 · earlier 2026",
+      items: [
+        "Product UI and Figma UI System complete",
+        "System audit and Light/Dark token model",
         "React tokens, themes, and Storybook foundation shipped",
         "Core components: Button, Icon Button, Badge, Avatar, Tooltip, KPI Card",
-        "Full component library and public Storybook in progress",
       ],
     },
   ] satisfies AtlasUpdate[],
