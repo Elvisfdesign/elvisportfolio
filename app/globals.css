@@ -259,6 +259,55 @@ button {
 }
 
 /*
+ * Currently-Building hero card.
+ *
+ * - Icon carries the ASCEND gold accent via the raster asset itself, so no
+ *   token-side color is needed. The wordmark uses `text-ink`, matching the
+ *   rest of the portfolio (theme-aware so it stays legible in both cream
+ *   and dark modes).
+ * - Status + progress list live in the DOM permanently so screen readers
+ *   always hear them; only the visual timing changes on hover / focus-within.
+ * - Touch devices always show the reveal because there is no hover to trigger
+ *   it. `prefers-reduced-motion` disables the transitions entirely.
+ */
+.current-project-reveal {
+  opacity: 0;
+  transform: translateY(6px);
+  transition:
+    opacity 240ms var(--ease-entrance),
+    transform 240ms var(--ease-entrance);
+}
+.current-project-card:hover .current-project-reveal,
+.current-project-card:focus-within .current-project-reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (hover: none) {
+  .current-project-reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.current-project-cta-arrow {
+  transition: transform 240ms var(--ease-entrance);
+}
+.current-project-card:hover .current-project-cta-arrow,
+.current-project-card:focus-within .current-project-cta-arrow {
+  transform: translateX(3px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .current-project-reveal,
+  .current-project-cta-arrow {
+    transition: none;
+  }
+  .current-project-card:hover .current-project-cta-arrow,
+  .current-project-card:focus-within .current-project-cta-arrow {
+    transform: none;
+  }
+}
+
+/*
  * Atlas theme segmented control —
  * Active label must stay visible over the ink pill. Global `button { color: inherit }`
  * would otherwise leave selected text as ink-on-ink (invisible).

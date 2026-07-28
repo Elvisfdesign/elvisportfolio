@@ -3,6 +3,7 @@
 import Link from "next/link";
 import clsx from "clsx";
 import { AtlasFeatureCard } from "@/components/atlas/atlas-feature-card";
+import { CurrentProjectCard } from "@/components/landing/current-project-card";
 import { Eyebrow } from "@/components/primitives/eyebrow";
 
 /** Shared layout overrides `link-underline`’s `inline-block` for aligned touch targets. */
@@ -83,10 +84,11 @@ function HeroIntro() {
 /**
  * Movement 01 — Opening Line.
  *
- * Editorial hero: large serif headline, supporting intro, and a full-width
- * flagship Atlas feature card that anchors the movement. The card lives
- * inside the same section so it inherits the opening rhythm without
- * introducing a new movement number.
+ * Editorial hero: large serif headline + supporting intro on the left, a
+ * small "currently building" card filling the right-column whitespace on
+ * desktop. Below `lg`, the currently-building card drops inline beneath the
+ * primary CTA group so nothing competes with the headline. The full-width
+ * flagship Atlas feature card follows in the same movement.
  */
 export function OpeningLine() {
   return (
@@ -99,10 +101,23 @@ export function OpeningLine() {
         PORTFOLIO&nbsp;·&nbsp;2026&nbsp;·&nbsp;V1
       </Eyebrow>
 
-      <div className="max-w-[64rem]">
-        <HeroHeadline />
-        <HeroIntro />
-        <EditorialOpeningNavActions />
+      <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-start lg:gap-10 xl:gap-16">
+        <div className="min-w-0 lg:col-span-7 xl:col-span-8">
+          <HeroHeadline />
+          <HeroIntro />
+          <EditorialOpeningNavActions />
+          {/* Inline placement below the primary CTA group on tablet + mobile.
+              Hidden on lg+ where the card lives in the right column instead. */}
+          <div className="mt-14 md:mt-16 lg:hidden">
+            <CurrentProjectCard />
+          </div>
+        </div>
+
+        {/* Desktop-only right column. Rendered as a display: none block below
+            lg so screen readers only see the inline instance above. */}
+        <div className="hidden lg:col-span-5 lg:block xl:col-span-4">
+          <CurrentProjectCard />
+        </div>
       </div>
 
       <div className="mt-20 md:mt-28 lg:mt-32">
