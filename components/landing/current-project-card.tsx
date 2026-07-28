@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
@@ -10,6 +9,31 @@ import { duration, ease } from "@/lib/motion";
 type CurrentProjectCardProps = {
   className?: string;
 };
+
+/**
+ * ASCEND mark, inlined as SVG so it stays crisp on every pixel density.
+ * Paths are copied verbatim from the ASCEND Figma source; the fill is the
+ * brand gold and stays constant across light/dark themes to preserve the
+ * mark's identity. `aria-hidden` because the card's aria-label already
+ * announces "ASCEND" — the icon carries no additional information.
+ */
+function AscendMark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 20"
+      xmlns="http://www.w3.org/2000/svg"
+      fill="#C79C62"
+      aria-hidden
+      focusable="false"
+      className={className}
+    >
+      <path d="M12.1053 4.73684L15.7895 0L19.4737 4.73684L15.7895 8.94737L12.1053 4.73684Z" />
+      <path d="M0 20L11.0526 5.78947L14.7368 10.5263L7.89474 20H0Z" />
+      <path d="M20.5263 5.78947L16.8421 10L23.6842 20H31.0526L20.5263 5.78947Z" />
+      <path d="M9.47368 20L15.7895 11.5789L21.5789 20H9.47368Z" />
+    </svg>
+  );
+}
 
 /**
  * Editorial "currently building" card for the hero side column.
@@ -66,15 +90,7 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
            directly beneath the wordmark, aligned to its left edge, no
            matter what size the icon becomes. Gap sits inside 12–16 px. */}
       <div className="mt-7 grid grid-cols-[auto_1fr] items-center gap-x-3.5 gap-y-2">
-        <Image
-          src={currentProject.logo.src}
-          alt=""
-          width={currentProject.logo.width}
-          height={currentProject.logo.height}
-          priority={false}
-          unoptimized
-          className="h-7 w-auto shrink-0 select-none"
-        />
+        <AscendMark className="h-7 w-auto shrink-0 select-none" />
         <p className="min-w-0 t-heading font-display text-ink leading-none tracking-[-0.01em]">
           {currentProject.name}
         </p>
