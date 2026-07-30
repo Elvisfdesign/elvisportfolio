@@ -18,7 +18,7 @@ export const currentProject = {
     "7 Marketing Pages",
   ] as const,
   figmaUrl:
-    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=7-3&t=xqIpdzx1USN2YTrC-1",
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=742-16&t=obBterjcFHUYGYOz-1",
   ctaLabel: "View Live Figma",
 } as const;
 
