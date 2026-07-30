@@ -129,7 +129,7 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
                   •
                 </span>
                 <span className="flex-1">{item}</span>
-                <span aria-label="Complete" className="text-signal">
+                <span aria-hidden className="text-signal">
                   ✓
                 </span>
               </li>
