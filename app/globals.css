@@ -357,6 +357,348 @@ button {
   background: var(--hairline-strong);
 }
 
+/*
+ * Layered hero preview — cards size to each screenshot’s intrinsic ratio.
+ * Overlap is handled in the component via negative margin; no forced
+ * crop boxes or absolute height percentages here.
+ * Front/back swap animates only z-index, transform, border, and shadow.
+ */
+.ascend-hero-stack .relative {
+  overflow: visible;
+}
+
+.ascend-hero-stack-card {
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.ascend-hero-stack-card--front {
+  z-index: 2;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.ascend-hero-stack-card--back {
+  z-index: 1;
+  transform: translate3d(0.5rem, -0.5rem, 0) scale(0.985);
+}
+
+.ascend-hero-stack-figure {
+  background: var(--canvas-recessed);
+  transition:
+    border-color 280ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-hero-stack-figure--front {
+  border-color: color-mix(in oklab, var(--ascend-gold) 55%, var(--hairline));
+  box-shadow: var(--shadow-lift);
+}
+
+.ascend-hero-stack-figure--back {
+  border-color: var(--hairline);
+  box-shadow: var(--shadow-press);
+  opacity: 0.96;
+}
+
+.ascend-hero-stack-trigger:hover .ascend-hero-stack-figure--back {
+  border-color: color-mix(in oklab, var(--ascend-gold) 28%, var(--hairline));
+  box-shadow: var(--shadow-lift);
+}
+
+.ascend-hero-stack-trigger:hover .ascend-hero-stack-figure--front {
+  border-color: color-mix(in oklab, var(--ascend-gold) 70%, var(--hairline));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascend-hero-stack-card,
+  .ascend-hero-stack-figure {
+    transition: none;
+  }
+
+  .ascend-hero-stack-card--back {
+    transform: none;
+  }
+}
+
+/* ASCEND chapter gallery — inline trigger affordance */
+.ascend-gallery-image-trigger {
+  cursor: zoom-in;
+  transition: border-color 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-gallery-image-trigger:hover,
+.ascend-gallery-image-trigger:focus-visible {
+  border-color: color-mix(in oklab, var(--ascend-gold) 45%, var(--hairline)) !important;
+}
+
+.ascend-gallery-expand-icon {
+  border-color: color-mix(in oklab, var(--ascend-gold) 35%, var(--hairline));
+  background: color-mix(in oklab, var(--canvas) 88%, transparent);
+  color: var(--ascend-gold);
+  opacity: 0;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-gallery-image-trigger:hover .ascend-gallery-expand-icon,
+.ascend-gallery-image-trigger:focus-visible .ascend-gallery-expand-icon {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .ascend-gallery-expand-icon {
+    opacity: 0.9;
+  }
+}
+
+/* ASCEND fullscreen lightbox — theme-aware via portfolio tokens */
+.ascend-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  isolation: isolate;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.ascend-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  /* Light Mode: warm translucent canvas wash (not near-black). */
+  background-color: color-mix(in oklab, var(--canvas) 90%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+html:not([data-theme="light"]) .ascend-lightbox-backdrop {
+  /* Dark Mode: deep canvas overlay with a faint gold cast. */
+  background-color: color-mix(
+    in oklab,
+    var(--canvas) 88%,
+    color-mix(in oklab, #000 70%, var(--ascend-gold) 30%) 12%
+  );
+}
+
+.ascend-lightbox-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100dvh;
+  width: 100%;
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  color: var(--ink);
+}
+
+.ascend-lightbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.25rem;
+  padding: 0.85rem clamp(0.75rem, 3vw, 2rem);
+}
+
+.ascend-lightbox-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 2.75rem; /* 44px */
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--canvas-raised) 92%, transparent);
+  color: var(--ink-mute);
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease;
+}
+
+.ascend-lightbox-close-icon {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1;
+  font-weight: 400;
+  transform: translateY(-0.04em);
+}
+
+.ascend-lightbox-close:hover {
+  border-color: color-mix(in oklab, var(--ascend-gold) 50%, var(--hairline-strong));
+  background: var(--ascend-gold-soft);
+  color: var(--ink);
+}
+
+.ascend-lightbox-close:active {
+  background: var(--ascend-gold-faint);
+  border-color: color-mix(in oklab, var(--ascend-gold) 60%, var(--hairline-strong));
+  color: var(--ink);
+}
+
+.ascend-lightbox-close:focus-visible {
+  outline: 2px solid var(--ascend-gold);
+  outline-offset: 2px;
+}
+
+.ascend-lightbox-stage {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.25rem clamp(0.5rem, 2vw, 1.5rem);
+  touch-action: pan-y;
+}
+
+.ascend-lightbox-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-width: min(92vw, 1600px);
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  border-radius: 2px;
+  background: var(--canvas-recessed);
+}
+
+.ascend-lightbox-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+  object-fit: contain;
+  object-position: center;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.ascend-lightbox-side-nav {
+  display: none;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 2px;
+  background: color-mix(in oklab, var(--canvas-raised) 90%, transparent);
+  color: var(--ink-mute);
+  transition:
+    border-color 200ms ease,
+    color 200ms ease,
+    background-color 200ms ease,
+    opacity 200ms ease;
+}
+
+.ascend-lightbox-side-nav--prev {
+  left: max(0.5rem, env(safe-area-inset-left));
+}
+
+.ascend-lightbox-side-nav--next {
+  right: max(0.5rem, env(safe-area-inset-right));
+}
+
+.ascend-lightbox-side-nav:hover:not(:disabled) {
+  border-color: color-mix(in oklab, var(--ascend-gold) 50%, var(--hairline-strong));
+  background: var(--ascend-gold-soft);
+  color: var(--ink);
+}
+
+.ascend-lightbox-side-nav:active:not(:disabled) {
+  background: var(--ascend-gold-faint);
+  color: var(--ink);
+}
+
+.ascend-lightbox-side-nav:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.ascend-lightbox-side-nav:focus-visible {
+  outline: 2px solid var(--ascend-gold);
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .ascend-lightbox-side-nav {
+    display: inline-flex;
+  }
+
+  .ascend-lightbox-frame {
+    max-width: min(84vw, 1600px);
+  }
+}
+
+.ascend-lightbox-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 4.25rem;
+  padding: 0.65rem clamp(0.75rem, 3vw, 2rem) 1rem;
+}
+
+.ascend-lightbox-footer-nav {
+  color: var(--ink-mute);
+  border: 1px solid transparent;
+  border-radius: 2px;
+  transition:
+    color 200ms ease,
+    border-color 200ms ease,
+    background-color 200ms ease,
+    opacity 200ms ease;
+}
+
+.ascend-lightbox-footer-nav:hover:not(:disabled) {
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--ascend-gold) 40%, var(--hairline));
+  background: var(--ascend-gold-faint);
+}
+
+.ascend-lightbox-footer-nav:active:not(:disabled) {
+  background: var(--ascend-gold-soft);
+}
+
+.ascend-lightbox-footer-nav:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.ascend-lightbox-footer-nav:focus-visible {
+  outline: 2px solid var(--ascend-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascend-gallery-image-trigger,
+  .ascend-gallery-expand-icon,
+  .ascend-lightbox-close,
+  .ascend-lightbox-side-nav,
+  .ascend-lightbox-footer-nav {
+    transition: none;
+  }
+}
+
 .ascend-chapter-nav-sticky {
   position: sticky;
   top: 4rem;

@@ -8,6 +8,7 @@ export const voiceModeration: CaseStudy = {
     "Designing voice moderation experiences across ToxMod, Voice Vault, internal tools, and launch support initiatives at Modulate.",
   positioning:
     "ToxMod, Voice Vault, executive analytics, design system work, internal tools, and Webflow launch support — Modulate.",
+  projectType: "Professional Work",
   meta: {
     role: "Senior UX/UI Designer",
     year: "Sep 2022 — Mar 2026",

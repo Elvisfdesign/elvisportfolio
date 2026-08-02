@@ -199,7 +199,7 @@ export const ascendChapters: readonly AscendChapter[] = [
     title: "Why this product needed to exist.",
     summary:
       "Most lifestyle apps optimize for streaks, not systems. ASCEND asks a harder question: what would a premium operating system for intentional living actually look like?",
-    state: "Placeholder",
+    state: "Complete",
   },
   {
     id: "vision",
@@ -209,8 +209,8 @@ export const ascendChapters: readonly AscendChapter[] = [
     eyebrow: "PRODUCT VISION",
     title: "A calm, disciplined space to build a life.",
     summary:
-      "Not another habit tracker. A quiet interface for training, recovery, community, and reflection — designed to hold attention with restraint, not compete for it.",
-    state: "Placeholder",
+      "Not another habit tracker. A quiet interface for training, recovery, community, and reflection—designed to hold attention with restraint, not compete for it.",
+    state: "Complete",
   },
   {
     id: "brand",
@@ -303,6 +303,140 @@ export const ascendChapters: readonly AscendChapter[] = [
 ];
 
 /**
+ * Chapter 02 — Opportunity.
+ * Narrative visuals + Level-2 process notes. Summary copy lives on the
+ * chapter record above; this object holds everything beneath it.
+ */
+export const ascendOpportunity = {
+  landscape: {
+    id: "current-landscape",
+    label: "The Current Landscape",
+    src: "/images/ascend/opportunity/current-landscape.jpg",
+    width: 1536,
+    height: 1024,
+    alt: "Editorial diagram of disconnected lifestyle apps surrounding a person — Headspace, Apple Health, Calendar, MyFitnessPal, and others — with broken connections between them.",
+    statement:
+      "Most products optimize one habit. Very few help people build a complete system for intentional living.",
+  },
+  opportunity: {
+    id: "the-opportunity",
+    label: "The Opportunity",
+    src: "/images/ascend/opportunity/the-opportunity.jpg",
+    width: 1536,
+    height: 1024,
+    alt: "ASCEND ecosystem diagram with a central hub connected to mind, body, recovery, journal, community, nutrition, and progress.",
+    statement:
+      "Instead of another habit tracker, I imagined ASCEND as a lifestyle operating system—bringing health, recovery, planning, reflection, and community into one cohesive experience.",
+  },
+  behindTheDesign: {
+    whyThisDirection:
+      "I didn't set out to build another habit tracker. That would have solved a narrow problem and left the rest of someone's life scattered across five other apps. The real gap I saw was continuity — a single place where training, recovery, planning, and reflection reinforce each other instead of competing for attention.",
+    designQuestions: [
+      "How can discipline feel sustainable instead of overwhelming?",
+      "How can recovery become part of the daily workflow?",
+      "How can one system replace multiple disconnected apps?",
+    ] as const,
+    research: [
+      "Competitive review across fitness, wellness, journaling, and productivity tools",
+      "Product strategy defining ASCEND as an operating system, not a feature set",
+      "Information architecture mapping the relationship between daily plan, programs, and reflection",
+      "Experience principles that keep the interface calm under complexity",
+    ] as const,
+    deliverables: [
+      "Product Vision",
+      "Information Architecture",
+      "UX Strategy",
+      "Brand Foundation",
+      "Experience Principles",
+    ] as const,
+  },
+} as const;
+
+/**
+ * Chapter 03 — Vision.
+ * Philosophy before product: experience intent, principles, and the thinking
+ * that guided every later surface. Summary copy lives on the chapter record.
+ */
+export const ascendVision = {
+  experience: {
+    id: "experience-i-wanted",
+    label: "The Experience I Wanted to Create",
+    src: "/images/ascend/vision/experience-we-wanted.jpg",
+    width: 1536,
+    height: 1024,
+    alt: "Editorial lifestyle photograph representing calm, intentional living and focused daily routines.",
+    statement:
+      "I envisioned technology that quietly supports better decisions, creating space for focus instead of demanding attention.",
+  },
+  principlesDiagram: {
+    id: "experience-principles",
+    label: "Experience Principles",
+    src: "/images/ascend/vision/experience-principles.jpg",
+    width: 1536,
+    height: 1024,
+    alt: "Conceptual diagram illustrating the five guiding principles of ASCEND: Calm, Discipline, Focus, Recovery, and Community.",
+    intro:
+      "I measured every product decision against five principles that shaped the experience.",
+  },
+  principles: [
+    {
+      id: "calm",
+      title: "Calm",
+      lines: ["Reduce noise.", "Create mental space."],
+    },
+    {
+      id: "discipline",
+      title: "Discipline",
+      lines: ["Support consistency rather than motivation."],
+    },
+    {
+      id: "focus",
+      title: "Focus",
+      lines: ["Help users stay present instead of distracted."],
+    },
+    {
+      id: "recovery",
+      title: "Recovery",
+      lines: ["Treat recovery as essential, not optional."],
+    },
+    {
+      id: "community",
+      title: "Community",
+      lines: [
+        "Encourage accountability without becoming another social network.",
+      ],
+    },
+  ] as const,
+  behindTheDesign: {
+    whyThisVision:
+      "I intentionally designed ASCEND to feel slower, calmer, and more deliberate than modern productivity tools. My goal was to reduce cognitive load rather than maximize engagement — to leave people with more attention, not less.",
+    designPrinciples: [
+      "Clarity over complexity",
+      "Consistency over novelty",
+      "Intentionality over urgency",
+      "Reflection over endless tracking",
+      "Quality over quantity",
+    ] as const,
+    experienceGoals: [
+      "Organized",
+      "Calmer",
+      "Focused",
+      "Encouraged",
+      "In control",
+    ] as const,
+    experienceGoalsNote: "—not overwhelmed.",
+    foundation: [
+      "Brand",
+      "Information Architecture",
+      "Product UX",
+      "Design System",
+      "React Component Library",
+      "Storybook",
+    ] as const,
+  },
+} as const;
+
+/**
  * Top-level project record — everything a card, page, or SEO payload needs.
  */
 export const ascendProject = {
@@ -325,6 +459,8 @@ export const ascendProject = {
   ecosystem: ascendEcosystem,
   atAGlance: ascendAtAGlance,
   chapters: ascendChapters,
+  opportunity: ascendOpportunity,
+  vision: ascendVision,
   ctas: ascendCtas,
   urls: ascendUrls,
   /** Hero primary + secondary actions. */
@@ -336,6 +472,28 @@ export const ascendProject = {
     label: "View Live Figma",
     href: ascendUrls.figmaProductUrl,
     external: true,
+  },
+  /**
+   * Hero layered preview — product dominates the foreground;
+   * marketing sits behind. Paths are relative to `/public`.
+   */
+  heroScreens: {
+    product: {
+      id: "hero-product",
+      label: "Product — Dashboard",
+      src: "/images/ascend/hero/product-dashboard.png",
+      width: 1440,
+      height: 1140,
+      alt: "ASCEND product dashboard showing daily score, focus, recovery, and progress metrics.",
+    },
+    marketing: {
+      id: "hero-marketing",
+      label: "Marketing — Home",
+      src: "/images/ascend/hero/marketing-home.jpg",
+      width: 1440,
+      height: 780,
+      alt: "ASCEND marketing website homepage with cinematic lifestyle imagery and product messaging.",
+    },
   },
 } as const;
 

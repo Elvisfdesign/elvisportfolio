@@ -19,6 +19,8 @@ type Film = {
   meta: string;
   kind: "case-study" | "practice" | "atlas" | "ascend";
   layoutId: string;
+  /** Optional restrained type marker, e.g. "Professional Work". */
+  projectType?: string;
 };
 
 function caseStudyFilm(c: CaseStudy): Film {
@@ -31,6 +33,7 @@ function caseStudyFilm(c: CaseStudy): Film {
     meta: `${c.meta.role} · ${c.meta.year}`,
     kind: "case-study",
     layoutId: `film:${c.slug}`,
+    projectType: c.projectType,
   };
 }
 
@@ -75,8 +78,8 @@ const ascendFilm: Film = {
 
 /** Homepage order · flagships first, then existing case studies + practice. */
 const films: Film[] = [
-  atlasFilm,
-  ascendFilm,
+  { ...ascendFilm, index: "01" },
+  { ...atlasFilm, index: "02" },
   { ...caseStudyFilm(requireStudy("voice-moderation")), index: "03" },
   { ...practiceFilm, index: "04" },
   { ...caseStudyFilm(requireStudy("career-navigator")), index: "05" },
@@ -148,14 +151,30 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
               : "md:col-span-6 md:col-start-7 md:pt-12"
         }
       >
-        <div className="flex items-baseline gap-6">
+        <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2">
           <span className="t-mono text-ink-quiet tabular">{film.index}</span>
-          <span className="t-mono text-ink-quiet tabular">
-            {film.kind === "practice"
-              ? "PRACTICE"
-              : isFlagship
-                ? "FLAGSHIP"
-                : "CASE STUDY"}
+          <span className="inline-flex flex-wrap items-center gap-x-3 gap-y-1 t-mono text-ink-quiet tabular">
+            <span>
+              {film.kind === "practice"
+                ? "PRACTICE"
+                : isFlagship
+                  ? "FLAGSHIP"
+                  : "CASE STUDY"}
+            </span>
+            {film.projectType ? (
+              <>
+                <span aria-hidden className="text-ink-faint">
+                  ·
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span
+                    aria-hidden
+                    className="inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-signal"
+                  />
+                  <span>{film.projectType.toUpperCase()}</span>
+                </span>
+              </>
+            ) : null}
           </span>
         </div>
 

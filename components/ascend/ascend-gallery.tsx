@@ -1,5 +1,12 @@
+"use client";
+
 import clsx from "clsx";
 import type { ReactNode } from "react";
+import {
+  AscendChapterGallery,
+  AscendGalleryImage,
+  type AscendGalleryImageItem,
+} from "@/components/ascend/ascend-chapter-gallery";
 
 export type AscendGalleryItem = {
   id: string;
@@ -15,9 +22,16 @@ export type AscendGalleryItem = {
   imageSrc?: string;
   /** Explicit alt copy — required whenever `imageSrc` is set. */
   alt?: string;
+  width?: number;
+  height?: number;
 };
 
 type AscendGalleryProps = {
+  /**
+   * Chapter / gallery group id. Images that share this id browse together
+   * in the lightbox. Examples: `"brand"`, `"architecture"`, `"product"`.
+   */
+  galleryId?: string;
   /** Gallery header / caption (optional). */
   header?: ReactNode;
   items: readonly AscendGalleryItem[];
@@ -35,6 +49,18 @@ const aspectClass: Record<NonNullable<AscendGalleryItem["aspect"]>, string> = {
   "9/16": "aspect-[9/16]",
 };
 
+const aspectRatioCss: Record<
+  NonNullable<AscendGalleryItem["aspect"]>,
+  string
+> = {
+  "16/9": "16 / 9",
+  "4/3": "4 / 3",
+  "3/2": "3 / 2",
+  "1/1": "1 / 1",
+  "3/4": "3 / 4",
+  "9/16": "9 / 16",
+};
+
 const columnsClass: Record<NonNullable<AscendGalleryProps["columns"]>, string> = {
   1: "md:grid-cols-1",
   2: "md:grid-cols-2",
@@ -46,20 +72,87 @@ const columnsClass: Record<NonNullable<AscendGalleryProps["columns"]>, string> =
  * editorial placeholder tiles so the visual hierarchy doesn't collapse
  * while the case study is being written.
  *
- * Placeholder tiles use `--stub-bg-screen` (theme-aware) with a soft gold
- * eyebrow inside so the ASCEND accent shows through even before the real
- * screenshots ship. Aspect-ratio containers keep the layout stable when
- * images finally drop in — no reflow.
- *
- * A lightbox is intentionally deferred to a later phase; when the images
- * are ready we can adapt AtlasScreenGallery for ASCEND.
+ * Real images (with `imageSrc`) automatically join the shared ASCEND
+ * lightbox via AscendChapterGallery. Pass `galleryId` so each chapter’s
+ * images stay in their own browse sequence.
  */
 export function AscendGallery({
+  galleryId = "gallery",
   header,
   items,
   columns = 2,
   className,
 }: AscendGalleryProps) {
+  const lightboxItems: AscendGalleryImageItem[] = items.flatMap((item) => {
+    if (!item.imageSrc) return [];
+    return [
+      {
+        id: item.id,
+        src: item.imageSrc,
+        alt: item.alt ?? item.label,
+        width: item.width ?? 1600,
+        height: item.height ?? 1200,
+        label: item.label,
+        caption: item.caption,
+      },
+    ];
+  });
+
+  const lightboxIndexById = new Map(
+    lightboxItems.map((item, index) => [item.id, index]),
+  );
+
+  const grid = (
+    <ul
+      className={clsx(
+        "grid grid-cols-1 gap-4 md:gap-6",
+        columnsClass[columns],
+      )}
+      role="list"
+    >
+      {items.map((item) => {
+        const lightboxIndex = lightboxIndexById.get(item.id);
+        const hasImage = lightboxIndex !== undefined;
+
+        return (
+          <li key={item.id} className="min-w-0">
+            {hasImage ? (
+              <AscendGalleryImage
+                index={lightboxIndex}
+                sizes="(min-width: 768px) 40vw, 100vw"
+                aspectRatio={aspectRatioCss[item.aspect ?? "4/3"]}
+                framePaddingClassName="p-0"
+                className={clsx(aspectClass[item.aspect ?? "4/3"])}
+              />
+            ) : (
+              <div
+                className={clsx(
+                  aspectClass[item.aspect ?? "4/3"],
+                  "relative overflow-hidden rounded-sm border",
+                )}
+                style={{
+                  borderColor: "var(--hairline)",
+                  background: "var(--stub-bg-screen)",
+                }}
+              >
+                <div className="absolute inset-0 flex flex-col justify-between p-5">
+                  <span className="t-mono text-[var(--ascend-gold)] tabular">
+                    {item.label}
+                  </span>
+                  {item.caption ? (
+                    <span className="t-mono text-ink-faint tabular">
+                      {item.caption}
+                    </span>
+                  ) : null}
+                </div>
+              </div>
+            )}
+          </li>
+        );
+      })}
+    </ul>
+  );
+
   return (
     <figure className={clsx("m-0", className)}>
       {header ? (
@@ -67,48 +160,14 @@ export function AscendGallery({
           {header}
         </figcaption>
       ) : null}
-      <ul
-        className={clsx(
-          "grid grid-cols-1 gap-4 md:gap-6",
-          columnsClass[columns],
-        )}
-        role="list"
-      >
-        {items.map((item) => (
-          <li
-            key={item.id}
-            className={clsx(
-              aspectClass[item.aspect ?? "4/3"],
-              "relative overflow-hidden rounded-sm border",
-            )}
-            style={{
-              borderColor: "var(--hairline)",
-              background: "var(--stub-bg-screen)",
-            }}
-          >
-            {item.imageSrc ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={item.imageSrc}
-                alt={item.alt ?? item.label}
-                loading="lazy"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 flex flex-col justify-between p-5">
-                <span className="t-mono text-[var(--ascend-gold)] tabular">
-                  {item.label}
-                </span>
-                {item.caption ? (
-                  <span className="t-mono text-ink-faint tabular">
-                    {item.caption}
-                  </span>
-                ) : null}
-              </div>
-            )}
-          </li>
-        ))}
-      </ul>
+
+      {lightboxItems.length > 0 ? (
+        <AscendChapterGallery galleryId={galleryId} items={lightboxItems}>
+          {grid}
+        </AscendChapterGallery>
+      ) : (
+        grid
+      )}
     </figure>
   );
 }

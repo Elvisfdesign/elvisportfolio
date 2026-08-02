@@ -109,6 +109,11 @@ export type CaseStudy = {
   thesis: string;
   /** Shorter blurb used on landing card. */
   positioning: string;
+  /**
+   * Optional Selected Work type marker (e.g. "Professional Work").
+   * When set, the homepage card shows a restrained metadata label.
+   */
+  projectType?: string;
   /** Optional hero reference links (quiet editorial mono — rendered beside metadata). */
   prototypeUrl?: string;
   prototypeLabel?: string;
