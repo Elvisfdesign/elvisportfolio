@@ -6,6 +6,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 import { ExtendedPortfolioArchive } from "@/components/landing/extended-portfolio-archive";
 import { Section } from "@/components/primitives/section";
 import { getCaseStudy, type CaseStudy } from "@/content/case-studies";
+import { ascendProject } from "@/content/ascend/project";
 import { atlasProject } from "@/content/atlas/project";
 import { practicePiece } from "@/content/practice/ai-for-product-designers";
 
@@ -16,7 +17,7 @@ type Film = {
   positioning: string;
   ambient: string;
   meta: string;
-  kind: "case-study" | "practice" | "atlas";
+  kind: "case-study" | "practice" | "atlas" | "ascend";
   layoutId: string;
 };
 
@@ -61,13 +62,25 @@ const atlasFilm: Film = {
   layoutId: "film:atlas",
 };
 
-/** Homepage order · Atlas first as flagship, then existing case studies + practice. */
+const ascendFilm: Film = {
+  href: ascendProject.href,
+  index: "02",
+  title: ascendProject.name,
+  positioning: ascendProject.description,
+  ambient: ascendProject.eyebrow,
+  meta: ascendProject.statusLabel,
+  kind: "ascend",
+  layoutId: "film:ascend",
+};
+
+/** Homepage order · flagships first, then existing case studies + practice. */
 const films: Film[] = [
   atlasFilm,
-  { ...caseStudyFilm(requireStudy("voice-moderation")), index: "02" },
-  { ...practiceFilm, index: "03" },
-  { ...caseStudyFilm(requireStudy("career-navigator")), index: "04" },
-  { ...caseStudyFilm(requireStudy("signal")), index: "05" },
+  ascendFilm,
+  { ...caseStudyFilm(requireStudy("voice-moderation")), index: "03" },
+  { ...practiceFilm, index: "04" },
+  { ...caseStudyFilm(requireStudy("career-navigator")), index: "05" },
+  { ...caseStudyFilm(requireStudy("signal")), index: "06" },
 ];
 
 export function FeaturedFilms() {
@@ -100,7 +113,7 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
   // Faint parallax on the ambient panel — narrative-driven, not decoration.
   const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0.7]);
-  const isFlagship = film.kind === "atlas";
+  const isFlagship = film.kind === "atlas" || film.kind === "ascend";
 
   return (
     <article ref={ref} className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-12">
@@ -140,7 +153,7 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
           <span className="t-mono text-ink-quiet tabular">
             {film.kind === "practice"
               ? "PRACTICE"
-              : film.kind === "atlas"
+              : isFlagship
                 ? "FLAGSHIP"
                 : "CASE STUDY"}
           </span>
@@ -162,12 +175,12 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
             href={film.href}
             className="t-mono link-underline text-ink shrink-0 touch-manipulation leading-none"
             aria-label={
-              film.kind === "atlas"
+              isFlagship
                 ? `Explore ${film.title}`
                 : `Enter case study: ${film.title}`
             }
           >
-            {film.kind === "atlas" ? (
+            {isFlagship ? (
               <>EXPLORE&nbsp;→</>
             ) : (
               <>ENTER&nbsp;→</>
@@ -267,6 +280,21 @@ function KindGlyph({
     return (
       <svg viewBox="0 0 200 200" className="h-1/2 w-1/2 text-signal" aria-hidden>
         <path d="M100 28 L172 172 H28 Z" fill="currentColor" opacity="0.9" />
+      </svg>
+    );
+  }
+  if (kind === "ascend") {
+    return (
+      <svg
+        viewBox="0 0 32 20"
+        className="h-[28%] w-[44%]"
+        fill="var(--ascend-gold)"
+        aria-hidden
+      >
+        <path d="M12.1053 4.73684L15.7895 0L19.4737 4.73684L15.7895 8.94737L12.1053 4.73684Z" />
+        <path d="M0 20L11.0526 5.78947L14.7368 10.5263L7.89474 20H0Z" />
+        <path d="M20.5263 5.78947L16.8421 10L23.6842 20H31.0526L20.5263 5.78947Z" />
+        <path d="M9.47368 20L15.7895 11.5789L21.5789 20H9.47368Z" />
       </svg>
     );
   }

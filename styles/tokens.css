@@ -27,6 +27,14 @@
   --signal-soft: rgba(200, 255, 0, 0.18);
   --signal-faint: rgba(200, 255, 0, 0.08);
 
+  /* --- ASCEND brand accent (warm gold — theme-constant, brand-identity color) ---
+   * Used only inside ASCEND surfaces (the hero mark, the /ascend case study,
+   * the "Currently Building" card). Deliberately kept identical across themes
+   * so the mark reads as brand, not as UI state. */
+  --ascend-gold: #c79c62;
+  --ascend-gold-soft: rgba(199, 156, 98, 0.18);
+  --ascend-gold-faint: rgba(199, 156, 98, 0.08);
+
   /* --- AI artifact surface (the mono evidence pane) --- */
   --artifact: #111114;
   --artifact-border: rgba(237, 234, 227, 0.10);
@@ -139,6 +147,12 @@
   --signal-soft: rgba(93, 125, 0, 0.16);
   --signal-faint: rgba(93, 125, 0, 0.08);
 
+  /* ASCEND gold — theme-constant. Same hex under cream + dark so the mark
+   * is instantly recognizable across viewing modes. */
+  --ascend-gold: #c79c62;
+  --ascend-gold-soft: rgba(199, 156, 98, 0.16);
+  --ascend-gold-faint: rgba(199, 156, 98, 0.08);
+
   /* AI artifact surface — inked-on-paper insert, not a screen */
   --artifact: #ece6d6;
   --artifact-border: rgba(20, 19, 15, 0.18);
@@ -192,6 +206,12 @@
   --signal: #c8ff00;
   --signal-soft: rgba(200, 255, 0, 0.18);
   --signal-faint: rgba(200, 255, 0, 0.08);
+
+  /* ASCEND gold — theme-constant brand color, echoed here so the token
+   * resolves under any explicit theme selector. */
+  --ascend-gold: #c79c62;
+  --ascend-gold-soft: rgba(199, 156, 98, 0.18);
+  --ascend-gold-faint: rgba(199, 156, 98, 0.08);
 
   --artifact: #111114;
   --artifact-border: rgba(237, 234, 227, 0.10);

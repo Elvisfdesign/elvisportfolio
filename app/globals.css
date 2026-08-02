@@ -18,6 +18,9 @@
   --color-signal: var(--signal);
   --color-signal-soft: var(--signal-soft);
   --color-signal-faint: var(--signal-faint);
+  --color-ascend-gold: var(--ascend-gold);
+  --color-ascend-gold-soft: var(--ascend-gold-soft);
+  --color-ascend-gold-faint: var(--ascend-gold-faint);
   --color-artifact: var(--artifact);
   --color-artifact-border: var(--artifact-border);
   --color-artifact-ink: var(--artifact-ink);
@@ -303,6 +306,92 @@ button {
   }
   .current-project-card:hover .current-project-cta-arrow,
   .current-project-card:focus-within .current-project-cta-arrow {
+    transform: none;
+  }
+}
+
+/*
+ * ASCEND case study — Phase 1 foundations.
+ *
+ * Soft gold atmosphere in the hero, sticky chapter index, disclosure
+ * chevron, and calm CTA motion. All transforms respect the global
+ * prefers-reduced-motion kill-switch further down this file.
+ */
+.ascend-hero-glow {
+  background:
+    radial-gradient(
+      60% 50% at 15% 20%,
+      var(--ascend-gold-faint) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      45% 40% at 85% 70%,
+      var(--ascend-gold-soft) 0%,
+      transparent 65%
+    );
+}
+
+.ascend-hero-primary-cta {
+  transition:
+    border-color 300ms var(--ease-entrance),
+    transform 300ms var(--ease-entrance),
+    box-shadow 300ms var(--ease-entrance);
+}
+.ascend-hero-primary-cta:hover {
+  transform: translateY(-2px);
+  border-color: var(--ascend-gold);
+  box-shadow: var(--shadow-lift);
+}
+.ascend-hero-cta-arrow {
+  display: inline-block;
+  transition: transform 300ms var(--ease-entrance);
+}
+.ascend-hero-primary-cta:hover .ascend-hero-cta-arrow {
+  transform: translateY(2px);
+}
+
+.ascend-scroll-cue-line {
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+.ascend-chapter-nav-sticky {
+  position: sticky;
+  top: 4rem;
+  z-index: 30;
+  border-bottom: 1px solid var(--hairline);
+  background: color-mix(in oklab, var(--canvas) 92%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.ascend-details-summary {
+  list-style: none;
+}
+.ascend-details-summary::-webkit-details-marker {
+  display: none;
+}
+.ascend-details-chevron {
+  display: inline-block;
+  transition: transform 240ms var(--ease-entrance);
+}
+.ascend-details[open] .ascend-details-chevron {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascend-hero-primary-cta,
+  .ascend-hero-cta-arrow,
+  .ascend-details-chevron {
+    transition: none;
+  }
+  .ascend-hero-primary-cta:hover {
+    transform: none;
+  }
+  .ascend-hero-primary-cta:hover .ascend-hero-cta-arrow,
+  .ascend-details[open] .ascend-details-chevron {
     transform: none;
   }
 }

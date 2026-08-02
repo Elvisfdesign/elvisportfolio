@@ -1,7 +1,9 @@
 "use client";
 
+import Link from "next/link";
 import clsx from "clsx";
 import { motion } from "motion/react";
+import { AscendMark } from "@/components/ascend/ascend-mark";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
 import { currentProject } from "@/content/current-project";
 import { duration, ease } from "@/lib/motion";
@@ -11,60 +13,31 @@ type CurrentProjectCardProps = {
 };
 
 /**
- * ASCEND mark, inlined as SVG so it stays crisp on every pixel density.
- * Paths are copied verbatim from the ASCEND Figma source; the fill is the
- * brand gold and stays constant across light/dark themes to preserve the
- * mark's identity. `aria-hidden` because the card's aria-label already
- * announces "ASCEND" — the icon carries no additional information.
- */
-function AscendMark({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 32 20"
-      xmlns="http://www.w3.org/2000/svg"
-      fill="#C79C62"
-      aria-hidden
-      focusable="false"
-      className={className}
-    >
-      <path d="M12.1053 4.73684L15.7895 0L19.4737 4.73684L15.7895 8.94737L12.1053 4.73684Z" />
-      <path d="M0 20L11.0526 5.78947L14.7368 10.5263L7.89474 20H0Z" />
-      <path d="M20.5263 5.78947L16.8421 10L23.6842 20H31.0526L20.5263 5.78947Z" />
-      <path d="M9.47368 20L15.7895 11.5789L21.5789 20H9.47368Z" />
-    </svg>
-  );
-}
-
-/**
  * Editorial "currently building" card for the hero side column.
  *
  * Structure (top → bottom):
  *   1. Eyebrow
- *   2. ASCEND lockup — gold triangle mark + wordmark + subtitle
+ *   2. ASCEND lockup — gold mark + wordmark + subtitle
  *   3. Short description
  *   4. Reveal-on-hover block: status + progress list
- *   5. CTA — "View Live Figma →"
+ *   5. Primary CTA — case study
+ *   6. Secondary CTA — Live Figma (kept; opens in a new tab)
  *
- * The entire card is a single external link so it is one clean keyboard target
- * with a visible focus ring. Reveal content stays in the DOM (screen readers
- * always hear it); only the visual timing changes on hover / focus-within.
- * Touch devices always show the reveal because there is no hover to trigger
- * it — see `.current-project-*` rules in globals.css.
+ * The card is a surface with two keyboard-accessible destinations so the
+ * case study is the primary path while Figma stays one click away.
+ * Reveal content stays in the DOM (screen readers always hear it); only
+ * the visual timing changes on hover / focus-within. Touch devices always
+ * show the reveal — see `.current-project-*` rules in globals.css.
  */
 export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
   const reduced = useReducedMotionPreference();
 
   return (
-    <motion.a
-      href={currentProject.figmaUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`${currentProject.name} — ${currentProject.subtitle}. ${currentProject.ctaLabel} (opens in a new tab).`}
+    <motion.article
       className={clsx(
         "current-project-card group relative flex w-full flex-col rounded-sm border bg-canvas-raised p-6 md:p-7",
         "transition-[border-color,transform] duration-300",
         "hover:-translate-y-0.5 hover:border-[var(--hairline-strong)]",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal",
         className,
       )}
       style={{
@@ -84,13 +57,8 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
         {currentProject.eyebrow}
       </p>
 
-      {/* Brand lockup — icon and wordmark share row 1 with items-center so
-           their optical centers align (a single cohesive mark, not two
-           stacked elements). Subtitle drops into row 2, col 2 so it stays
-           directly beneath the wordmark, aligned to its left edge, no
-           matter what size the icon becomes. Gap sits inside 12–16 px. */}
       <div className="mt-7 grid grid-cols-[auto_1fr] items-center gap-x-3.5 gap-y-2">
-        <AscendMark className="h-7 w-auto shrink-0 select-none" />
+        <AscendMark className="h-7 w-auto" />
         <p className="min-w-0 t-heading font-display text-ink leading-none tracking-[-0.01em]">
           {currentProject.name}
         </p>
@@ -138,14 +106,39 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
         </div>
       </div>
 
-      <p className="mt-7 flex items-center gap-2 t-mono text-ink tabular">
-        <span className="current-project-cta-label border-b border-current pb-[2px]">
-          {currentProject.ctaLabel}
-        </span>
-        <span aria-hidden className="current-project-cta-arrow inline-block">
-          →
-        </span>
-      </p>
-    </motion.a>
+      <div className="mt-7 flex flex-col items-start gap-3">
+        <Link
+          href={currentProject.caseStudyHref}
+          className={clsx(
+            "inline-flex min-h-11 items-center gap-2 t-mono text-ink tabular touch-manipulation",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal",
+          )}
+          aria-label={`${currentProject.caseStudyCtaLabel}: ${currentProject.name}`}
+        >
+          <span className="current-project-cta-label border-b border-current pb-[2px]">
+            {currentProject.caseStudyCtaLabel}
+          </span>
+          <span aria-hidden className="current-project-cta-arrow inline-block">
+            →
+          </span>
+        </Link>
+        <a
+          href={currentProject.figmaUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={clsx(
+            "inline-flex min-h-11 items-center gap-2 t-mono text-ink-mute tabular touch-manipulation",
+            "hover:text-ink",
+            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal",
+          )}
+          aria-label={`${currentProject.figmaCtaLabel} (opens in a new tab)`}
+        >
+          <span className="border-b border-current pb-[2px]">
+            {currentProject.figmaCtaLabel}
+          </span>
+          <span aria-hidden>↗</span>
+        </a>
+      </div>
+    </motion.article>
   );
 }
