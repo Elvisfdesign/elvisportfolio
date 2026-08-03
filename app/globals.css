@@ -273,23 +273,10 @@ button {
  * - Touch devices always show the reveal because there is no hover to trigger
  *   it. `prefers-reduced-motion` disables the transitions entirely.
  */
+/* Status + progress stay visible by default (no hover reveal). */
 .current-project-reveal {
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    opacity 240ms var(--ease-entrance),
-    transform 240ms var(--ease-entrance);
-}
-.current-project-card:hover .current-project-reveal,
-.current-project-card:focus-within .current-project-reveal {
   opacity: 1;
-  transform: translateY(0);
-}
-@media (hover: none) {
-  .current-project-reveal {
-    opacity: 1;
-    transform: none;
-  }
+  transform: none;
 }
 
 .current-project-cta-arrow {
@@ -300,7 +287,6 @@ button {
   transform: translateX(3px);
 }
 @media (prefers-reduced-motion: reduce) {
-  .current-project-reveal,
   .current-project-cta-arrow {
     transition: none;
   }

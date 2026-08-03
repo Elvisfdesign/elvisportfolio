@@ -19,15 +19,12 @@ type CurrentProjectCardProps = {
  *   1. Eyebrow
  *   2. ASCEND lockup — gold mark + wordmark + subtitle
  *   3. Short description
- *   4. Reveal-on-hover block: status + progress list
+ *   4. Status + progress list (always visible)
  *   5. Primary CTA — case study
  *   6. Secondary CTA — Live Figma (kept; opens in a new tab)
  *
  * The card is a surface with two keyboard-accessible destinations so the
  * case study is the primary path while Figma stays one click away.
- * Reveal content stays in the DOM (screen readers always hear it); only
- * the visual timing changes on hover / focus-within. Touch devices always
- * show the reveal — see `.current-project-*` rules in globals.css.
  */
 export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
   const reduced = useReducedMotionPreference();
