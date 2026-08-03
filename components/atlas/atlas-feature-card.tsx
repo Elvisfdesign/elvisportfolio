@@ -1,12 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import type { ReactNode } from "react";
 import { AtlasLogo } from "@/components/atlas/atlas-logo";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import {
   atlasProject,
   resolveScreenAssets,
@@ -287,52 +287,49 @@ export function AtlasFeatureCard({ className }: AtlasFeatureCardProps) {
           )}
         >
           <div className="flex flex-wrap items-center justify-start gap-x-7 gap-y-1 md:flex-nowrap">
-            <Link
+            <EditorialTextLink
               href={atlasProject.href}
-              className="t-mono link-underline !inline-flex min-h-11 items-center whitespace-nowrap text-ink tabular touch-manipulation leading-none"
-              aria-label={`Read ${atlasProject.name} case study`}
-            >
-              Case&nbsp;Study&nbsp;→
-            </Link>
-            <a
+              label={<>Case&nbsp;Study</>}
+              arrow="forward"
+              tone="ink"
+              ariaLabel={`Read ${atlasProject.name} case study`}
+              className="whitespace-nowrap"
+            />
+            <EditorialTextLink
               href={STORYBOOK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="t-mono link-underline !inline-flex min-h-11 items-center whitespace-nowrap text-ink-mute tabular touch-manipulation leading-none hover:text-ink"
-              aria-label="View Atlas UI Storybook (opens in a new tab)"
-            >
-              Storybook&nbsp;↗
-            </a>
-            <a
+              label="Storybook"
+              arrow="external"
+              tone="mute"
+              ariaLabel="View Atlas UI Storybook (opens in a new tab)"
+              className="whitespace-nowrap"
+            />
+            <EditorialTextLink
               href={GITHUB_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="t-mono link-underline !inline-flex min-h-11 items-center whitespace-nowrap text-ink-mute tabular touch-manipulation leading-none hover:text-ink"
-              aria-label="View Atlas UI GitHub repository (opens in a new tab)"
-            >
-              GitHub&nbsp;↗
-            </a>
+              label="GitHub"
+              arrow="external"
+              tone="mute"
+              ariaLabel="View Atlas UI GitHub repository (opens in a new tab)"
+              className="whitespace-nowrap"
+            />
           </div>
 
           <div className="flex flex-wrap items-center justify-start gap-x-7 gap-y-1 md:flex-nowrap">
-            <a
+            <EditorialTextLink
               href={FIGMA_PRODUCT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="t-mono link-underline !inline-flex min-h-11 items-center whitespace-nowrap text-ink-mute tabular touch-manipulation leading-none hover:text-ink"
-              aria-label="Open Atlas Product UI in Figma (opens in a new tab)"
-            >
-              Product&nbsp;UI&nbsp;(Figma)&nbsp;↗
-            </a>
-            <a
+              label={<>Product&nbsp;UI&nbsp;(Figma)</>}
+              arrow="external"
+              tone="mute"
+              ariaLabel="Open Atlas Product UI in Figma (opens in a new tab)"
+              className="whitespace-nowrap"
+            />
+            <EditorialTextLink
               href={FIGMA_SYSTEM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="t-mono link-underline !inline-flex min-h-11 items-center whitespace-nowrap text-ink-mute tabular touch-manipulation leading-none hover:text-ink"
-              aria-label="Open Atlas Design System in Figma (opens in a new tab)"
-            >
-              Design&nbsp;System&nbsp;(Figma)&nbsp;↗
-            </a>
+              label={<>Design&nbsp;System&nbsp;(Figma)</>}
+              arrow="external"
+              tone="mute"
+              ariaLabel="Open Atlas Design System in Figma (opens in a new tab)"
+              className="whitespace-nowrap"
+            />
           </div>
         </nav>
       </footer>

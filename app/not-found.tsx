@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 
 export default function NotFound() {
   return (
@@ -18,15 +18,24 @@ export default function NotFound() {
           haven&rsquo;t built yet. Try one of these instead.
         </p>
         <div className="mt-12 flex flex-wrap gap-x-12 gap-y-4">
-          <Link href="/" className="t-mono link-underline text-ink">
-            INDEX&nbsp;↑
-          </Link>
-          <Link href="/work/voice-moderation" className="t-mono link-underline text-ink">
-            FEATURED&nbsp;WORK&nbsp;→
-          </Link>
-          <Link href="/contact" className="t-mono link-underline text-ink">
-            CONTACT&nbsp;→
-          </Link>
+          <EditorialTextLink
+            href="/"
+            label="INDEX"
+            arrow="up"
+            tone="ink"
+          />
+          <EditorialTextLink
+            href="/work/voice-moderation"
+            label={<>FEATURED&nbsp;WORK</>}
+            arrow="forward"
+            tone="ink"
+          />
+          <EditorialTextLink
+            href="/contact"
+            label="CONTACT"
+            arrow="forward"
+            tone="ink"
+          />
         </div>
       </div>
     </section>

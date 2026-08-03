@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import type { AtlasCta } from "@/content/atlas/project";
 
 type AtlasExternalLinksProps = {
@@ -24,8 +25,6 @@ export function AtlasExternalLinks({
     >
       {links.map((link) => {
         if (!link.href) {
-          // Hide entirely if there's no explicit inactive copy — avoids
-          // stale "Publishing soon" language on live surfaces.
           if (!link.pendingLabel) return null;
           return (
             <li key={link.id}>
@@ -42,13 +41,14 @@ export function AtlasExternalLinks({
         }
 
         return (
-          <li key={link.id} className="inline-flex items-baseline">
-            <a
+          <li key={link.id} className="inline-flex items-baseline gap-2">
+            <EditorialTextLink
               href={link.href}
-              target={link.external ? "_blank" : undefined}
-              rel={link.external ? "noopener noreferrer" : undefined}
-              className="t-mono link-underline text-ink tabular touch-manipulation"
-              aria-label={
+              label={link.label}
+              arrow={link.external ? "external" : "forward"}
+              tone="ink"
+              external={link.external}
+              ariaLabel={
                 link.external
                   ? `${link.label} (opens in a new tab)${
                       link.statusLabel ? `, ${link.statusLabel}` : ""
@@ -57,15 +57,13 @@ export function AtlasExternalLinks({
                       link.statusLabel ? `, ${link.statusLabel}` : ""
                     }`
               }
-            >
-              {link.label}&nbsp;↗
-            </a>
+            />
             {link.statusLabel ? (
               <span
                 className="t-mono text-ink-faint tabular"
                 aria-hidden="true"
               >
-                &nbsp;·&nbsp;{link.statusLabel}
+                ·&nbsp;{link.statusLabel}
               </span>
             ) : null}
           </li>

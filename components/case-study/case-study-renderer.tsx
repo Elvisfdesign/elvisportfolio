@@ -2,12 +2,13 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import { FadeRise } from "@/components/motion/fade-rise";
+import { MaskUp } from "@/components/motion/mask-up";
 import { ArtifactSurface } from "@/components/primitives/artifact-surface";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { MetadataStrip } from "@/components/primitives/metadata-strip";
 import { PullQuote } from "@/components/primitives/pull-quote";
 import { ReadingColumn } from "@/components/primitives/reading-column";
-import { FadeRise } from "@/components/motion/fade-rise";
-import { MaskUp } from "@/components/motion/mask-up";
 import { VisualStub } from "./visual-stub";
 import {
   BEAT_LABEL,
@@ -153,15 +154,14 @@ function EditorialCaseStudyRefLinks({
       <div className="min-w-0 overflow-x-auto overscroll-x-contain pb-0.5 [-webkit-overflow-scrolling:touch]">
         <p className="inline-flex min-w-0 flex-nowrap items-baseline gap-x-3 t-mono text-ink tabular">
           {study.prototypeUrl ? (
-            <a
+            <EditorialTextLink
               href={study.prototypeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${study.prototypeLabel ?? "View Prototype"} (opens in a new tab)`}
-              className="shrink-0 whitespace-nowrap link-underline decoration-from-font underline-offset-[0.15em] transition-colors hover:text-signal touch-manipulation"
-            >
-              {study.prototypeLabel ?? "View Prototype"}&nbsp;↗
-            </a>
+              label={study.prototypeLabel ?? "View Prototype"}
+              arrow="external"
+              tone="ink"
+              ariaLabel={`${study.prototypeLabel ?? "View Prototype"} (opens in a new tab)`}
+              className="shrink-0 whitespace-nowrap"
+            />
           ) : null}
           {study.prototypeUrl && study.journalUrl ? (
             <span aria-hidden className="shrink-0 select-none text-ink-quiet">
@@ -333,15 +333,13 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
       return (
         <FadeRise>
           <div className="md:ml-[33%]" style={{ maxWidth: "var(--max-prose)" }}>
-            <a
+            <EditorialTextLink
               href={block.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="t-mono link-underline text-ink tabular touch-manipulation"
-            >
-              {block.label}
-              &nbsp;→
-            </a>
+              label={block.label}
+              arrow="forward"
+              tone="ink"
+              external
+            />
           </div>
         </FadeRise>
       );

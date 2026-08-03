@@ -21,9 +21,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Structured data — publishes the live Figma URL (and any other live
- * destinations) so crawlers can associate this case-study page with the
- * active ASCEND product work.
+ * Structured data — publishes live destinations (Figma, Storybook, GitHub,
+ * and any other published URLs) so crawlers can associate this case-study
+ * page with the active ASCEND product work.
  */
 const ascendJsonLd = {
   "@context": "https://schema.org",

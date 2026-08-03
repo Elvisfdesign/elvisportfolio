@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type MouseEvent } from "react";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "motion/react";
 import { scrollToTop } from "@/components/motion/lenis-provider";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const NAV_ITEMS = [
@@ -129,12 +130,13 @@ export function SiteNav() {
 
           <div className="hidden md:flex items-center gap-6">
             <ThemeToggle />
-            <Link
+            <EditorialTextLink
               href="/contact"
-              className="t-mono link-underline text-ink-quiet hover:text-ink transition-colors duration-300 tabular"
-            >
-              SAY&nbsp;HELLO&nbsp;→
-            </Link>
+              label={<>SAY&nbsp;HELLO</>}
+              arrow="forward"
+              tone="quiet"
+              ariaLabel="Say hello"
+            />
           </div>
 
           {/* Mobile toggle */}
@@ -200,15 +202,19 @@ export function SiteNav() {
               </ul>
 
               <div className="mt-12 flex items-center justify-between t-mono text-ink-quiet">
-                <Link href="/contact" className="tabular link-underline text-ink">
-                  SAY&nbsp;HELLO&nbsp;→
-                </Link>
-                <a
+                <EditorialTextLink
+                  href="/contact"
+                  label={<>SAY&nbsp;HELLO</>}
+                  arrow="forward"
+                  tone="ink"
+                  ariaLabel="Say hello"
+                />
+                <EditorialTextLink
                   href="mailto:elvisfdesign@gmail.com"
-                  className="link-underline text-ink-mute"
-                >
-                  ELVISFDESIGN@…
-                </a>
+                  label="ELVISFDESIGN@…"
+                  arrow="none"
+                  tone="mute"
+                />
               </div>
 
               <div className="mt-8 hairline-t pt-6 flex items-center justify-between t-mono text-ink-quiet">

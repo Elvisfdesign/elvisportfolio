@@ -1,6 +1,7 @@
 import { AscendAtAGlance } from "@/components/ascend/ascend-at-a-glance";
 import { AscendCallout } from "@/components/ascend/ascend-callout";
 import { AscendChapterNav } from "@/components/ascend/ascend-chapter-nav";
+import { AscendCodeChapter } from "@/components/ascend/ascend-code-chapter";
 import { AscendDetails } from "@/components/ascend/ascend-details";
 import { AscendEcosystemStrip } from "@/components/ascend/ascend-ecosystem-strip";
 import { AscendExternalLinks } from "@/components/ascend/ascend-external-links";
@@ -12,6 +13,7 @@ import { AscendSectionHeader } from "@/components/ascend/ascend-section-header";
 import { AscendVisionChapter } from "@/components/ascend/ascend-vision-chapter";
 import { FadeRise } from "@/components/motion/fade-rise";
 import { MaskUp } from "@/components/motion/mask-up";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { Section } from "@/components/primitives/section";
 import {
   ascendAtAGlance,
@@ -69,11 +71,11 @@ export function AscendPage() {
               className="!px-0"
             >
               <AscendSectionHeader
-                title="Continue exploring."
-                description="Jump into the live Figma file now. Prototype, Storybook, GitHub, and the marketing site will land here as each surface ships."
+                title="Project Resources"
+                description="Live destinations for the ASCEND design system, component library, and source code. The interactive prototype will join this list when it ships."
               />
               <div className="mt-10">
-                <AscendExternalLinks links={ascendCtas} />
+                <AscendExternalLinks links={ascendCtas} variant="resources" />
               </div>
             </Section>
           </div>
@@ -163,39 +165,62 @@ function AscendHero() {
               ))}
             </dl>
 
-            <div className="mt-9 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-7 md:mt-10">
-              <a
-                href={ascendProject.heroPrimaryCta.hrefAnchor}
-                className="ascend-hero-primary-cta group inline-flex min-h-11 items-center gap-4 rounded-sm border px-5 py-4 md:px-6"
-                style={{
-                  borderColor:
-                    "color-mix(in oklab, var(--ascend-gold) 55%, var(--hairline-strong))",
-                  background: "var(--ascend-gold-soft)",
-                }}
-              >
-                <span className="t-subhead font-display text-ink leading-none">
-                  {ascendProject.heroPrimaryCta.label}
-                </span>
-                <span
-                  aria-hidden
-                  className="ascend-hero-cta-arrow t-mono text-[var(--ascend-gold)] tabular"
-                >
-                  ↓
-                </span>
-              </a>
-
-              {ascendProject.heroSecondaryCta.href ? (
+            {/*
+              Hero resource block — hairline divider, content-width row.
+              lg+: CTA · Storybook · GitHub · Figma on one line.
+              Mobile: CTA, then Storybook, then GitHub + Figma.
+            */}
+            <nav
+              className="ascend-hero-actions"
+              aria-label="ASCEND case study actions and resources"
+            >
+              <div className="ascend-hero-actions-row">
                 <a
-                  href={ascendProject.heroSecondaryCta.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="t-mono link-underline inline-flex min-h-11 items-center text-ink tabular touch-manipulation"
-                  aria-label={`${ascendProject.heroSecondaryCta.label} (opens in a new tab)`}
+                  href={ascendProject.heroPrimaryCta.hrefAnchor}
+                  className="ascend-hero-primary-cta group inline-flex min-h-11 items-center gap-4 rounded-sm border px-5 py-4 md:px-6"
+                  style={{
+                    borderColor:
+                      "color-mix(in oklab, var(--ascend-gold) 55%, var(--hairline-strong))",
+                    background: "var(--ascend-gold-soft)",
+                  }}
                 >
-                  {ascendProject.heroSecondaryCta.label}&nbsp;↗
+                  <span className="t-subhead font-display text-ink leading-none">
+                    {ascendProject.heroPrimaryCta.label}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="ascend-hero-cta-arrow t-mono text-[var(--ascend-gold)] tabular"
+                  >
+                    ↓
+                  </span>
                 </a>
-              ) : null}
-            </div>
+
+                {ascendProject.heroSecondaryCta.href ? (
+                  <EditorialTextLink
+                    href={ascendProject.heroSecondaryCta.href}
+                    label={ascendProject.heroSecondaryCta.label}
+                    ariaLabel={ascendProject.heroSecondaryCta.ariaLabel}
+                    arrow="external"
+                    tone="ink"
+                    accent="ascend"
+                  />
+                ) : null}
+
+                <div className="ascend-hero-actions-support">
+                  {ascendProject.heroSupportingLinks.map((link) => (
+                    <EditorialTextLink
+                      key={link.id}
+                      href={link.href}
+                      label={link.label}
+                      ariaLabel={link.ariaLabel}
+                      arrow="external"
+                      tone="mute"
+                      accent="ascend"
+                    />
+                  ))}
+                </div>
+              </div>
+            </nav>
           </div>
 
           <div className="relative min-w-0 lg:col-span-5 lg:pt-2 xl:pt-0">
@@ -234,6 +259,8 @@ function AscendChapterSection({ chapter }: { chapter: AscendChapter }) {
         <AscendOpportunityChapter />
       ) : chapter.id === "vision" ? (
         <AscendVisionChapter />
+      ) : chapter.id === "code" ? (
+        <AscendCodeChapter />
       ) : chapter.id === "overview" ? (
         <div className="mt-10 space-y-6">
           <AscendCallout tone="emphasis" eyebrow="THESIS">

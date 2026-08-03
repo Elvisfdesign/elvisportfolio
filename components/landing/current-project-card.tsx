@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import clsx from "clsx";
 import { motion } from "motion/react";
 import { AscendMark } from "@/components/ascend/ascend-mark";
 import { useReducedMotionPreference } from "@/components/motion/use-reduced-motion";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { currentProject } from "@/content/current-project";
 import { duration, ease } from "@/lib/motion";
 
@@ -104,37 +104,22 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
       </div>
 
       <div className="mt-7 flex flex-col items-start gap-3">
-        <Link
+        <EditorialTextLink
           href={currentProject.caseStudyHref}
-          className={clsx(
-            "inline-flex min-h-11 items-center gap-2 t-mono text-ink tabular touch-manipulation",
-            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal",
-          )}
-          aria-label={`${currentProject.caseStudyCtaLabel}: ${currentProject.name}`}
-        >
-          <span className="current-project-cta-label border-b border-current pb-[2px]">
-            {currentProject.caseStudyCtaLabel}
-          </span>
-          <span aria-hidden className="current-project-cta-arrow inline-block">
-            →
-          </span>
-        </Link>
-        <a
+          label={currentProject.caseStudyCtaLabel}
+          arrow="forward"
+          tone="ink"
+          accent="ascend"
+          ariaLabel={`${currentProject.caseStudyCtaLabel}: ${currentProject.name}`}
+        />
+        <EditorialTextLink
           href={currentProject.figmaUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={clsx(
-            "inline-flex min-h-11 items-center gap-2 t-mono text-ink-mute tabular touch-manipulation",
-            "hover:text-ink",
-            "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-signal",
-          )}
-          aria-label={`${currentProject.figmaCtaLabel} (opens in a new tab)`}
-        >
-          <span className="border-b border-current pb-[2px]">
-            {currentProject.figmaCtaLabel}
-          </span>
-          <span aria-hidden>↗</span>
-        </a>
+          label={currentProject.figmaCtaLabel}
+          arrow="external"
+          tone="mute"
+          accent="ascend"
+          ariaLabel={`${currentProject.figmaCtaLabel} (opens in a new tab)`}
+        />
       </div>
     </motion.article>
   );

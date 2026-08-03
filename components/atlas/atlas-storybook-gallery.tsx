@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { AtlasStatusBadge } from "@/components/atlas/atlas-status-badge";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import type { AtlasStorybookShot } from "@/content/atlas/project";
 
 type AtlasStorybookGalleryProps = {
@@ -132,15 +133,13 @@ export function AtlasStorybookGallery({
                 </div>
                 <p className="t-body text-ink-mute">{shot.description}</p>
                 {shot.href ? (
-                  <a
+                  <EditorialTextLink
                     href={shot.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="t-mono link-underline text-ink-mute tabular"
-                    aria-label={`${shot.title} — opens in a new tab`}
-                  >
-                    Open&nbsp;↗
-                  </a>
+                    label="Open"
+                    arrow="external"
+                    tone="mute"
+                    ariaLabel={`${shot.title} — opens in a new tab`}
+                  />
                 ) : null}
               </figcaption>
             </figure>

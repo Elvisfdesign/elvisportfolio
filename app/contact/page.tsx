@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Section } from "@/components/primitives/section";
-import { MetadataStrip } from "@/components/primitives/metadata-strip";
 import { ContactForm } from "@/components/contact/contact-form";
 import { MaskUp } from "@/components/motion/mask-up";
 import { FadeRise } from "@/components/motion/fade-rise";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
+import { MetadataStrip } from "@/components/primitives/metadata-strip";
+import { Section } from "@/components/primitives/section";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -70,32 +70,36 @@ export default function ContactPage() {
         <ul className="grid grid-cols-1 gap-14 md:grid-cols-3 md:gap-x-16 md:gap-y-14 items-start">
           <li className="hairline-t pt-6">
             <p className="t-mono text-ink-quiet tabular">EMAIL</p>
-            <a
+            <EditorialTextLink
               href="mailto:elvisfdesign@gmail.com"
-              className="mt-3 inline-block max-w-full t-subhead text-ink link-underline break-words"
-            >
-              elvisfdesign@gmail.com
-            </a>
+              label="elvisfdesign@gmail.com"
+              arrow="none"
+              tone="ink"
+              size="subhead"
+              className="mt-3 max-w-full break-words"
+            />
           </li>
           <li className="hairline-t pt-6">
             <p className="t-mono text-ink-quiet tabular">LINKEDIN</p>
-            <a
+            <EditorialTextLink
               href="https://www.linkedin.com/in/elvisfdesign/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-3 inline-block max-w-full t-subhead text-ink link-underline break-words"
-            >
-              linkedin.com/in/elvisfdesign
-            </a>
+              label="linkedin.com/in/elvisfdesign"
+              arrow="none"
+              tone="ink"
+              size="subhead"
+              className="mt-3 max-w-full break-words"
+            />
           </li>
           <li className="hairline-t pt-6">
             <p className="t-mono text-ink-quiet tabular">PRACTICE</p>
-            <Link
+            <EditorialTextLink
               href="/practice/ai-for-product-designers"
-              className="mt-3 inline-block t-subhead text-ink link-underline"
-            >
-              AI for product designers
-            </Link>
+              label="AI for product designers"
+              arrow="none"
+              tone="ink"
+              size="subhead"
+              className="mt-3"
+            />
           </li>
         </ul>
       </Section>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { AtlasArchitecture } from "@/components/atlas/atlas-architecture";
 import { AtlasComponentMap } from "@/components/atlas/atlas-component-map";
 import { AtlasExternalLinks } from "@/components/atlas/atlas-external-links";
@@ -16,6 +15,7 @@ import { AtlasUpdateList } from "@/components/atlas/atlas-update-list";
 import { AtlasWorkspace } from "@/components/atlas/atlas-workspace";
 import { FadeRise } from "@/components/motion/fade-rise";
 import { MaskUp } from "@/components/motion/mask-up";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { Section } from "@/components/primitives/section";
 import { atlasProject, getAtlasLinks } from "@/content/atlas/project";
 
@@ -353,12 +353,12 @@ export function AtlasPage() {
           <AtlasExternalLinks links={links} />
         </div>
         <p className="mt-12 md:mt-14">
-          <Link
+          <EditorialTextLink
             href="/#films"
-            className="t-mono link-underline text-ink-mute tabular hover:text-ink"
-          >
-            Return to selected work&nbsp;↑
-          </Link>
+            label={<>Return to selected work</>}
+            arrow="up"
+            tone="mute"
+          />
         </p>
       </Section>
     </article>

@@ -20,6 +20,10 @@ export type AscendCta = {
   pendingLabel?: string;
   /** Optional status note shown alongside an active link. */
   statusLabel?: string;
+  /** Optional short description for Project Resources. */
+  description?: string;
+  /** Optional accessible name override for external anchors. */
+  ariaLabel?: string;
 };
 
 export type AscendChapterState = "Complete" | "In progress" | "Placeholder";
@@ -63,54 +67,58 @@ export const ascendUrls = {
   figmaProductUrl:
     "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=742-16&t=obBterjcFHUYGYOz-1",
   figmaSystemUrl: null as string | null,
-  storybookUrl: null as string | null,
-  githubUrl: null as string | null,
+  storybookUrl: "https://ascend-ui.vercel.app/",
+  githubUrl: "https://github.com/Elvisfdesign/ascend-ui",
   prototypeUrl: null as string | null,
   marketingUrl: null as string | null,
 } as const;
 
 /**
- * Ordered external resources for the hero + Resources chapter.
+ * Ordered Project Resources for the case-study resources block.
  *
  * Only publish `href` when the destination is live — the AscendExternalLinks
- * component renders an honest inline "Planned" label when href is null so
+ * component renders an honest inline pending label when href is null so
  * we never ship dead "#" anchors on a portfolio surface.
  */
 export const ascendCtas: readonly AscendCta[] = [
   {
     id: "figmaProductUrl",
-    label: "Live Figma",
+    label: "Figma Design System",
     href: ascendUrls.figmaProductUrl,
     external: true,
     statusLabel: "Active development",
-  },
-  {
-    id: "prototypeUrl",
-    label: "Prototype",
-    href: ascendUrls.prototypeUrl,
-    external: true,
-    pendingLabel: "In progress",
+    description:
+      "Product and design-system source of truth — components, tokens, and flows in Figma.",
+    ariaLabel: "Open ASCEND Figma Design System in a new tab",
   },
   {
     id: "storybookUrl",
-    label: "Storybook",
+    label: "Live Storybook",
     href: ascendUrls.storybookUrl,
     external: true,
-    pendingLabel: "Planned",
+    statusLabel: "ASCEND UI v1.0",
+    description:
+      "Reusable React and TypeScript components documented with controls, states, and accessibility checks.",
+    ariaLabel: "Open ASCEND UI Storybook in a new tab",
   },
   {
     id: "githubUrl",
-    label: "GitHub",
+    label: "GitHub Repository",
     href: ascendUrls.githubUrl,
     external: true,
-    pendingLabel: "Planned",
+    statusLabel: "Public",
+    description:
+      "Open-source ASCEND UI repository — the React implementation of the design system.",
+    ariaLabel: "Open ASCEND UI GitHub repository in a new tab",
   },
   {
-    id: "figmaSystemUrl",
-    label: "Design System (Figma)",
-    href: ascendUrls.figmaSystemUrl,
+    id: "prototypeUrl",
+    label: "Interactive Prototype",
+    href: ascendUrls.prototypeUrl,
     external: true,
-    pendingLabel: "In progress",
+    pendingLabel: "Coming soon",
+    description:
+      "End-to-end interactive proof of the ASCEND marketing-to-product experience.",
   },
   {
     id: "marketingUrl",
@@ -118,6 +126,7 @@ export const ascendCtas: readonly AscendCta[] = [
     href: ascendUrls.marketingUrl,
     external: true,
     pendingLabel: "Planned",
+    description: "Public marketing website for ASCEND.",
   },
 ];
 
@@ -275,8 +284,8 @@ export const ascendChapters: readonly AscendChapter[] = [
     eyebrow: "REACT + STORYBOOK",
     title: "The system, in production code.",
     summary:
-      "The visual system, mirrored 1:1 as React components and documented in Storybook with controls, states, and accessibility checks — so design decisions survive contact with implementation.",
-    state: "Placeholder",
+      "I translated the ASCEND Design System into a reusable React and TypeScript component library, documented through a live Storybook experience and prepared as an open-source repository.",
+    state: "In progress",
   },
   {
     id: "prototype",
@@ -437,6 +446,31 @@ export const ascendVision = {
 } as const;
 
 /**
+ * Chapter 09 — React + Storybook.
+ * Live library deliverables. Summary copy lives on the chapter record;
+ * this object holds the body actions and version label.
+ */
+export const ascendCode = {
+  versionLabel: "ASCEND UI v1.0",
+  body:
+    "I translated the ASCEND Design System into a reusable React and TypeScript component library, documented through a live Storybook experience and prepared as an open-source repository.",
+  actions: [
+    {
+      id: "storybook",
+      label: "Explore Live Storybook",
+      href: ascendUrls.storybookUrl,
+      ariaLabel: "Open ASCEND UI Storybook in a new tab",
+    },
+    {
+      id: "github",
+      label: "View Source on GitHub",
+      href: ascendUrls.githubUrl,
+      ariaLabel: "Open ASCEND UI GitHub repository in a new tab",
+    },
+  ] as const,
+} as const;
+
+/**
  * Top-level project record — everything a card, page, or SEO payload needs.
  */
 export const ascendProject = {
@@ -461,6 +495,7 @@ export const ascendProject = {
   chapters: ascendChapters,
   opportunity: ascendOpportunity,
   vision: ascendVision,
+  code: ascendCode,
   ctas: ascendCtas,
   urls: ascendUrls,
   /** Hero primary + secondary actions. */
@@ -469,10 +504,26 @@ export const ascendProject = {
     hrefAnchor: "#chapter-overview",
   },
   heroSecondaryCta: {
-    label: "View Live Figma",
-    href: ascendUrls.figmaProductUrl,
+    label: "View Storybook",
+    href: ascendUrls.storybookUrl,
     external: true,
+    ariaLabel: "Open ASCEND UI Storybook in a new tab",
   },
+  /** Quiet supporting destinations under the primary / secondary pair. */
+  heroSupportingLinks: [
+    {
+      id: "github",
+      label: "GitHub",
+      href: ascendUrls.githubUrl,
+      ariaLabel: "Open ASCEND UI GitHub repository in a new tab",
+    },
+    {
+      id: "figma",
+      label: "Figma",
+      href: ascendUrls.figmaProductUrl,
+      ariaLabel: "Open ASCEND Live Figma in a new tab",
+    },
+  ] as const,
   /**
    * Hero layered preview — product dominates the foreground;
    * marketing sits behind. Paths are relative to `/public`.

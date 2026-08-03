@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { ExtendedPortfolioArchive } from "@/components/landing/extended-portfolio-archive";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { Section } from "@/components/primitives/section";
 import { getCaseStudy, type CaseStudy } from "@/content/case-studies";
 import { ascendProject } from "@/content/ascend/project";
@@ -190,21 +191,18 @@ function FilmSpread({ film, reverse }: { film: Film; reverse: boolean }) {
 
         <div className="mt-10 flex items-center gap-8 hairline-t pt-6">
           <span className="t-mono text-ink-quiet tabular">{film.meta}</span>
-          <Link
+          <EditorialTextLink
             href={film.href}
-            className="t-mono link-underline text-ink shrink-0 touch-manipulation leading-none"
-            aria-label={
+            label={isFlagship ? "EXPLORE" : "ENTER"}
+            arrow="forward"
+            tone="ink"
+            className="shrink-0"
+            ariaLabel={
               isFlagship
                 ? `Explore ${film.title}`
                 : `Enter case study: ${film.title}`
             }
-          >
-            {isFlagship ? (
-              <>EXPLORE&nbsp;→</>
-            ) : (
-              <>ENTER&nbsp;→</>
-            )}
-          </Link>
+          />
         </div>
       </div>
     </article>

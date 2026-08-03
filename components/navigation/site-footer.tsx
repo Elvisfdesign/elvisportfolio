@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -19,19 +19,19 @@ export function SiteFooter() {
         </div>
 
         <div className="flex flex-col items-start gap-2 md:items-end">
-          <Link
+          <EditorialTextLink
             href="/contact"
-            className="t-mono link-underline text-ink"
-            aria-label="Say hello"
-          >
-            SAY&nbsp;HELLO&nbsp;→
-          </Link>
-          <a
+            label={<>SAY&nbsp;HELLO</>}
+            arrow="forward"
+            tone="ink"
+            ariaLabel="Say hello"
+          />
+          <EditorialTextLink
             href="mailto:elvisfdesign@gmail.com"
-            className="t-mono link-underline text-ink-mute"
-          >
-            elvisfdesign@gmail.com
-          </a>
+            label="elvisfdesign@gmail.com"
+            arrow="none"
+            tone="mute"
+          />
         </div>
       </div>
 

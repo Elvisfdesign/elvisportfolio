@@ -279,24 +279,9 @@ button {
   transform: none;
 }
 
-.current-project-cta-arrow {
-  transition: transform 240ms var(--ease-entrance);
-}
-.current-project-card:hover .current-project-cta-arrow,
-.current-project-card:focus-within .current-project-cta-arrow {
-  transform: translateX(3px);
-}
-@media (prefers-reduced-motion: reduce) {
-  .current-project-cta-arrow {
-    transition: none;
-  }
-  .current-project-card:hover .current-project-cta-arrow,
-  .current-project-card:focus-within .current-project-cta-arrow {
-    transform: none;
-  }
-}
-
 /*
+
+
  * ASCEND case study — Phase 1 foundations.
  *
  * Soft gold atmosphere in the hero, sticky chapter index, disclosure
@@ -863,7 +848,10 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
   50% { box-shadow: 0 0 0 8px transparent; }
 }
 
-/* Link underline that animates from left */
+/*
+ * Legacy .link-underline — kept for residual inline / prose links.
+ * Prefer EditorialTextLink for editorial CTAs (split label underline).
+ */
 .link-underline {
   position: relative;
   display: inline-block;
@@ -872,21 +860,201 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
   content: "";
   position: absolute;
   left: 0;
-  bottom: -2px;
+  bottom: -5px;
   width: 100%;
   height: 1px;
   background: currentColor;
   transform-origin: left;
-  transform: scaleX(0);
-  transition: transform 300ms var(--ease-entrance);
+  transform: scaleX(0.28);
+  opacity: 0.55;
+  transition:
+    transform 220ms var(--ease-entrance),
+    opacity 220ms var(--ease-entrance);
 }
-.link-underline:focus-visible::after {
+.link-underline:focus-visible::after,
+.link-underline:hover::after {
   transform: scaleX(1);
+  opacity: 1;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .link-underline:hover::after {
-    transform: scaleX(1);
+/*
+ * EditorialTextLink — shared editorial / resource text-link system.
+ * Underline rides the label (~4–6px under baseline), not the tall touch target.
+ * Arrow motion follows direction. Accent is signal (portfolio) or ascend gold.
+ */
+.editorial-text-link {
+  outline: none;
+}
+
+.editorial-text-link-label {
+  position: relative;
+  display: inline-block;
+  transition:
+    color 200ms var(--ease-entrance),
+    opacity 160ms var(--ease-entrance);
+}
+
+.editorial-text-link-label--ink {
+  color: var(--ink);
+}
+
+.editorial-text-link-label--mute {
+  color: var(--ink-mute);
+}
+
+.editorial-text-link-label--quiet {
+  color: var(--ink-quiet);
+}
+
+.editorial-text-link-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: left;
+  transform: scaleX(0.28);
+  opacity: 0.55;
+  transition:
+    transform 220ms var(--ease-entrance),
+    opacity 220ms var(--ease-entrance);
+}
+
+.editorial-text-link-icon {
+  display: inline-block;
+  transition: transform 220ms var(--ease-entrance);
+}
+
+.editorial-text-link--signal:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.editorial-text-link--ascend:focus-visible {
+  outline: 2px solid var(--ascend-gold);
+  outline-offset: 2px;
+}
+
+.editorial-text-link:focus-visible .editorial-text-link-label::after,
+.editorial-text-link:hover .editorial-text-link-label::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.editorial-text-link:hover .editorial-text-link-icon--forward,
+.editorial-text-link:focus-visible .editorial-text-link-icon--forward {
+  transform: translateX(2px);
+}
+
+.editorial-text-link:hover .editorial-text-link-icon--down,
+.editorial-text-link:focus-visible .editorial-text-link-icon--down {
+  transform: translateY(2px);
+}
+
+.editorial-text-link:hover .editorial-text-link-icon--up,
+.editorial-text-link:focus-visible .editorial-text-link-icon--up {
+  transform: translateY(-2px);
+}
+
+.editorial-text-link:hover .editorial-text-link-icon--external,
+.editorial-text-link:focus-visible .editorial-text-link-icon--external {
+  transform: translate(2px, -2px);
+}
+
+.editorial-text-link--signal:hover .editorial-text-link-label,
+.editorial-text-link--signal:hover .editorial-text-link-label--ink,
+.editorial-text-link--signal:hover .editorial-text-link-label--mute,
+.editorial-text-link--signal:hover .editorial-text-link-label--quiet,
+.editorial-text-link--signal:focus-visible .editorial-text-link-label,
+.editorial-text-link--signal:focus-visible .editorial-text-link-label--ink,
+.editorial-text-link--signal:focus-visible .editorial-text-link-label--mute,
+.editorial-text-link--signal:focus-visible .editorial-text-link-label--quiet {
+  color: var(--signal);
+}
+
+.editorial-text-link--ascend:hover .editorial-text-link-label,
+.editorial-text-link--ascend:hover .editorial-text-link-label--ink,
+.editorial-text-link--ascend:hover .editorial-text-link-label--mute,
+.editorial-text-link--ascend:hover .editorial-text-link-label--quiet,
+.editorial-text-link--ascend:focus-visible .editorial-text-link-label,
+.editorial-text-link--ascend:focus-visible .editorial-text-link-label--ink,
+.editorial-text-link--ascend:focus-visible .editorial-text-link-label--mute,
+.editorial-text-link--ascend:focus-visible .editorial-text-link-label--quiet {
+  color: var(--ascend-gold);
+}
+
+.editorial-text-link:active .editorial-text-link-label {
+  opacity: 0.82;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-text-link-label,
+  .editorial-text-link-label::after,
+  .editorial-text-link-icon,
+  .link-underline::after {
+    transition: none;
+  }
+
+  .editorial-text-link:hover .editorial-text-link-icon,
+  .editorial-text-link:focus-visible .editorial-text-link-icon {
+    transform: none;
+  }
+}
+
+/* ASCEND hero action / resource block */
+.ascend-hero-actions {
+  width: fit-content;
+  max-width: 100%;
+  margin-top: 2.25rem;
+  padding-top: 1.75rem; /* 28px after divider */
+  border-top: 1px solid var(--hairline);
+}
+
+.ascend-hero-actions-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ascend-hero-actions-support {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem; /* 20px between GitHub / Figma */
+}
+
+/* Tablet — single wrapping row; primary + Storybook stay adjacent */
+@media (min-width: 640px) {
+  .ascend-hero-actions {
+    padding-top: 2rem; /* 32px */
+  }
+
+  .ascend-hero-actions-row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 1.5rem; /* 24px */
+    row-gap: 0.75rem;
+  }
+
+  .ascend-hero-actions-support {
+    display: contents; /* join the parent row */
+  }
+}
+
+/* Desktop — one content-width row, vertically centered */
+@media (min-width: 1024px) {
+  .ascend-hero-actions {
+    margin-top: 2.5rem;
+    padding-top: 2.125rem; /* 34px */
+  }
+
+  .ascend-hero-actions-row {
+    flex-wrap: nowrap;
+    column-gap: 1.75rem; /* 28px */
   }
 }
 

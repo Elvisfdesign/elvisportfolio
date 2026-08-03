@@ -1,14 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import clsx from "clsx";
 import { AtlasFeatureCard } from "@/components/atlas/atlas-feature-card";
 import { CurrentProjectCard } from "@/components/landing/current-project-card";
+import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { Eyebrow } from "@/components/primitives/eyebrow";
-
-/** Shared layout overrides `link-underline`’s `inline-block` for aligned touch targets. */
-const EDITORIAL_OPENING_LINK_CLASSES =
-  "t-mono link-underline !inline-flex min-h-11 items-center touch-manipulation leading-none transition-colors relative";
 
 function OpeningEditorialHairlineMark({ className }: { className?: string }) {
   return (
@@ -25,35 +21,31 @@ function OpeningEditorialHairlineMark({ className }: { className?: string }) {
 function EditorialOpeningNavActions() {
   return (
     <div className="mt-12 flex flex-wrap items-center gap-x-3 gap-y-3 sm:gap-x-6 md:flex-nowrap md:gap-x-8">
-      <Link
+      <EditorialTextLink
         href="/atlas"
-        className={clsx(EDITORIAL_OPENING_LINK_CLASSES, "text-ink")}
-        aria-label="Explore Atlas UI System"
-      >
-        EXPLORE&nbsp;ATLAS&nbsp;→
-      </Link>
+        label={<>EXPLORE&nbsp;ATLAS</>}
+        arrow="forward"
+        tone="ink"
+        ariaLabel="Explore Atlas UI System"
+      />
       <OpeningEditorialHairlineMark />
-      <a
+      <EditorialTextLink
         href="#films"
-        className={clsx(
-          EDITORIAL_OPENING_LINK_CLASSES,
-          "text-ink-quiet hover:text-ink",
-        )}
-        aria-label="Jump to selected work"
-      >
-        VIEW&nbsp;SELECTED&nbsp;WORK&nbsp;↓
-      </a>
+        label={<>VIEW&nbsp;SELECTED&nbsp;WORK</>}
+        arrow="down"
+        tone="quiet"
+        external={false}
+        ariaLabel="Jump to selected work"
+      />
       <OpeningEditorialHairlineMark className="hidden lg:block" />
-      <Link
+      <EditorialTextLink
         href="/about#meet"
-        className={clsx(
-          EDITORIAL_OPENING_LINK_CLASSES,
-          "hidden text-ink-quiet hover:text-ink lg:inline-flex",
-        )}
-        aria-label="Meet Elvis Fernandes — about who builds this portfolio"
-      >
-        MEET&nbsp;ELVIS&nbsp;→
-      </Link>
+        label={<>MEET&nbsp;ELVIS</>}
+        arrow="forward"
+        tone="quiet"
+        ariaLabel="Meet Elvis Fernandes — about who builds this portfolio"
+        className="hidden lg:inline-flex"
+      />
     </div>
   );
 }
