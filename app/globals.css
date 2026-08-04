@@ -670,6 +670,287 @@ html:not([data-theme="light"]) .ascend-lightbox-backdrop {
   }
 }
 
+/* ASCEND marketing page previews — fixed-height window into long pages */
+.ascend-marketing-preview {
+  cursor: zoom-in;
+  border-color: var(--hairline);
+  background: var(--canvas-recessed);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--ink) 4%, transparent);
+  transition:
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-marketing-preview:hover,
+.ascend-marketing-preview:focus-visible {
+  border-color: color-mix(in oklab, var(--ascend-gold) 45%, var(--hairline)) !important;
+  box-shadow:
+    0 18px 40px color-mix(in oklab, var(--ink) 12%, transparent),
+    0 2px 0 color-mix(in oklab, var(--ink) 4%, transparent);
+}
+
+.ascend-marketing-preview-window {
+  height: min(68vh, 640px);
+  background: var(--canvas-recessed);
+}
+
+@media (min-width: 768px) {
+  .ascend-marketing-preview-window {
+    height: min(72vh, 720px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .ascend-marketing-preview-window {
+    height: min(74vh, 780px);
+  }
+}
+
+.ascend-marketing-preview-image {
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-marketing-preview:hover .ascend-marketing-preview-image,
+.ascend-marketing-preview:focus-visible .ascend-marketing-preview-image {
+  transform: scale(1.035);
+}
+
+.ascend-marketing-preview-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 1rem 1.1rem;
+  background: linear-gradient(
+    to top,
+    color-mix(in oklab, #0a0a0a 58%, transparent) 0%,
+    color-mix(in oklab, #0a0a0a 18%, transparent) 42%,
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-marketing-preview:hover .ascend-marketing-preview-overlay,
+.ascend-marketing-preview:focus-visible .ascend-marketing-preview-overlay {
+  opacity: 1;
+}
+
+.ascend-marketing-preview-cta {
+  color: #f5f2eb;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+}
+
+@media (hover: none) {
+  .ascend-marketing-preview-overlay {
+    opacity: 0.92;
+  }
+
+  .ascend-marketing-preview-image {
+    transform: none;
+  }
+}
+
+/* Marketing full-page lightbox — dark stage for long scrolls */
+.ascend-marketing-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  isolation: isolate;
+  height: 100dvh;
+  width: 100vw;
+  overflow: hidden;
+  color: #f5f2eb;
+}
+
+.ascend-marketing-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: color-mix(in oklab, #050505 92%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.ascend-marketing-lightbox-panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  height: 100dvh;
+  width: 100%;
+  padding-left: max(0.75rem, env(safe-area-inset-left));
+  padding-right: max(0.75rem, env(safe-area-inset-right));
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.ascend-marketing-lightbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 4.25rem;
+  padding: 0.85rem clamp(0.75rem, 3vw, 2rem);
+}
+
+.ascend-marketing-zoom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  border: 1px solid color-mix(in oklab, #fff 18%, transparent);
+  border-radius: 2px;
+  background: color-mix(in oklab, #111 80%, transparent);
+  overflow: hidden;
+}
+
+.ascend-marketing-zoom-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  min-width: 2.5rem;
+  min-height: 2.5rem;
+  color: #f5f2eb;
+  transition: background-color 180ms ease, opacity 180ms ease;
+}
+
+.ascend-marketing-zoom-btn:hover:not(:disabled) {
+  background: color-mix(in oklab, #fff 10%, transparent);
+}
+
+.ascend-marketing-zoom-btn:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+.ascend-marketing-zoom-label {
+  min-width: 3.25rem;
+  text-align: center;
+  font-size: 0.6875rem;
+  color: color-mix(in oklab, #fff 70%, transparent);
+}
+
+.ascend-marketing-lightbox-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  border: 1px solid color-mix(in oklab, #fff 18%, transparent);
+  border-radius: 2px;
+  background: color-mix(in oklab, #111 80%, transparent);
+  color: color-mix(in oklab, #fff 80%, transparent);
+  font-size: 1.35rem;
+  line-height: 1;
+  transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.ascend-marketing-lightbox-close:hover {
+  border-color: color-mix(in oklab, var(--ascend-gold) 55%, transparent);
+  background: color-mix(in oklab, var(--ascend-gold) 18%, #111);
+  color: #fff;
+}
+
+.ascend-marketing-lightbox-close:focus-visible,
+.ascend-marketing-zoom-btn:focus-visible,
+.ascend-marketing-side-nav:focus-visible {
+  outline: 2px solid var(--ascend-gold);
+  outline-offset: 2px;
+}
+
+.ascend-marketing-lightbox-stage {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ascend-marketing-lightbox-scroll {
+  height: 100%;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 0.5rem clamp(0.75rem, 3vw, 2rem) 1.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ascend-marketing-lightbox-scroll-inner {
+  margin: 0 auto;
+  max-width: none;
+}
+
+.ascend-marketing-lightbox-image {
+  display: block;
+  max-width: none;
+  height: auto;
+  border: 1px solid color-mix(in oklab, #fff 10%, transparent);
+  border-radius: 2px;
+  background: #0a0a0a;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.ascend-marketing-side-nav {
+  display: none;
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid color-mix(in oklab, #fff 18%, transparent);
+  border-radius: 2px;
+  background: color-mix(in oklab, #111 82%, transparent);
+  color: color-mix(in oklab, #fff 80%, transparent);
+}
+
+.ascend-marketing-side-nav--prev {
+  left: max(0.5rem, env(safe-area-inset-left));
+}
+
+.ascend-marketing-side-nav--next {
+  right: max(0.5rem, env(safe-area-inset-right));
+}
+
+.ascend-marketing-side-nav:hover:not(:disabled) {
+  border-color: color-mix(in oklab, var(--ascend-gold) 55%, transparent);
+  background: color-mix(in oklab, var(--ascend-gold) 18%, #111);
+  color: #fff;
+}
+
+.ascend-marketing-side-nav:disabled {
+  opacity: 0.28;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .ascend-marketing-side-nav {
+    display: inline-flex;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascend-marketing-preview,
+  .ascend-marketing-preview-image,
+  .ascend-marketing-preview-overlay,
+  .ascend-marketing-lightbox-close,
+  .ascend-marketing-zoom-btn {
+    transition: none;
+  }
+
+  .ascend-marketing-preview:hover .ascend-marketing-preview-image,
+  .ascend-marketing-preview:focus-visible .ascend-marketing-preview-image {
+    transform: none;
+  }
+}
+
 .ascend-chapter-nav-sticky {
   position: sticky;
   top: 4rem;

@@ -66,7 +66,8 @@ export type AscendEcosystemNode = {
 export const ascendUrls = {
   figmaProductUrl:
     "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=742-16&t=obBterjcFHUYGYOz-1",
-  figmaSystemUrl: null as string | null,
+  figmaSystemUrl:
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product" as string | null,
   storybookUrl: "https://ascend-ui.vercel.app/",
   githubUrl: "https://github.com/Elvisfdesign/ascend-ui",
   prototypeUrl: null as string | null,
@@ -252,7 +253,7 @@ export const ascendChapters: readonly AscendChapter[] = [
     title: "Discipline, designed.",
     summary:
       "The core product screens — dashboard, daily plan, program detail, training, recovery, community — designed as a single visual language rather than a collection of features.",
-    state: "Placeholder",
+    state: "Complete",
   },
   {
     id: "marketing",
@@ -263,7 +264,7 @@ export const ascendChapters: readonly AscendChapter[] = [
     title: "Seven pages, one narrative.",
     summary:
       "A dark, editorial marketing site that positions ASCEND as a premium operating system. Every page written to move a specific reader from awareness to intent.",
-    state: "Placeholder",
+    state: "Complete",
   },
   {
     id: "system",
@@ -274,7 +275,7 @@ export const ascendChapters: readonly AscendChapter[] = [
     title: "Foundations extracted, not invented.",
     summary:
       "Color, type, spacing, elevation, motion, and component tokens — all extracted from the product itself so the system stays honest to real interfaces, not aspirational libraries.",
-    state: "Placeholder",
+    state: "Complete",
   },
   {
     id: "code",
@@ -571,6 +572,261 @@ export const ascendArchitecture = {
 } as const;
 
 /**
+ * Chapter 06 — Core Product Experience.
+ * Editorial product showcase: dashboard hero, featured pair, session feature,
+ * then Figma explore CTA. Summary copy lives on the chapter record.
+ */
+export const ascendProduct = {
+  exploreHref:
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=7-5&t=QiJWAAfLKLZ0ysJq-1",
+  exploreLabel: "Explore Full Product in Figma",
+  exploreAriaLabel: "Open ASCEND Full Product in Figma in a new tab",
+  exploreTitle: "Explore the complete product",
+  exploreDescription:
+    "The complete design system includes Dashboard, Daily Plan, Programs, Recovery, Journal, Nutrition, Progress, Community, Profile, Settings, responsive layouts, interaction states, and supporting design documentation.",
+  featuredTitle: "Featured Product Experiences",
+  featuredDescription:
+    "The product is intentionally focused. Each screen helps transform daily habits into long-term discipline through calm, structured experiences.",
+  /** Full-width hero — Dashboard. */
+  hero: {
+    id: "dashboard",
+    label: "Dashboard",
+    src: "/images/ascend/product/Dashboard (1).png",
+    width: 1440,
+    height: 1140,
+    alt: "ASCEND product dashboard showing daily score, focus areas, recovery, and progress at a glance.",
+  },
+  /** Equal two-column pair beneath the featured intro. */
+  featured: [
+    {
+      id: "daily-plan",
+      label: "Daily Plan",
+      src: "/images/ascend/product/Daily Plan.png",
+      width: 1440,
+      height: 2737,
+      alt: "ASCEND Daily Plan screen organizing the day’s training, recovery, and intentional habits.",
+    },
+    {
+      id: "programs",
+      label: "Programs",
+      src: "/images/ascend/product/Programs.png",
+      width: 1440,
+      height: 2452,
+      alt: "ASCEND Programs screen presenting structured training paths with clear progression.",
+    },
+  ] as const,
+  /** Full-width feature — in-workout Session Experience. */
+  session: {
+    id: "session-experience",
+    label: "Session Experience",
+    src: "/images/ascend/product/Session Experience (1).png",
+    width: 1440,
+    height: 1862,
+    alt: "ASCEND Session Experience showing the in-workout interface with calm, structured guidance.",
+  },
+  process: {
+    summary: "Designing a calm operating system",
+    blocks: [
+      {
+        id: "approach",
+        title: "Designing a calm operating system",
+        body: "ASCEND wasn't designed as a collection of screens—it was designed as a single operating system for personal discipline. Every interaction reduces cognitive load while helping users focus on the next meaningful action.",
+      },
+      {
+        id: "principles",
+        title: "Product principles",
+        items: [
+          "One primary action per screen",
+          "Calm, distraction-free layouts",
+          "Consistent navigation and reusable components",
+          "Editorial typography balanced with practical usability",
+          "Progress always visible without becoming overwhelming",
+        ],
+      },
+      {
+        id: "design-system",
+        title: "Design system",
+        body: "Every screen shares the same design language.",
+        itemsIntro: "This includes:",
+        items: [
+          "Sidebar navigation",
+          "Card components",
+          "Progress indicators",
+          "Buttons",
+          "Status badges",
+          "Typography scale",
+          "Color tokens",
+          "Spacing system",
+        ],
+        itemsOutro:
+          "Building the experience from reusable components kept the interface visually consistent while making future expansion straightforward.",
+      },
+      {
+        id: "screen-coverage",
+        title: "Screen coverage",
+        body: "The prototype includes the primary product surfaces:",
+        items: [
+          "Dashboard",
+          "Daily Plan",
+          "Programs",
+          "Workout Experience",
+          "Journal",
+          "Recovery",
+          "Nutrition",
+          "Progress",
+          "Community",
+          "Profile",
+          "Settings",
+        ],
+        itemsOutro:
+          "Each screen was designed as part of one connected workflow rather than as an isolated page.",
+      },
+      {
+        id: "outcome",
+        title: "Outcome",
+        body: "The result is a product that feels calm, premium, and intentional.",
+        itemsOutro:
+          "Instead of exposing dozens of features, the experience focuses on helping users build consistent habits through thoughtful UX, clear hierarchy, and a cohesive visual system.",
+      },
+    ] as const,
+  },
+} as const;
+
+/**
+ * Chapter 07 — Marketing Website.
+ * Seven-page editorial site shown as fixed-height window previews
+ * (object-cover), with a scrollable full-page lightbox.
+ */
+export const ascendMarketing = {
+  exploreHref:
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=742-16&t=QiJWAAfLKLZ0ysJq-1",
+  exploreLabel: "Open Marketing Website in Figma",
+  exploreAriaLabel: "Open ASCEND Marketing Website in Figma in a new tab",
+  exploreTitle: "Explore the complete marketing website",
+  exploreDescription:
+    "Every page was designed as part of a cohesive editorial experience—from first impression to membership conversion.",
+  pages: [
+    {
+      id: "homepage",
+      label: "Homepage",
+      src: "/images/ascend/marketing/homepage.png",
+      width: 1440,
+      height: 9720,
+      alt: "ASCEND marketing homepage — cinematic hero, positioning, and entry into the lifestyle operating system narrative.",
+    },
+    {
+      id: "programs",
+      label: "Programs",
+      src: "/images/ascend/marketing/programs.png",
+      width: 1440,
+      height: 8288,
+      alt: "ASCEND Programs marketing page presenting structured training paths and editorial program storytelling.",
+    },
+    {
+      id: "the-app",
+      label: "The App",
+      src: "/images/ascend/marketing/the-app.png",
+      width: 1440,
+      height: 9898,
+      alt: "ASCEND The App marketing page showcasing product surfaces and how the operating system supports daily practice.",
+    },
+    {
+      id: "community",
+      label: "Community",
+      src: "/images/ascend/marketing/community.png",
+      width: 1440,
+      height: 8697,
+      alt: "ASCEND Community marketing page highlighting shared practice, belonging, and collective discipline.",
+    },
+    {
+      id: "philosophy",
+      label: "Philosophy",
+      src: "/images/ascend/marketing/philosophy.png",
+      width: 1440,
+      height: 8935,
+      alt: "ASCEND Philosophy marketing page articulating the brand’s intentional, calm approach to growth.",
+    },
+    {
+      id: "membership",
+      label: "Membership",
+      src: "/images/ascend/marketing/membership.png",
+      width: 1440,
+      height: 6793,
+      alt: "ASCEND Membership marketing page outlining plans and the conversion path into the product.",
+    },
+    {
+      id: "about",
+      label: "About",
+      src: "/images/ascend/marketing/about.png",
+      width: 1440,
+      height: 7957,
+      alt: "ASCEND About marketing page sharing the story and intent behind the lifestyle operating system.",
+    },
+  ] as const,
+  process: {
+    summary: "How the seven-page narrative was designed.",
+    points: [
+      {
+        id: "storytelling",
+        title: "Editorial storytelling",
+        body: "Each page reads as a chapter in one narrative—not a traditional feature landing page with interchangeable modules.",
+      },
+      {
+        id: "language",
+        title: "Consistent visual language",
+        body: "Typography, color, spacing, and layout cadence stay coherent across all seven pages so the site feels like one surface.",
+      },
+      {
+        id: "photography",
+        title: "Photography-led layouts",
+        body: "Documentary imagery leads the composition, giving every page atmosphere before it asks for attention or conversion.",
+      },
+      {
+        id: "system",
+        title: "Shared design system",
+        body: "Reusable components and tokens keep the marketing site aligned with the product and brand foundations.",
+      },
+      {
+        id: "conversion",
+        title: "Clear conversion path",
+        body: "The journey moves deliberately from awareness to intent to membership, without interrupting the editorial rhythm.",
+      },
+    ] as const,
+  },
+} as const;
+
+/**
+ * Chapter 08 — Design System.
+ * Intentionally minimal: one overview hero + explore link + process notes.
+ * Summary copy lives on the chapter record.
+ */
+export const ascendSystem = {
+  exploreHref:
+    ascendUrls.figmaSystemUrl ??
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product",
+  exploreLabel: "Explore the full Design System in Figma",
+  exploreAriaLabel: "Open ASCEND Design System in Figma in a new tab",
+  overview: {
+    id: "design-system-overview",
+    label: "Design System Overview",
+    src: "/images/ascend/system/design-system-overview.png",
+    width: 1440,
+    height: 900,
+    alt: "ASCEND design system overview covering foundations, components, and the shared visual language extracted from the product.",
+  },
+  process: {
+    summary: "Building one language instead of many",
+    paragraphs: [
+      "The design system wasn't designed first—it was extracted from the product itself.",
+      "Every color, spacing rule, typography style, component, interaction, and token came from solving real interface problems rather than creating a theoretical UI kit.",
+      "The result is a system that feels cohesive because every pattern has already been proven inside the product.",
+      "Instead of maintaining separate design languages for marketing and product, both experiences share the same visual foundations, making the brand feel consistent everywhere.",
+      "The system now serves as the foundation for future product growth, faster iteration, and reusable components.",
+    ] as const,
+  },
+} as const;
+
+/**
  * Chapter 09 — React + Storybook.
  * Live library deliverables. Summary copy lives on the chapter record;
  * this object holds the body actions and version label.
@@ -622,6 +878,9 @@ export const ascendProject = {
   vision: ascendVision,
   brand: ascendBrand,
   architecture: ascendArchitecture,
+  product: ascendProduct,
+  marketing: ascendMarketing,
+  system: ascendSystem,
   code: ascendCode,
   ctas: ascendCtas,
   urls: ascendUrls,

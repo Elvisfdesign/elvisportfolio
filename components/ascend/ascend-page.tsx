@@ -11,7 +11,10 @@ import { AscendGallery } from "@/components/ascend/ascend-gallery";
 import { AscendHeroStack } from "@/components/ascend/ascend-hero-stack";
 import { AscendMark } from "@/components/ascend/ascend-mark";
 import { AscendOpportunityChapter } from "@/components/ascend/ascend-opportunity-chapter";
+import { AscendMarketingChapter } from "@/components/ascend/ascend-marketing-chapter";
+import { AscendProductChapter } from "@/components/ascend/ascend-product-chapter";
 import { AscendSectionHeader } from "@/components/ascend/ascend-section-header";
+import { AscendSystemChapter } from "@/components/ascend/ascend-system-chapter";
 import { AscendVisionChapter } from "@/components/ascend/ascend-vision-chapter";
 import { FadeRise } from "@/components/motion/fade-rise";
 import { MaskUp } from "@/components/motion/mask-up";
@@ -263,6 +266,12 @@ function AscendChapterSection({ chapter }: { chapter: AscendChapter }) {
         <AscendBrandChapter />
       ) : chapter.id === "architecture" ? (
         <AscendArchitectureChapter />
+      ) : chapter.id === "product" ? (
+        <AscendProductChapter />
+      ) : chapter.id === "marketing" ? (
+        <AscendMarketingChapter />
+      ) : chapter.id === "system" ? (
+        <AscendSystemChapter />
       ) : chapter.id === "code" ? (
         <AscendCodeChapter />
       ) : chapter.id === "overview" ? (
