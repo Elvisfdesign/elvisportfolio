@@ -880,7 +880,7 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
 /*
  * EditorialTextLink — shared editorial / resource text-link system.
  * Underline rides the label (~4–6px under baseline), not the tall touch target.
- * Arrow motion follows direction. Accent is signal (portfolio) or ascend gold.
+ * Arrow motion follows direction. Hover accent is always --signal (portfolio green).
  */
 .editorial-text-link {
   outline: none;
@@ -927,13 +927,8 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
   transition: transform 220ms var(--ease-entrance);
 }
 
-.editorial-text-link--signal:focus-visible {
+.editorial-text-link:focus-visible {
   outline: 2px solid var(--signal);
-  outline-offset: 2px;
-}
-
-.editorial-text-link--ascend:focus-visible {
-  outline: 2px solid var(--ascend-gold);
   outline-offset: 2px;
 }
 
@@ -963,26 +958,16 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
   transform: translate(2px, -2px);
 }
 
-.editorial-text-link--signal:hover .editorial-text-link-label,
-.editorial-text-link--signal:hover .editorial-text-link-label--ink,
-.editorial-text-link--signal:hover .editorial-text-link-label--mute,
-.editorial-text-link--signal:hover .editorial-text-link-label--quiet,
-.editorial-text-link--signal:focus-visible .editorial-text-link-label,
-.editorial-text-link--signal:focus-visible .editorial-text-link-label--ink,
-.editorial-text-link--signal:focus-visible .editorial-text-link-label--mute,
-.editorial-text-link--signal:focus-visible .editorial-text-link-label--quiet {
+/* Single portfolio-wide hover accent — Signal green (same as Explore Atlas). */
+.editorial-text-link:hover .editorial-text-link-label,
+.editorial-text-link:hover .editorial-text-link-label--ink,
+.editorial-text-link:hover .editorial-text-link-label--mute,
+.editorial-text-link:hover .editorial-text-link-label--quiet,
+.editorial-text-link:focus-visible .editorial-text-link-label,
+.editorial-text-link:focus-visible .editorial-text-link-label--ink,
+.editorial-text-link:focus-visible .editorial-text-link-label--mute,
+.editorial-text-link:focus-visible .editorial-text-link-label--quiet {
   color: var(--signal);
-}
-
-.editorial-text-link--ascend:hover .editorial-text-link-label,
-.editorial-text-link--ascend:hover .editorial-text-link-label--ink,
-.editorial-text-link--ascend:hover .editorial-text-link-label--mute,
-.editorial-text-link--ascend:hover .editorial-text-link-label--quiet,
-.editorial-text-link--ascend:focus-visible .editorial-text-link-label,
-.editorial-text-link--ascend:focus-visible .editorial-text-link-label--ink,
-.editorial-text-link--ascend:focus-visible .editorial-text-link-label--mute,
-.editorial-text-link--ascend:focus-visible .editorial-text-link-label--quiet {
-  color: var(--ascend-gold);
 }
 
 .editorial-text-link:active .editorial-text-link-label {

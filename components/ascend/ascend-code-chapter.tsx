@@ -28,7 +28,6 @@ export function AscendCodeChapter() {
             label={action.label}
             arrow="external"
             tone={index === 0 ? "ink" : "mute"}
-            accent="ascend"
             ariaLabel={action.ariaLabel}
           />
         ))}

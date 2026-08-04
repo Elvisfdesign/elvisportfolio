@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 
 export type EditorialArrow = "none" | "forward" | "down" | "up" | "external";
 export type EditorialTone = "ink" | "mute" | "quiet";
-export type EditorialAccent = "signal" | "ascend";
 
 type EditorialTextLinkProps = {
   href: string;
@@ -13,8 +12,6 @@ type EditorialTextLinkProps = {
   ariaLabel?: string;
   arrow?: EditorialArrow;
   tone?: EditorialTone;
-  /** Hover / focus accent. Portfolio default is signal; ASCEND surfaces use gold. */
-  accent?: EditorialAccent;
   /** Label type scale. Mono is the editorial default; subhead suits contact rows. */
   size?: "mono" | "subhead";
   /**
@@ -57,7 +54,6 @@ export function EditorialTextLink({
   ariaLabel,
   arrow = "none",
   tone = "ink",
-  accent = "signal",
   size = "mono",
   external,
   className,
@@ -67,7 +63,6 @@ export function EditorialTextLink({
 
   const classes = clsx(
     "editorial-text-link inline-flex min-h-11 items-center touch-manipulation",
-    `editorial-text-link--${accent}`,
     className,
   );
 

@@ -202,7 +202,6 @@ function AscendHero() {
                     ariaLabel={ascendProject.heroSecondaryCta.ariaLabel}
                     arrow="external"
                     tone="ink"
-                    accent="ascend"
                   />
                 ) : null}
 
@@ -215,7 +214,6 @@ function AscendHero() {
                       ariaLabel={link.ariaLabel}
                       arrow="external"
                       tone="mute"
-                      accent="ascend"
                     />
                   ))}
                 </div>

@@ -109,7 +109,6 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
           label={currentProject.caseStudyCtaLabel}
           arrow="forward"
           tone="ink"
-          accent="ascend"
           ariaLabel={`${currentProject.caseStudyCtaLabel}: ${currentProject.name}`}
         />
         <EditorialTextLink
@@ -117,7 +116,6 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
           label={currentProject.figmaCtaLabel}
           arrow="external"
           tone="mute"
-          accent="ascend"
           ariaLabel={`${currentProject.figmaCtaLabel} (opens in a new tab)`}
         />
       </div>

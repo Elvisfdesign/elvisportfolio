@@ -44,7 +44,6 @@ export function AscendExternalLinks({
                   label={link.label}
                   arrow={link.external ? "external" : "forward"}
                   tone="ink"
-                  accent="ascend"
                   external={link.external}
                   ariaLabel={
                     link.ariaLabel ??
@@ -116,7 +115,6 @@ export function AscendExternalLinks({
               label={link.label}
               arrow={link.external ? "external" : "forward"}
               tone="ink"
-              accent="ascend"
               external={link.external}
               ariaLabel={
                 link.ariaLabel ??
