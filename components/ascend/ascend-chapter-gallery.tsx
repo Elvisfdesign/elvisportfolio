@@ -465,9 +465,16 @@ type AscendGalleryImageProps = {
   /** Zero-based index into the parent AscendChapterGallery `items` array. */
   index: number;
   sizes: string;
-  /** CSS aspect-ratio for the inline frame. Defaults to editorial `3 / 2`. */
+  /**
+   * `frame` — reserved aspect-ratio box with object-contain (editorial
+   * spreads that share a common stage). Default.
+   * `intrinsic` — wrapper collapses to the image height (`h-auto`); use when
+   * a fixed frame would reserve unused vertical space beneath the artwork.
+   */
+  fit?: "frame" | "intrinsic";
+  /** CSS aspect-ratio for `fit="frame"`. Defaults to editorial `3 / 2`. */
   aspectRatio?: string;
-  /** Extra padding inside the frame around the contained image. */
+  /** Extra padding inside the frame around the contained image (`frame` only). */
   framePaddingClassName?: string;
   className?: string;
   priority?: boolean;
@@ -480,6 +487,7 @@ type AscendGalleryImageProps = {
 export function AscendGalleryImage({
   index,
   sizes,
+  fit = "frame",
   aspectRatio = "3 / 2",
   framePaddingClassName = "p-3 md:p-4",
   className,
@@ -492,6 +500,7 @@ export function AscendGalleryImage({
   if (!item) return null;
 
   const open = activeIndex !== null;
+  const intrinsic = fit === "intrinsic";
 
   return (
     <button
@@ -510,10 +519,10 @@ export function AscendGalleryImage({
       style={{
         borderColor: "var(--hairline)",
         background: "var(--canvas-recessed)",
-        aspectRatio,
+        ...(intrinsic ? {} : { aspectRatio }),
       }}
     >
-      <span className="ascend-story-frame relative block h-full w-full overflow-hidden">
+      {intrinsic ? (
         <Image
           src={item.src}
           alt={item.alt}
@@ -522,12 +531,25 @@ export function AscendGalleryImage({
           sizes={sizes}
           priority={priority}
           loading={priority ? undefined : "lazy"}
-          className={clsx(
-            "h-full w-full object-contain object-center",
-            framePaddingClassName,
-          )}
+          className="block h-auto w-full"
         />
-      </span>
+      ) : (
+        <span className="ascend-story-frame relative block h-full w-full overflow-hidden">
+          <Image
+            src={item.src}
+            alt={item.alt}
+            width={item.width}
+            height={item.height}
+            sizes={sizes}
+            priority={priority}
+            loading={priority ? undefined : "lazy"}
+            className={clsx(
+              "h-full w-full object-contain object-center",
+              framePaddingClassName,
+            )}
+          />
+        </span>
+      )}
 
       <span
         aria-hidden

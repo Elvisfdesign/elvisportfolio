@@ -1,4 +1,6 @@
+import { AscendArchitectureChapter } from "@/components/ascend/ascend-architecture-chapter";
 import { AscendAtAGlance } from "@/components/ascend/ascend-at-a-glance";
+import { AscendBrandChapter } from "@/components/ascend/ascend-brand-chapter";
 import { AscendCallout } from "@/components/ascend/ascend-callout";
 import { AscendChapterNav } from "@/components/ascend/ascend-chapter-nav";
 import { AscendCodeChapter } from "@/components/ascend/ascend-code-chapter";
@@ -257,6 +259,10 @@ function AscendChapterSection({ chapter }: { chapter: AscendChapter }) {
         <AscendOpportunityChapter />
       ) : chapter.id === "vision" ? (
         <AscendVisionChapter />
+      ) : chapter.id === "brand" ? (
+        <AscendBrandChapter />
+      ) : chapter.id === "architecture" ? (
+        <AscendArchitectureChapter />
       ) : chapter.id === "code" ? (
         <AscendCodeChapter />
       ) : chapter.id === "overview" ? (

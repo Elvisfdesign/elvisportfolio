@@ -229,8 +229,8 @@ export const ascendChapters: readonly AscendChapter[] = [
     eyebrow: "BRAND & VISUAL DIRECTION",
     title: "Editorial darkness, warm gold, quiet type.",
     summary:
-      "Serif display type paired with restrained mono captions. A gold accent that reads as ambition rather than ornament. Photography that leans documentary, not aspirational.",
-    state: "Placeholder",
+      "ASCEND's identity was designed to feel disciplined rather than loud. A restrained serif introduces warmth and confidence, while IBM Plex Mono provides structure and precision. Every visual decision supports clarity, focus, and long-term usability across both the marketing site and product experience.",
+    state: "Complete",
   },
   {
     id: "architecture",
@@ -240,8 +240,8 @@ export const ascendChapters: readonly AscendChapter[] = [
     eyebrow: "PRODUCT ARCHITECTURE",
     title: "The map before the pixels.",
     summary:
-      "IA, primary flows, and the relationship between dashboard, daily plan, programs, community, and reflection. Structure that lets the product grow without collapsing into complexity.",
-    state: "Placeholder",
+      "Before designing interfaces, ASCEND was structured around a scalable information architecture that defines navigation, user journeys, and relationships between every major feature. By solving the product structure first, every screen became easier to design, build, and evolve without introducing unnecessary complexity.",
+    state: "Complete",
   },
   {
     id: "product",
@@ -446,6 +446,131 @@ export const ascendVision = {
 } as const;
 
 /**
+ * Chapter 04 — Brand & Visual Direction.
+ * Identity system boards + process notes. Summary copy lives on the
+ * chapter record above; this object holds the visual grid and process body.
+ */
+export const ascendBrand = {
+  exploreHref:
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=15-28&t=UQwgCnHa3cpvIDOf-0",
+  exploreLabel: "Explore Brand Foundation",
+  exploreAriaLabel: "Open ASCEND Brand Foundation in Figma in a new tab",
+  panels: [
+    {
+      id: "logo-system",
+      label: "Logo System",
+      src: "/images/ascend/brand/brand-logo-system.png",
+      width: 1120,
+      height: 1187,
+      alt: "ASCEND logo system board showing the primary mark, wordmark lockups, clear space, and monochrome treatments.",
+    },
+    {
+      id: "color-palette",
+      label: "Color Palette",
+      src: "/images/ascend/brand/brand-colors.png",
+      width: 1120,
+      height: 1810,
+      alt: "ASCEND color system board with deep charcoal foundations, warm gold accent, and supporting neutrals for product and marketing surfaces.",
+    },
+    {
+      id: "typography",
+      label: "Typography",
+      src: "/images/ascend/brand/brand-typography.png",
+      width: 1120,
+      height: 1441,
+      alt: "ASCEND typography system pairing an editorial serif display with IBM Plex Mono for captions, labels, and interface structure.",
+    },
+    {
+      id: "photography",
+      label: "Photography",
+      src: "/images/ascend/brand/photography-grid.png",
+      width: 1120,
+      height: 1655,
+      alt: "ASCEND photography grid of calm, documentary lifestyle moments emphasizing authenticity over aspirational fitness clichés.",
+    },
+  ] as const,
+  process: {
+    summary: "Every visual decision reinforces ASCEND's personality.",
+    blocks: [
+      {
+        id: "logo",
+        title: "Logo System",
+        body: "The logo system emphasizes simplicity and recognition across every touchpoint.",
+      },
+      {
+        id: "type",
+        title: "Typography",
+        body: "Typography pairs editorial elegance with technical precision to balance warmth and clarity.",
+      },
+      {
+        id: "color",
+        title: "Color Palette",
+        body: "The color palette uses warm gold as a restrained accent rather than decoration, creating hierarchy without visual noise.",
+      },
+      {
+        id: "photo",
+        title: "Photography",
+        body: "Photography favors authentic documentary moments over aspirational fitness clichés, making the experience feel calm, trustworthy, and premium.",
+      },
+    ] as const,
+  },
+} as const;
+
+/**
+ * Chapter 05 — Product Architecture.
+ * Structure-first documentation: overview, navigation, hierarchy, and flows.
+ * Summary copy lives on the chapter record; this object holds the visuals
+ * and process notes.
+ */
+export const ascendArchitecture = {
+  exploreHref:
+    "https://www.figma.com/design/SuxbknnazGyqwY4L5JRkK1/ASCEND-%E2%80%94-Product?node-id=123-8&t=UQwgCnHa3cpvIDOf-1",
+  exploreLabel: "Explore Product Architecture",
+  exploreAriaLabel: "Open ASCEND Product Architecture in Figma in a new tab",
+  /** Hero board — rendered full-width for emphasis. */
+  overview: {
+    id: "product-architecture",
+    label: "Product Architecture",
+    src: "/images/ascend/architecture/product-architecture.png",
+    width: 1120,
+    height: 567,
+    alt: "ASCEND product architecture overview mapping major areas — dashboard, daily plan, programs, community, and reflection — and how they relate.",
+  },
+  /** Supporting boards beneath the overview. */
+  supporting: [
+    {
+      id: "primary-navigation",
+      label: "Primary Navigation",
+      src: "/images/ascend/architecture/primary-navigation.png",
+      width: 1120,
+      height: 613,
+      alt: "ASCEND primary navigation structure showing how users move between the product’s core destinations.",
+    },
+    {
+      id: "screen-hierarchy",
+      label: "Screen Hierarchy",
+      src: "/images/ascend/architecture/screen-hierarchy.png",
+      width: 1120,
+      height: 734,
+      alt: "ASCEND screen hierarchy diagram organizing parent screens, nested views, and supporting states.",
+    },
+    {
+      id: "core-user-flows",
+      label: "Core User Flows",
+      src: "/images/ascend/architecture/core-user-flows.png",
+      width: 1120,
+      height: 936,
+      alt: "ASCEND core user flows outlining key journeys through planning, training, recovery, and reflection.",
+    },
+  ] as const,
+  process: {
+    summary:
+      "Before designing individual interfaces, ASCEND was organized around a scalable product architecture.",
+    body: "Information hierarchy, navigation, and core user journeys were defined first, creating a clear foundation for every screen. This approach reduced complexity, improved consistency, and ensured that future features could be added without redesigning the core experience.",
+  },
+} as const;
+
+/**
  * Chapter 09 — React + Storybook.
  * Live library deliverables. Summary copy lives on the chapter record;
  * this object holds the body actions and version label.
@@ -495,6 +620,8 @@ export const ascendProject = {
   chapters: ascendChapters,
   opportunity: ascendOpportunity,
   vision: ascendVision,
+  brand: ascendBrand,
+  architecture: ascendArchitecture,
   code: ascendCode,
   ctas: ascendCtas,
   urls: ascendUrls,
