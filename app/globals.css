@@ -280,14 +280,34 @@ button {
 }
 
 /*
-
-
  * ASCEND case study — Phase 1 foundations.
  *
  * Soft gold atmosphere in the hero, sticky chapter index, disclosure
  * chevron, and calm CTA motion. All transforms respect the global
  * prefers-reduced-motion kill-switch further down this file.
  */
+
+/*
+ * Shared chapter-transition rhythm for every ASCEND Section.
+ * Tokens: --ascend-section-y / -md / -lg in styles/tokens.css.
+ * Interior chapter spacing (headers, galleries) is unchanged.
+ */
+.ascend-section-rhythm {
+  padding-block: var(--ascend-section-y);
+}
+
+@media (min-width: 768px) {
+  .ascend-section-rhythm {
+    padding-block: var(--ascend-section-y-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ascend-section-rhythm {
+    padding-block: var(--ascend-section-y-lg);
+  }
+}
+
 .ascend-hero-glow {
   background:
     radial-gradient(
@@ -1269,58 +1289,197 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
   }
 }
 
-/* ASCEND hero action / resource block */
+/* ASCEND prototype chapter — controlled cover previews + status */
+.ascend-prototype-preview {
+  border-color: var(--hairline);
+  background: var(--canvas-recessed);
+  height: min(52vh, 420px);
+  transition:
+    border-color 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (min-width: 768px) {
+  .ascend-prototype-preview {
+    height: min(48vh, 460px);
+  }
+}
+
+.ascend-prototype-screen:hover .ascend-prototype-preview,
+.ascend-prototype-screen:focus-visible .ascend-prototype-preview {
+  border-color: color-mix(in oklab, var(--ascend-gold) 45%, var(--hairline)) !important;
+  box-shadow: 0 14px 32px color-mix(in oklab, var(--ink) 10%, transparent);
+}
+
+.ascend-prototype-preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ascend-prototype-screen:hover .ascend-prototype-preview-image,
+.ascend-prototype-screen:focus-visible .ascend-prototype-preview-image {
+  transform: scale(1.025);
+}
+
+.ascend-prototype-status-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+}
+
+.ascend-prototype-status-dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px color-mix(in oklab, #22c55e 22%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ascend-prototype-preview,
+  .ascend-prototype-preview-image {
+    transition: none;
+  }
+
+  .ascend-prototype-screen:hover .ascend-prototype-preview-image,
+  .ascend-prototype-screen:focus-visible .ascend-prototype-preview-image {
+    transform: none;
+  }
+}
+
+/*
+ * ASCEND hero actions — sibling of the copy/preview grid so it spans the
+ * full hero content width (not trapped in lg:col-span-7).
+ */
 .ascend-hero-actions {
-  width: fit-content;
+  box-sizing: border-box;
+  width: 100%;
   max-width: 100%;
-  margin-top: 2.25rem;
-  padding-top: 1.75rem; /* 28px after divider */
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
   border-top: 1px solid var(--hairline);
 }
 
+/* Mobile — stack; status stays under Live Prototype */
 .ascend-hero-actions-row {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.75rem;
+  gap: var(--s-3);
+  width: 100%;
+  min-width: 0;
 }
 
-.ascend-hero-actions-support {
+.ascend-hero-actions-cta,
+.ascend-hero-prototype,
+.ascend-hero-actions-link {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 1.25rem; /* 20px between GitHub / Figma */
+  min-width: 0;
 }
 
-/* Tablet — single wrapping row; primary + Storybook stay adjacent */
+.ascend-hero-prototype {
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* SaaS-style live status under View Live Prototype */
+.ascend-hero-prototype-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: var(--s-3) 0 0;
+  max-width: 18rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--ink-mute);
+}
+
+.ascend-hero-prototype-status-dot {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: #22c55e;
+  box-shadow: 0 0 0 3px color-mix(in oklab, #22c55e 22%, transparent);
+}
+
+.ascend-hero-prototype-status-label {
+  display: inline-block;
+  transform: translateY(0.02em); /* optical baseline with the 9px dot */
+}
+
+.ascend-scroll-cue {
+  margin-top: var(--s-16);
+}
+
+/* Tablet — wrapping row; avoid orphaned single links when possible */
 @media (min-width: 640px) {
   .ascend-hero-actions {
-    padding-top: 2rem; /* 32px */
+    padding-top: var(--s-8);
   }
 
   .ascend-hero-actions-row {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    column-gap: 1.5rem; /* 24px */
-    row-gap: 0.75rem;
-  }
-
-  .ascend-hero-actions-support {
-    display: contents; /* join the parent row */
+    column-gap: var(--s-6);
+    row-gap: var(--s-4);
   }
 }
 
-/* Desktop — one content-width row, vertically centered */
+/*
+ * Desktop — one full-width row with all five actions.
+ * Status caption is absolute so it cannot shift the shared baseline.
+ */
 @media (min-width: 1024px) {
   .ascend-hero-actions {
-    margin-top: 2.5rem;
-    padding-top: 2.125rem; /* 34px */
+    margin-top: var(--s-12);
   }
 
   .ascend-hero-actions-row {
-    flex-wrap: nowrap;
-    column-gap: 1.75rem; /* 28px */
+    display: grid;
+    grid-template-columns:
+      minmax(260px, auto)
+      repeat(4, minmax(max-content, 1fr));
+    align-items: start;
+    column-gap: clamp(24px, 3vw, 64px);
+    row-gap: 0;
+    width: 100%;
+    /* Room for absolute status under Live Prototype */
+    padding-bottom: 1.75rem;
+  }
+
+  .ascend-hero-actions-cta,
+  .ascend-hero-prototype,
+  .ascend-hero-actions-link {
+    align-self: start;
+  }
+
+  .ascend-hero-prototype {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .ascend-hero-prototype-status {
+    position: absolute;
+    top: calc(100% + var(--s-3));
+    left: 0;
+    margin: 0;
+    white-space: nowrap;
   }
 }
 

@@ -100,6 +100,16 @@
   --s-48: 12rem;
   --s-64: 16rem;
 
+  /*
+   * ASCEND case-study chapter transitions (padding-block on each Section).
+   * ~25–35% tighter than the shared `editorial` rhythm (4 / 6 / 9rem),
+   * so consecutive chapters feel connected without crowding interior content.
+   * Future ASCEND sections should use rhythm: "ascend" to inherit these.
+   */
+  --ascend-section-y: var(--s-12); /* 3rem — was 4rem */
+  --ascend-section-y-md: var(--s-16); /* 4rem — was 6rem */
+  --ascend-section-y-lg: var(--s-24); /* 6rem — was 9rem */
+
   /* --- Layout --- */
   --max-outer: 1440px;
   --max-reading: 1200px;

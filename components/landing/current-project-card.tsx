@@ -21,10 +21,10 @@ type CurrentProjectCardProps = {
  *   3. Short description
  *   4. Status + progress list (always visible)
  *   5. Primary CTA — case study
- *   6. Secondary CTA — Live Figma (kept; opens in a new tab)
+ *   6. Secondary CTA — live product prototype (opens in a new tab)
  *
  * The card is a surface with two keyboard-accessible destinations so the
- * case study is the primary path while Figma stays one click away.
+ * case study is the primary path while the live prototype stays one click away.
  */
 export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
   const reduced = useReducedMotionPreference();
@@ -112,11 +112,11 @@ export function CurrentProjectCard({ className }: CurrentProjectCardProps) {
           ariaLabel={`${currentProject.caseStudyCtaLabel}: ${currentProject.name}`}
         />
         <EditorialTextLink
-          href={currentProject.figmaUrl}
-          label={currentProject.figmaCtaLabel}
+          href={currentProject.prototypeUrl}
+          label={currentProject.prototypeCtaLabel}
           arrow="external"
           tone="mute"
-          ariaLabel={`${currentProject.figmaCtaLabel} (opens in a new tab)`}
+          ariaLabel={`${currentProject.prototypeCtaLabel} (opens in a new tab)`}
         />
       </div>
     </motion.article>

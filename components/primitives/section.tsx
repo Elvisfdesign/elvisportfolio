@@ -5,7 +5,14 @@ type SectionProps = {
   children: ReactNode;
   id?: string;
   /** Vertical breathing — landing acts use 'movement', case studies use 'beat'. */
-  rhythm?: "movement" | "movementDense" | "beat" | "tight" | "editorial" | "none";
+  rhythm?:
+    | "movement"
+    | "movementDense"
+    | "beat"
+    | "tight"
+    | "editorial"
+    | "ascend"
+    | "none";
   /** Narrower eyebrow/header band → first heading (same hairline divider). */
   tightHeader?: boolean;
   /** Container width clamp. Defaults to 'outer' (1440px). */
@@ -23,6 +30,12 @@ const rhythmClass: Record<NonNullable<SectionProps["rhythm"]>, string> = {
   movementDense: "py-24 md:py-44 lg:py-56",
   /** Flagship doc pages (Atlas) — spacious but not cinematic dead air. */
   editorial: "py-16 md:py-24 lg:py-36",
+  /**
+   * ASCEND case-study chapters — shared transition rhythm via CSS variables
+   * (`--ascend-section-y*`). Keeps every chapter identical; ~30% tighter
+   * than `editorial` between sections only.
+   */
+  ascend: "ascend-section-rhythm",
   beat: "py-20 md:py-28 lg:py-32",
   tight: "py-12 md:py-16",
   none: "",

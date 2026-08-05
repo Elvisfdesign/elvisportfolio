@@ -5,7 +5,7 @@ import { ascendProject, ascendUrls } from "@/content/ascend/project";
  *
  * Kept as a thin projection of `ascendProject` so the homepage card and the
  * /ascend case study never drift out of sync. The card opens the case study;
- * Live Figma remains a secondary action.
+ * the live product prototype remains a secondary action.
  */
 export const currentProject = {
   eyebrow: "CURRENTLY BUILDING",
@@ -23,9 +23,9 @@ export const currentProject = {
   /** Primary destination — the flagship case study. */
   caseStudyHref: ascendProject.href,
   caseStudyCtaLabel: "Explore Case Study",
-  /** Secondary destination — live Figma (always kept). */
-  figmaUrl: ascendUrls.figmaProductUrl,
-  figmaCtaLabel: "View Live Figma",
+  /** Secondary destination — live product prototype. */
+  prototypeUrl: ascendUrls.prototypeUrl,
+  prototypeCtaLabel: "View Live Prototype",
 } as const;
 
 export type CurrentProject = typeof currentProject;

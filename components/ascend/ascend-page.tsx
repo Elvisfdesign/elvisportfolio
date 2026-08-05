@@ -12,7 +12,9 @@ import { AscendHeroStack } from "@/components/ascend/ascend-hero-stack";
 import { AscendMark } from "@/components/ascend/ascend-mark";
 import { AscendOpportunityChapter } from "@/components/ascend/ascend-opportunity-chapter";
 import { AscendMarketingChapter } from "@/components/ascend/ascend-marketing-chapter";
+import { AscendOutcomeChapter } from "@/components/ascend/ascend-outcome-chapter";
 import { AscendProductChapter } from "@/components/ascend/ascend-product-chapter";
+import { AscendPrototypeChapter } from "@/components/ascend/ascend-prototype-chapter";
 import { AscendSectionHeader } from "@/components/ascend/ascend-section-header";
 import { AscendSystemChapter } from "@/components/ascend/ascend-system-chapter";
 import { AscendVisionChapter } from "@/components/ascend/ascend-vision-chapter";
@@ -29,9 +31,12 @@ import {
   type AscendChapter,
 } from "@/content/ascend/project";
 
-/** ASCEND body sections share Atlas' editorial rhythm. */
+/**
+ * ASCEND body sections share one chapter-transition rhythm.
+ * Vertical padding comes from `--ascend-section-y*` (see tokens.css).
+ */
 const ASCEND_SECTION = {
-  rhythm: "editorial" as const,
+  rhythm: "ascend" as const,
   width: "outer" as const,
   tightHeader: true,
 };
@@ -68,9 +73,8 @@ export function AscendPage() {
             ))}
 
             <Section
-              rhythm="editorial"
+              {...ASCEND_SECTION}
               width="full"
-              tightHeader
               number="—"
               eyebrow="RESOURCES"
               className="!px-0"
@@ -169,61 +173,6 @@ function AscendHero() {
                 </div>
               ))}
             </dl>
-
-            {/*
-              Hero resource block — hairline divider, content-width row.
-              lg+: CTA · Storybook · GitHub · Figma on one line.
-              Mobile: CTA, then Storybook, then GitHub + Figma.
-            */}
-            <nav
-              className="ascend-hero-actions"
-              aria-label="ASCEND case study actions and resources"
-            >
-              <div className="ascend-hero-actions-row">
-                <a
-                  href={ascendProject.heroPrimaryCta.hrefAnchor}
-                  className="ascend-hero-primary-cta group inline-flex min-h-11 items-center gap-4 rounded-sm border px-5 py-4 md:px-6"
-                  style={{
-                    borderColor:
-                      "color-mix(in oklab, var(--ascend-gold) 55%, var(--hairline-strong))",
-                    background: "var(--ascend-gold-soft)",
-                  }}
-                >
-                  <span className="t-subhead font-display text-ink leading-none">
-                    {ascendProject.heroPrimaryCta.label}
-                  </span>
-                  <span
-                    aria-hidden
-                    className="ascend-hero-cta-arrow t-mono text-[var(--ascend-gold)] tabular"
-                  >
-                    ↓
-                  </span>
-                </a>
-
-                {ascendProject.heroSecondaryCta.href ? (
-                  <EditorialTextLink
-                    href={ascendProject.heroSecondaryCta.href}
-                    label={ascendProject.heroSecondaryCta.label}
-                    ariaLabel={ascendProject.heroSecondaryCta.ariaLabel}
-                    arrow="external"
-                    tone="ink"
-                  />
-                ) : null}
-
-                <div className="ascend-hero-actions-support">
-                  {ascendProject.heroSupportingLinks.map((link) => (
-                    <EditorialTextLink
-                      key={link.id}
-                      href={link.href}
-                      label={link.label}
-                      ariaLabel={link.ariaLabel}
-                      arrow="external"
-                      tone="mute"
-                    />
-                  ))}
-                </div>
-              </div>
-            </nav>
           </div>
 
           <div className="relative min-w-0 lg:col-span-5 lg:pt-2 xl:pt-0">
@@ -233,7 +182,85 @@ function AscendHero() {
           </div>
         </div>
 
-        <p className="ascend-scroll-cue mt-12 flex items-center gap-3 t-mono text-ink-faint tabular md:mt-16">
+        {/*
+          Actions live outside the 7/5 copy/preview grid so the row can span
+          the full hero content width. Desktop: all five actions on one line.
+        */}
+        <nav
+          className="ascend-hero-actions"
+          aria-label="ASCEND case study actions and resources"
+        >
+          <div className="ascend-hero-actions-row">
+            <div className="ascend-hero-actions-cta">
+              <a
+                href={ascendProject.heroPrimaryCta.hrefAnchor}
+                className="ascend-hero-primary-cta group inline-flex min-h-11 items-center gap-4 rounded-sm border px-5 py-4 md:px-6"
+                style={{
+                  borderColor:
+                    "color-mix(in oklab, var(--ascend-gold) 55%, var(--hairline-strong))",
+                  background: "var(--ascend-gold-soft)",
+                }}
+              >
+                <span className="t-subhead font-display text-ink leading-none">
+                  {ascendProject.heroPrimaryCta.label}
+                </span>
+                <span
+                  aria-hidden
+                  className="ascend-hero-cta-arrow t-mono text-[var(--ascend-gold)] tabular"
+                >
+                  ↓
+                </span>
+              </a>
+            </div>
+
+            {ascendProject.heroPrototypeCta.href ? (
+              <div className="ascend-hero-prototype">
+                <EditorialTextLink
+                  href={ascendProject.heroPrototypeCta.href}
+                  label={ascendProject.heroPrototypeCta.label}
+                  ariaLabel={ascendProject.heroPrototypeCta.ariaLabel}
+                  arrow="external"
+                  tone="ink"
+                />
+                <p className="ascend-hero-prototype-status">
+                  <span
+                    className="ascend-hero-prototype-status-dot"
+                    aria-hidden
+                  />
+                  <span className="ascend-hero-prototype-status-label">
+                    {ascendProject.heroPrototypeCta.statusLabel}
+                  </span>
+                </p>
+              </div>
+            ) : null}
+
+            {ascendProject.heroSecondaryCta.href ? (
+              <div className="ascend-hero-actions-link">
+                <EditorialTextLink
+                  href={ascendProject.heroSecondaryCta.href}
+                  label={ascendProject.heroSecondaryCta.label}
+                  ariaLabel={ascendProject.heroSecondaryCta.ariaLabel}
+                  arrow="external"
+                  tone="mute"
+                />
+              </div>
+            ) : null}
+
+            {ascendProject.heroSupportingLinks.map((link) => (
+              <div key={link.id} className="ascend-hero-actions-link">
+                <EditorialTextLink
+                  href={link.href}
+                  label={link.label}
+                  ariaLabel={link.ariaLabel}
+                  arrow="external"
+                  tone="mute"
+                />
+              </div>
+            ))}
+          </div>
+        </nav>
+
+        <p className="ascend-scroll-cue flex items-center gap-3 t-mono text-ink-faint tabular">
           <span aria-hidden className="ascend-scroll-cue-line" />
           Scroll to explore
         </p>
@@ -274,6 +301,10 @@ function AscendChapterSection({ chapter }: { chapter: AscendChapter }) {
         <AscendSystemChapter />
       ) : chapter.id === "code" ? (
         <AscendCodeChapter />
+      ) : chapter.id === "prototype" ? (
+        <AscendPrototypeChapter />
+      ) : chapter.id === "outcome" ? (
+        <AscendOutcomeChapter />
       ) : chapter.id === "overview" ? (
         <div className="mt-10 space-y-6">
           <AscendCallout tone="emphasis" eyebrow="THESIS">
