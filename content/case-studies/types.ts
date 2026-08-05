@@ -102,6 +102,32 @@ export type ContentBlock =
       beat: Beat;
       label: string;
       href: string;
+    }
+  | {
+      kind: "checklist";
+      beat: Beat;
+      items: string[];
+    }
+  | {
+      kind: "principle-grid";
+      beat: Beat;
+      items: { title: string; body: string }[];
+    }
+  | {
+      kind: "timeline";
+      beat: Beat;
+      steps: { title: string; body: string }[];
+    }
+  | {
+      kind: "comparison";
+      beat: Beat;
+      pairs: { before: string; after: string }[];
+    }
+  | {
+      kind: "cycle";
+      beat: Beat;
+      steps: string[];
+      note?: string;
     };
 
 export type CaseStudy = {
@@ -136,6 +162,15 @@ export type CaseStudy = {
   /** Optional cover hero photograph (public path). Falls back to abstract cover. */
   coverImage?: string;
   coverImageAlt?: string;
+  /**
+   * Essay / process studies: denser rhythm, custom beat labels, compact cover.
+   * Product case studies omit this and keep the film template.
+   */
+  layout?: "film" | "essay";
+  /** Override default beat section labels (e.g. "01 · CHALLENGE"). */
+  beatLabels?: Partial<Record<Beat, string>>;
+  /** When true, omit the large cover media band under the hero. */
+  hideCoverMedia?: boolean;
   blocks: ContentBlock[];
   next: { slug: string; title: string };
 };
