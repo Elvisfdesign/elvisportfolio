@@ -2,11 +2,13 @@ import type { CaseStudy } from "./types";
 import { voiceModeration } from "./voice-moderation";
 import { careerNavigator } from "./career-navigator";
 import { signal } from "./signal";
+import { designingMyDesignPortfolio } from "./designing-my-design-portfolio";
 
 export const CASE_STUDIES: CaseStudy[] = [
   voiceModeration,
   careerNavigator,
   signal,
+  designingMyDesignPortfolio,
 ];
 
 export function getCaseStudy(slug: string): CaseStudy | undefined {

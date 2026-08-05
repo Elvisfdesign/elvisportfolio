@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import Image from "next/image";
 import Link from "next/link";
 import { FadeRise } from "@/components/motion/fade-rise";
 import { MaskUp } from "@/components/motion/mask-up";
@@ -280,27 +281,45 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
     case "image":
       return (
         <FadeRise>
-          <VisualStub
-            kind={block.stub ?? "screen"}
-            aspect={block.aspect ?? "16/9"}
-            alt={block.alt}
-            caption={block.caption}
-          />
+          {block.src ? (
+            <CaseStudyPhoto
+              src={block.src}
+              alt={block.alt}
+              aspect={block.aspect ?? "16/9"}
+              caption={block.caption}
+            />
+          ) : (
+            <VisualStub
+              kind={block.stub ?? "screen"}
+              aspect={block.aspect ?? "16/9"}
+              alt={block.alt}
+              caption={block.caption}
+            />
+          )}
         </FadeRise>
       );
     case "image-grid":
       return (
         <FadeRise>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {block.images.map((img, i) => (
-              <VisualStub
-                key={i}
-                kind={img.stub ?? "screen"}
-                aspect={img.aspect ?? "4/3"}
-                alt={img.alt}
-                index={String(i + 1).padStart(2, "0")}
-              />
-            ))}
+            {block.images.map((img, i) =>
+              img.src ? (
+                <CaseStudyPhoto
+                  key={i}
+                  src={img.src}
+                  alt={img.alt}
+                  aspect={img.aspect ?? "4/3"}
+                />
+              ) : (
+                <VisualStub
+                  key={i}
+                  kind={img.stub ?? "screen"}
+                  aspect={img.aspect ?? "4/3"}
+                  alt={img.alt}
+                  index={String(i + 1).padStart(2, "0")}
+                />
+              ),
+            )}
           </div>
           {block.caption && (
             <p className="mt-3 t-mono text-ink-quiet tabular">
@@ -329,26 +348,84 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
           </ul>
         </FadeRise>
       );
-    case "cta":
+    case "cta": {
+      const isHttp =
+        block.href.startsWith("http://") || block.href.startsWith("https://");
       return (
         <FadeRise>
           <div className="md:ml-[33%]" style={{ maxWidth: "var(--max-prose)" }}>
             <EditorialTextLink
               href={block.href}
               label={block.label}
-              arrow="forward"
+              arrow={isHttp ? "external" : "forward"}
               tone="ink"
-              external
+              external={isHttp}
             />
           </div>
         </FadeRise>
       );
+    }
     default:
       return null;
   }
 }
 
+function CaseStudyPhoto({
+  src,
+  alt,
+  aspect = "16/9",
+  caption,
+}: {
+  src: string;
+  alt: string;
+  aspect?: "16/9" | "21/9" | "4/3" | "1/1" | "3/4";
+  caption?: string;
+}) {
+  return (
+    <figure>
+      <div
+        className="relative overflow-hidden rounded-sm border bg-canvas-raised"
+        style={{
+          borderColor: "var(--hairline)",
+          aspectRatio: aspect.replace("/", " / "),
+        }}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 768px) 100vw, min(1100px, 92vw)"
+        />
+      </div>
+      {caption ? (
+        <figcaption className="mt-3 t-mono text-ink-quiet tabular">
+          {caption}
+        </figcaption>
+      ) : null}
+    </figure>
+  );
+}
+
 function CoverHero({ study }: { study: CaseStudy }) {
+  if (study.coverImage) {
+    return (
+      <div className="relative h-full w-full">
+        <Image
+          src={study.coverImage}
+          alt={
+            study.coverImageAlt ??
+            `${study.title} cover — portfolio homepage preview`
+          }
+          fill
+          className="object-cover object-top"
+          sizes="(max-width: 768px) 100vw, min(1440px, 100vw)"
+          priority
+        />
+      </div>
+    );
+  }
+
   // Composite cover — same family as landing AmbientPanel but wider/calmer.
   return (
     <div className="relative h-full w-full">

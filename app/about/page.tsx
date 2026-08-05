@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { AboutPortraitLightbox } from "@/components/about/about-portrait-lightbox";
 import { Section } from "@/components/primitives/section";
-import { ReadingColumn } from "@/components/primitives/reading-column";
 import { MetadataStrip } from "@/components/primitives/metadata-strip";
 import { MaskUp } from "@/components/motion/mask-up";
 import { FadeRise } from "@/components/motion/fade-rise";
@@ -12,32 +12,120 @@ export const metadata: Metadata = {
     "Elvis Fernandes designs and builds thoughtful UX/UI, scalable design systems, and front-end experiences.",
 };
 
-const NOW = [
-  "Operational tools where AI signal becomes a human decision in under a second.",
-  "Data-informed dashboards that hold up across moderator, manager, and exec roles.",
-  "Compressing the design-to-code loop with Cursor, Claude, and Figma Make.",
-  "Patterns for AI-assisted prototyping inside enterprise constraints, not around them.",
-  "Lightening design systems without losing the structural truth they protect.",
-];
+const FOCUS = [
+  {
+    title: "AI-assisted product workflows",
+    detail:
+      "Shortening the distance between idea, design, and implementation.",
+  },
+  {
+    title: "Operational AI products",
+    detail:
+      "Complex AI signals that become clear, timely human decisions.",
+  },
+  {
+    title: "Flexible design systems",
+    detail:
+      "Structural consistency that still leaves room to adapt.",
+  },
+  {
+    title: "Data-informed dashboards",
+    detail:
+      "Surfaces that support operators, managers, and executives.",
+  },
+] as const;
 
-const WORKFLOW = [
-  // Source of truth
-  { item: "Figma · FigJam", note: "Where the system lives. Tokens, flows, components, working canvases." },
-  { item: "React + front-end", note: "Where designs survive contact with reality." },
-  // AI critique partners
-  { item: "Claude", note: "Critique partner. Edge-case generator. Copy editor." },
-  { item: "ChatGPT", note: "Second opinion. Different blind spots than Claude." },
-  { item: "Gemini · Google AI Studio", note: "Multi-modal exploration. Voice and vision prototypes." },
-  // AI scaffolding & generation
-  { item: "Figma Make", note: "Generative scaffolding for new surfaces inside the system." },
-  { item: "Lovable", note: "Concept-to-clickable in an afternoon." },
-  { item: "UX Pilot", note: "Rapid IA and flow generation when the brief is still soft." },
-  { item: "Magic Patterns", note: "Exploring component variations at speed." },
-  { item: "Stitch", note: "Visual UI experimentation, throwaway-friendly." },
-  { item: "Subframe", note: "Design-system-aware UI generation that respects tokens." },
-  // Implementation
-  { item: "Cursor", note: "Where design becomes shippable code." },
-];
+const PRINCIPLES = [
+  {
+    title: "Systems before screens",
+    body: "I begin with structure, states, constraints, and reusable patterns so individual screens belong to a coherent product.",
+  },
+  {
+    title: "Design and implementation inform each other",
+    body: "Frontend fluency helps me evaluate what is practical to build and gives design and engineering a shared language for tradeoffs.",
+  },
+  {
+    title: "AI supports the process, not the judgment",
+    body: "I use AI for critique, exploration, documentation, and implementation support. It accelerates the workflow, but it does not make the final product decisions.",
+  },
+  {
+    title: "Feedback improves the work",
+    body: "I refine ideas through repeated reviews, cross-functional collaboration, and feedback from experienced designers and former colleagues.",
+  },
+] as const;
+
+const CORE_TOOLS = [
+  {
+    name: "Figma",
+    note: "Product design, systems, flows, and interface exploration.",
+  },
+  {
+    name: "Cursor",
+    note: "Frontend implementation, component refinement, debugging, and responsive iteration.",
+  },
+  {
+    name: "React / Frontend",
+    note: "The environment where design decisions are tested against real behavior and constraints.",
+  },
+  {
+    name: "ChatGPT",
+    note: "Product thinking, UX critique, content refinement, and iteration support.",
+  },
+  {
+    name: "Claude",
+    note: "Architecture, implementation planning, critique, and documentation.",
+  },
+] as const;
+
+const SUPPORTING_TOOLS = [
+  "FigJam",
+  "Figma Make",
+  "Gemini",
+  "Google AI Studio",
+  "Lovable",
+  "Magic Patterns",
+  "UX Pilot",
+  "Stitch",
+  "Subframe",
+] as const;
+
+const WORKFLOW_STEPS = [
+  "Understand",
+  "Structure",
+  "Explore",
+  "Design",
+  "Build",
+  "Review",
+  "Refine",
+] as const;
+
+/**
+ * Shared About section shell — outer width, beat rhythm, and a consistent
+ * left label/title · right content editorial grid across the page.
+ */
+function AboutSection({
+  number,
+  title,
+  children,
+}: {
+  number: string;
+  title: string;
+  children: ReactNode;
+}) {
+  return (
+    <Section rhythm="beat" width="outer">
+      <div className="about-section-grid grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-[clamp(3rem,6vw,7rem)]">
+        <div className="md:col-span-4 lg:col-span-3">
+          <p className="t-mono text-ink-quiet tabular">{number}</p>
+          <h2 className="mt-2 t-heading font-display text-ink">{title}</h2>
+        </div>
+        <div className="min-w-0 md:col-span-8 lg:col-span-8 lg:col-start-5">
+          {children}
+        </div>
+      </div>
+    </Section>
+  );
+}
 
 export default function AboutPage() {
   return (
@@ -70,8 +158,9 @@ export default function AboutPage() {
                 thumbSizes="(max-width: 768px) 7rem, 7.25rem"
               />
               <figcaption className="sr-only">
-                Portrait thumbnail beside practice details — select to view a larger
-                version. Asset: public/images/elvis-portrait.png (crop ~4:5 suggested).
+                Portrait thumbnail beside practice details — select to view a
+                larger version. Asset: public/images/elvis-portrait.png
+                (crop ~4:5 suggested).
               </figcaption>
             </figure>
             <FadeRise delay={0.2}>
@@ -79,10 +168,20 @@ export default function AboutPage() {
                 className="flex-col items-start gap-y-4"
                 items={[
                   { label: "BASED", value: "Boston, MA" },
-                  { label: "PRACTICE", value: "UX/UI · Systems · Front-End" },
-                  { label: "FOCUS", value: "Enterprise UX · Design Systems · Implementation" },
+                  {
+                    label: "PRACTICE",
+                    value: "UX/UI · Systems · Front-End",
+                  },
+                  {
+                    label: "FOCUS",
+                    value:
+                      "Enterprise UX · Design Systems · Implementation",
+                  },
                   { label: "BUILDING FOR WEB SINCE", value: "2017" },
-                  { label: "PRODUCT DESIGN FOCUSED SINCE", value: "2022" },
+                  {
+                    label: "PRODUCT DESIGN FOCUSED SINCE",
+                    value: "2022",
+                  },
                 ]}
               />
             </FadeRise>
@@ -90,169 +189,158 @@ export default function AboutPage() {
         </div>
       </header>
 
-      {/* Long-form bio */}
-      <Section rhythm="beat" width="reading">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-          <div className="md:col-span-3">
-            <p className="t-mono text-ink-quiet tabular">01 · BIO</p>
-            <h2 className="mt-2 t-heading font-display text-ink">
-              The short version.
-            </h2>
-          </div>
-          <ReadingColumn className="md:col-span-7 md:col-start-5">
-            <div className="space-y-6">
-              <p className="t-body-l text-ink-mute">
-                I started exploring design and front-end development in 2005,
-                during my early studies in Cape Verde, and continued through
-                my Bachelor&rsquo;s at the New England Institute of Art in
-                Massachusetts. My professional product and UX career sharpened
-                in 2017 at StudentUniverse, where I learned how product design
-                behaves under real engineering and business constraints. Since
-                then I&rsquo;ve moved deeper into systems work, enterprise UX,
-                and the human side of AI products.
-              </p>
-              <p className="t-body-l text-ink-mute">
-                Most recently I led design initiatives at Modulate, working
-                across ToxMod, Voice Vault, internal moderation and admin
-                tools, executive dashboards, authentication flows, and the
-                shared design system underneath. The work was high-consequence
-                enterprise UX: dense surfaces, cross-functional review, and
-                the daily question of how a human should decide what to do
-                with AI signal. I worked closely with engineering, product,
-                QA, and trust-and-safety stakeholders — and I implemented in
-                front-end where it shortened the loop.
-              </p>
-              <p className="t-body-l text-ink-mute">
-                I design and build in the same pass — thoughtful UX/UI,
-                scalable systems, and front-end detail that survives contact
-                with engineering. That means designing for what&rsquo;s
-                actually shippable, not what looks good in Figma alone. AI is
-                a working tool in that loop — a critique partner, a scaffolding
-                generator, a way to compress the gap between concept and
-                code. I use it daily and pragmatically; the design decisions
-                in the middle still happen in my head.
-              </p>
-            </div>
-          </ReadingColumn>
+      {/* 01 · Bio */}
+      <AboutSection number="01 · BIO" title="The short version.">
+        <div
+          className="space-y-7"
+          style={{ maxWidth: "var(--max-prose)" }}
+        >
+          <p className="t-body-l text-ink-mute">
+            I began exploring design and frontend development during my
+            studies in Cape Verde, and continued through my bachelor&rsquo;s
+            degree in Massachusetts. My professional product and UX career
+            developed through frontend work and later product design roles —
+            learning how design behaves under real engineering and business
+            constraints.
+          </p>
+          <p className="t-body-l text-ink-mute">
+            Most recently I led design initiatives at Modulate across
+            enterprise UX for AI and trust-and-safety products: operational
+            tools, dashboards, and the shared design system underneath. The
+            work meant dense surfaces, cross-functional review, and close
+            collaboration with product, engineering, QA, and business
+            stakeholders — including frontend implementation where it
+            shortened the loop.
+          </p>
+          <p className="t-body-l text-ink-mute">
+            I design and build in the same loop. My work connects product
+            strategy, UX/UI, systems, and frontend implementation. AI is a
+            professional tool for critique, acceleration, and exploration;
+            final decisions remain mine.
+          </p>
         </div>
-      </Section>
+      </AboutSection>
 
-      {/* Currently exploring */}
-      <Section rhythm="beat" width="outer">
-        <header className="hairline-b mb-12 flex flex-col gap-y-3 pb-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-6">
-          <span className="t-mono text-ink-quiet tabular shrink-0">02 · NOW</span>
-          <span className="t-mono text-ink-quiet tabular max-w-full break-words sm:text-right">
-            CURRENTLY EXPLORING
-          </span>
-        </header>
-        <ul>
-          {NOW.map((line, i) => (
-            <FadeRise key={i} delay={i * 0.06}>
-              <li className="hairline-t grid grid-cols-12 items-baseline gap-4 py-6">
-                <span className="col-span-2 t-mono text-ink-quiet tabular">
+      {/* 02 · Current Focus */}
+      <AboutSection number="02 · NOW" title="Current focus.">
+        <ul className="grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+          {FOCUS.map((item, i) => (
+            <FadeRise key={item.title} delay={i * 0.05}>
+              <li className="hairline-t py-5 md:py-6">
+                <span className="t-mono text-ink-quiet tabular">
                   {String(i + 1).padStart(2, "0")}
                 </span>
-                <span className="col-span-10 t-subhead text-ink">{line}</span>
+                <p className="mt-2 t-subhead text-ink">{item.title}</p>
+                <p className="mt-1.5 t-body text-ink-mute">{item.detail}</p>
               </li>
             </FadeRise>
           ))}
         </ul>
-      </Section>
+      </AboutSection>
 
-      {/* Workflow · daily drivers */}
-      <Section rhythm="beat" width="outer">
-        <header className="hairline-b mb-12 flex flex-col gap-y-3 pb-4 sm:flex-row sm:flex-wrap sm:items-baseline sm:justify-between sm:gap-x-6">
-          <span className="t-mono text-ink-quiet tabular shrink-0">03 · WORKFLOW</span>
-          <span className="t-mono text-ink-quiet tabular max-w-full break-words sm:text-right">
-            DAILY DRIVERS
-          </span>
-        </header>
-        <ul className="grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-2">
-          {WORKFLOW.map((tool) => (
-            <FadeRise key={tool.item}>
-              <li className="hairline-t pt-6">
-                <p className="t-subhead text-ink">{tool.item}</p>
-                <p className="mt-2 t-body text-ink-mute">{tool.note}</p>
+      {/* 03 · How I Work */}
+      <AboutSection number="03 · APPROACH" title="How I work.">
+        <ul className="space-y-0" style={{ maxWidth: "var(--max-prose)" }}>
+          {PRINCIPLES.map((principle, i) => (
+            <FadeRise key={principle.title} delay={i * 0.04}>
+              <li className="hairline-t py-5 md:py-6">
+                <p className="font-sans text-[1.0625rem] font-semibold leading-snug tracking-[-0.01em] text-ink">
+                  {principle.title}
+                </p>
+                <p className="mt-2 t-body text-ink-mute">{principle.body}</p>
               </li>
             </FadeRise>
           ))}
         </ul>
-      </Section>
+      </AboutSection>
 
-      {/* Philosophy */}
-      <Section rhythm="beat" width="reading">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
-          <div className="md:col-span-3">
-            <p className="t-mono text-ink-quiet tabular">04 · PHILOSOPHY</p>
-            <h2 className="mt-2 t-heading font-display text-ink">
-              How I work.
-            </h2>
-          </div>
-          <ReadingColumn className="md:col-span-7 md:col-start-5">
-            <ul className="space-y-6 t-body-l text-ink-mute">
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">Systems before screens.</strong>{" "}
-                Enterprise products are components, states, density modes,
-                and time—not a sequence of hero frames. I think in that
-                order so reviews with product and engineering stay tied to
-                what we actually ship.
-              </li>
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">
-                  Front-end fluency changes the design.
-                </strong>{" "}
-                I implement in React. What is pragmatic to build informs
-                the canvas alongside brand and usability—and it gives
-                engineering and me a shared vocabulary when we negotiate
-                tradeoffs.
-              </li>
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">
-                  AI is a collaborator, not an author.
-                </strong>{" "}
-                I use AI to shorten the distance between idea and artifact,
-                surface edge cases, and speed scaffolding. What we commit
-                to still earns its place in critique; the model helps,
-                it doesn&rsquo;t decide.
-              </li>
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">
-                  Data-informed, not data-led.
-                </strong>{" "}
-                Metrics sharpen the conversation with stakeholders—they
-                should not substitute for it. I care about grounded arguments:
-                users, constraints, incentives, then a deliberate call.
-              </li>
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">
-                  Operational clarity over visual flash.
-                </strong>{" "}
-                I care most about outcomes for real operators: the right state
-                at the right beat under load. Quiet UI that reads fast beats
-                a memorable decoration that adds cognitive tax.
-              </li>
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">
-                  Feedback is part of the work.
-                </strong>{" "}
-                I take critique seriously and try to give it back the same way:
-                specific, tied to shared goals, actionable. Strong views,
-                open to revision when we learn something new from design,
-                eng, QA, or the field—iteration is ordinary, not a crisis.
-              </li>
-              <li className="hairline-t pt-6">
-                <strong className="text-ink">
-                  Collaboration is craftsmanship.
-                </strong>{" "}
-                Respect for engineering, product, QA, and stakeholders is
-                not soft culture—it keeps the craft honest. I stay curious
-                about what they see before I&rsquo;ve drawn it; that gap is
-                where assumptions die. Prepared reviews, clear async signals,
-                patience with the messy middle, low drama. I am ambitious about
-                what we ship; I try to leave the room calmer than I found it.
-              </li>
+      {/* 04 · Tools and Workflow */}
+      <AboutSection number="04 · WORKFLOW" title="Tools in the loop.">
+        <div className="space-y-12 md:space-y-14">
+          <div>
+            <p className="t-mono text-ink-quiet tabular">CORE TOOLS</p>
+            <ul className="mt-5 grid grid-cols-1 gap-x-10 sm:grid-cols-2">
+              {CORE_TOOLS.map((tool, i) => (
+                <FadeRise key={tool.name} delay={i * 0.04}>
+                  <li className="hairline-t py-5 md:py-6">
+                    <p className="t-subhead text-ink">{tool.name}</p>
+                    <p className="mt-1.5 t-body text-ink-mute">{tool.note}</p>
+                  </li>
+                </FadeRise>
+              ))}
             </ul>
-          </ReadingColumn>
+          </div>
+
+          <div>
+            <p className="t-mono text-ink-quiet tabular">SUPPORTING TOOLS</p>
+            <p className="mt-3 max-w-prose t-body text-ink-mute">
+              Used selectively for rapid exploration, alternative concepts,
+              and early-stage prototyping.
+            </p>
+            <ul className="mt-5 flex flex-wrap gap-x-1 gap-y-2">
+              {SUPPORTING_TOOLS.map((tool, i) => (
+                <li
+                  key={tool}
+                  className="t-mono text-[0.75rem] text-ink-quiet tabular"
+                >
+                  {tool}
+                  {i < SUPPORTING_TOOLS.length - 1 ? (
+                    <span className="mx-2.5 text-ink-faint" aria-hidden>
+                      ·
+                    </span>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <p className="t-mono text-ink-quiet tabular">WORKFLOW</p>
+            <ol
+              role="list"
+              aria-label="Design workflow stages"
+              className="mt-5 flex flex-wrap items-center gap-x-2.5 gap-y-2"
+            >
+              {WORKFLOW_STEPS.map((step, i) => (
+                <li
+                  key={step}
+                  className="flex items-center gap-x-2.5"
+                >
+                  <span className="t-mono text-[0.8125rem] text-ink tabular">
+                    {step}
+                  </span>
+                  {i < WORKFLOW_STEPS.length - 1 ? (
+                    <span
+                      aria-hidden
+                      className="t-mono text-ink-faint tabular"
+                    >
+                      →
+                    </span>
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+            <p className="mt-4 t-mono text-[0.75rem] leading-relaxed text-ink-faint">
+              The tools change by project. The decision-making process stays
+              consistent.
+            </p>
+          </div>
+        </div>
+      </AboutSection>
+
+      {/* Closing statement — not a numbered section */}
+      <Section rhythm="beat" width="outer" className="!pt-0">
+        <div className="grid grid-cols-1 md:grid-cols-12 md:gap-[clamp(3rem,6vw,7rem)]">
+          <div className="md:col-span-8 md:col-start-5 lg:col-span-8 lg:col-start-5">
+            <FadeRise>
+              <p
+                className="hairline-t max-w-[40rem] pt-10 t-body-l italic text-ink-mute leading-relaxed md:pt-12"
+              >
+                Great products come from thoughtful iteration, continuous
+                learning, and combining the right tools with human judgment.
+              </p>
+            </FadeRise>
+          </div>
         </div>
       </Section>
     </article>

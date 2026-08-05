@@ -1,5 +1,6 @@
 import { OpeningLine } from "@/components/landing/opening-line";
 import { FeaturedFilms } from "@/components/landing/featured-films";
+import { BehindTheWork } from "@/components/landing/behind-the-work";
 import { PracticeStrip } from "@/components/landing/practice-strip";
 import { IdentityReel } from "@/components/landing/identity-reel";
 import { CapabilityMap } from "@/components/landing/capability-map";
@@ -9,7 +10,7 @@ import { SharedElementScope } from "@/components/motion/shared-element";
 
 /**
  * Homepage narrative:
- * Hero (+ Atlas flagship card) → Selected work → Practice → Identity →
+ * Hero → Selected work → Behind the work → Practice → Identity →
  * Capabilities → Context → Invitation.
  */
 export default function HomePage() {
@@ -17,6 +18,7 @@ export default function HomePage() {
     <SharedElementScope>
       <OpeningLine />
       <FeaturedFilms />
+      <BehindTheWork />
       <PracticeStrip />
       <IdentityReel />
       <CapabilityMap />

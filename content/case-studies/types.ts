@@ -75,6 +75,8 @@ export type ContentBlock =
       beat: Beat;
       caption?: string;
       alt: string;
+      /** Public path to a real asset. When set, renders instead of the stub. */
+      src?: string;
       /** Placeholder kind — what to render in the stub panel. */
       stub?: "dashboard" | "system" | "flow" | "graph" | "prompt" | "screen";
       aspect?: "16/9" | "21/9" | "4/3" | "1/1" | "3/4";
@@ -85,6 +87,7 @@ export type ContentBlock =
       caption?: string;
       images: {
         alt: string;
+        src?: string;
         stub?: "dashboard" | "system" | "flow" | "graph" | "prompt" | "screen";
         aspect?: "16/9" | "21/9" | "4/3" | "1/1" | "3/4";
       }[];
@@ -130,6 +133,9 @@ export type CaseStudy = {
   };
   reading: string;
   ambient: string;
+  /** Optional cover hero photograph (public path). Falls back to abstract cover. */
+  coverImage?: string;
+  coverImageAlt?: string;
   blocks: ContentBlock[];
   next: { slug: string; title: string };
 };
