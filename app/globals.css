@@ -1175,6 +1175,38 @@ li:has(.atlas-screen-card-hit:focus-visible) .atlas-screen-card figcaption span:
 }
 
 /*
+ * Primary site navigation — quiet destination links.
+ * Color/opacity only; no underline, no translation, no layout shift on hover.
+ * Action CTAs continue to use .link-underline / EditorialTextLink.
+ */
+.site-nav-link {
+  color: var(--ink-mute);
+  transition:
+    color 160ms var(--ease-entrance),
+    opacity 160ms var(--ease-entrance);
+}
+.site-nav-link:hover {
+  color: var(--ink);
+}
+.site-nav-link:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.site-nav-link--active {
+  color: var(--ink);
+  font-weight: 500;
+}
+.site-nav-link:active {
+  opacity: 0.82;
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav-link {
+    transition: none;
+  }
+}
+
+/*
  * Legacy .link-underline — kept for residual inline / prose links.
  * Prefer EditorialTextLink for editorial CTAs (split label underline).
  */

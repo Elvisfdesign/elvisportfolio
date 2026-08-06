@@ -115,9 +115,10 @@ export function SiteNav() {
                     <Link
                       href={item.href}
                       {...topResetProps}
+                      aria-current={active ? "page" : undefined}
                       className={clsx(
-                        "t-mono link-underline transition-colors duration-300",
-                        active ? "text-ink" : "text-ink-mute hover:text-ink"
+                        "t-mono site-nav-link",
+                        active && "site-nav-link--active",
                       )}
                     >
                       {item.label}
@@ -189,9 +190,10 @@ export function SiteNav() {
                       <Link
                         href={item.href}
                         {...topResetProps}
+                        aria-current={active ? "page" : undefined}
                         className={clsx(
-                          "block t-display-m font-display transition-colors duration-300",
-                          active ? "text-ink" : "text-ink-mute hover:text-ink"
+                          "site-nav-link block t-display-m font-display",
+                          active && "site-nav-link--active",
                         )}
                       >
                         {item.label}
