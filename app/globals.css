@@ -244,6 +244,31 @@ button {
 [data-theme="light"] .atlas-feature-preview-light { display: block; }
 [data-theme="light"] .atlas-feature-preview-dark { display: none; }
 
+/*
+ * Reusable ThemeAwareImage — same data-theme source of truth as ThemeProvider
+ * (including Auto/system). Default assumes dark until light is explicit.
+ * Opacity/visibility keeps Next/Image fill layout intact (display:none can blank).
+ */
+.theme-aware-image--light {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.theme-aware-image--dark {
+  opacity: 1;
+  visibility: visible;
+}
+[data-theme="light"] .theme-aware-image--light {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+[data-theme="light"] .theme-aware-image--dark {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* Primary Live Demo CTA — subtle arrow lift on hover, respects reduced-motion. */
 .atlas-feature-primary-cta:hover .atlas-feature-primary-cta-arrow {
   transform: translate(2px, -2px);

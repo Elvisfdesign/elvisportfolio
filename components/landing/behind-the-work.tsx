@@ -1,17 +1,17 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import { EditorialTextLink } from "@/components/primitives/editorial-text-link";
 import { Section } from "@/components/primitives/section";
+import { ThemeAwareImage } from "@/components/theme/theme-aware-image";
 import { getCaseStudy } from "@/content/case-studies";
 
 const STUDY_SLUG = "designing-my-design-portfolio";
 const HREF = `/work/${STUDY_SLUG}`;
-const PREVIEW_DESKTOP = "/images/portfolio-process/homepage-desktop.png";
-const PREVIEW_MOBILE = "/images/portfolio-process/homepage-mobile.png";
+const PREVIEW_LIGHT = "/images/portfolio-process/portfolio-preview-light.png";
+const PREVIEW_DARK = "/images/portfolio-process/portfolio-preview-dark.png";
 
 /**
  * Homepage coda after Selected Work — presents the portfolio itself as a
@@ -61,51 +61,35 @@ function ProcessCard({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [28, -28]);
+  const y = useTransform(scrollYProgress, [0, 1], [20, -20]);
   const opacity = useTransform(
     scrollYProgress,
     [0, 0.18, 0.82, 1],
-    [0, 1, 1, 0.75],
+    [0, 1, 1, 0.8],
   );
 
   return (
     <article
       ref={ref}
-      className="mt-14 grid grid-cols-1 gap-10 hairline-t pt-14 md:mt-20 md:grid-cols-12 md:gap-12 md:pt-20"
+      className="mt-14 grid grid-cols-1 gap-10 hairline-t pt-14 md:mt-20 md:grid-cols-12 md:items-center md:gap-12 md:pt-20"
     >
       <div className="md:col-span-6 md:col-start-1">
         <motion.div
           style={{ y, opacity, borderColor: "var(--hairline)" }}
           layoutId={`film:${STUDY_SLUG}`}
-          className="relative aspect-[16/10] overflow-hidden rounded-sm border bg-canvas-raised md:aspect-[4/3]"
+          className="relative aspect-[1024/600] overflow-hidden rounded-sm border bg-canvas-raised"
         >
-          <Image
-            src={PREVIEW_DESKTOP}
-            alt="Desktop screenshot of the current portfolio homepage hero and navigation"
-            fill
-            className="object-cover object-top"
-            sizes="(max-width: 768px) 100vw, 50vw"
+          <ThemeAwareImage
+            lightSrc={PREVIEW_LIGHT}
+            darkSrc={PREVIEW_DARK}
+            alt="Elvis Fernandes portfolio homepage shown in desktop and mobile layouts"
+            imageClassName="object-contain object-center"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 640px"
           />
-          <div
-            className="pointer-events-none absolute bottom-4 right-4 w-[28%] overflow-hidden rounded-sm border sm:bottom-5 sm:right-5 sm:w-[26%] md:bottom-6 md:right-6"
-            style={{
-              borderColor: "var(--hairline)",
-              boxShadow: "var(--shadow-press)",
-              aspectRatio: "9 / 16",
-            }}
-          >
-            <Image
-              src={PREVIEW_MOBILE}
-              alt="Mobile screenshot of the portfolio homepage"
-              fill
-              className="object-cover object-top"
-              sizes="120px"
-            />
-          </div>
         </motion.div>
       </div>
 
-      <div className="flex flex-col justify-center md:col-span-5 md:col-start-8 md:pt-4">
+      <div className="flex min-w-0 flex-col justify-center md:col-span-5 md:col-start-8">
         <p className="t-mono text-ink-quiet tabular">PROCESS PROJECT</p>
         <h3 className="mt-5 font-display text-ink t-heading md:mt-6 md:text-[clamp(1.75rem,2.4vw,2.35rem)] md:leading-tight">
           <Link
@@ -118,19 +102,26 @@ function ProcessCard({
         <p className="mt-5 max-w-prose t-body text-ink-mute md:mt-6">
           {positioning}
         </p>
-        <div className="mt-8 flex flex-col gap-5 hairline-t pt-5 sm:mt-10 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:pt-6">
-          <span className="t-mono text-ink-quiet tabular">
-            Independent Project · UX/UI · Frontend · AI-Assisted Workflow
-          </span>
-          <EditorialTextLink
-            href={HREF}
-            label="EXPLORE THE PROCESS"
-            arrow="external"
-            tone="ink"
-            external={false}
-            className="shrink-0"
-            ariaLabel={`Explore the process: ${title}`}
-          />
+
+        {/* Unified metadata + CTA footer — grid keeps columns from overlapping */}
+        <div className="mt-8 hairline-t pt-5 sm:mt-10 sm:pt-6">
+          <div
+            className="grid w-full grid-cols-1 items-center gap-4 sm:grid-cols-[minmax(0,1fr)_auto] sm:gap-6"
+          >
+            <p className="min-w-0 t-mono text-[0.6875rem] uppercase tracking-[0.06em] text-ink-quiet tabular">
+              Independent Project · UX/UI Designer · Front-end ·
+              AI-assisted Workflow
+            </p>
+            <EditorialTextLink
+              href={HREF}
+              label="Explore the Process"
+              arrow="external"
+              tone="ink"
+              external={false}
+              className="justify-self-start sm:justify-self-end"
+              ariaLabel={`Explore the process: ${title}`}
+            />
+          </div>
         </div>
       </div>
     </article>
