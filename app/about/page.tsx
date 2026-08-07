@@ -165,22 +165,27 @@ export default function AboutPage() {
             </figure>
             <FadeRise delay={0.2}>
               <MetadataStrip
-                className="flex-col items-start gap-y-4"
+                stacked
+                className="flex-col items-start"
                 items={[
                   { label: "BASED", value: "Boston, MA" },
                   {
-                    label: "PRACTICE",
-                    value: "UX/UI · Systems · Front-End",
+                    label: "ROLE",
+                    value: "Senior Product Designer · UX/UI · Front-End",
                   },
                   {
-                    label: "FOCUS",
+                    label: "SPECIALIZATION",
+                    value: "Enterprise SaaS · AI Products · Design Systems",
+                  },
+                  {
+                    label: "WORKFLOW",
                     value:
-                      "Enterprise UX · Design Systems · Implementation",
+                      "Research → Strategy → UX/UI → Prototype → React → Iterate",
                   },
-                  { label: "BUILDING FOR WEB SINCE", value: "2017" },
                   {
-                    label: "PRODUCT DESIGN FOCUSED SINCE",
-                    value: "2022",
+                    label: "CURRENT FOCUS",
+                    value:
+                      "Building AI-assisted product experiences, interactive prototypes, and scalable design systems.",
                   },
                 ]}
               />
